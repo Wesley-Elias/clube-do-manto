@@ -76,6 +76,11 @@ form.addEventListener("submit", async (e) => {
       options: { data: { nome: campos.nome.value.trim() }, emailRedirectTo: redirecionar },
     });
     if (error) throw error;
+    // Com a confirmação de e-mail ligada, o Supabase não devolve erro para um
+    // e-mail já cadastrado: responde com um usuário sem identidades.
+    if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+      throw Object.assign(new Error("User already registered"), { code: "user_already_exists" });
+    }
     // Sem sessão: o projeto exige confirmar o e-mail antes do primeiro acesso.
     mostrarEtapa(data.session ? "sucesso" : "confirmacao");
   } catch (erro) {
