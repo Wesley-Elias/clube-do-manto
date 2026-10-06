@@ -41,14 +41,16 @@ js/formulario.js      validação junto ao campo, mostrar senha, processamento
 css/cliente.css       cabeçalho do cliente, C01 e C02
 js/cliente.js         sessão obrigatória, cabeçalho do cliente e formatação
 js/busca-equipe.js    seleção de equipe com busca (teclado e leitor de tela)
-supabase/migrations/  001 = esquema; 002 = acesso público e login; 003 = painel e perfil
+supabase/migrations/  001 = esquema; 002 = acesso público e login; 003 = painel e perfil; 004 = tamanhos oficiais
 ```
 
 ## Supabase
 
 Projeto **clube-do-manto** (região São Paulo, plano gratuito), com as migrações 001 e 002 aplicadas. `js/config.js` já aponta para ele. A chave em `config.js` é a **publicável** (pública por natureza); a proteção vem das políticas de RLS. Nunca coloque a chave `service_role` no site.
 
-A migração 003 cadastra as equipes provisórias (clubes internacionais e seleções, sem clubes brasileiros), oferece `tamanhos_do_catalogo()` (tamanhos com estoque; enquanto o estoque estiver vazio, a lista provisória P, M, G, GG), grava o perfil só pela função `salvar_perfil()`, que valida tamanho, equipes e favorita diferente da rival, e libera a leitura dos próprios kits, itens e trocas.
+A migração 003 cadastra as equipes provisórias (clubes internacionais e seleções, sem clubes brasileiros), oferece `tamanhos_do_catalogo()`, grava o perfil só pela função `salvar_perfil()`, que valida tamanho, equipes e favorita diferente da rival, e libera a leitura dos próprios kits, itens e trocas.
+
+A migração 004 fixa a lista oficial de tamanhos: **P, M, G e GG** (decisão de 06/10/2026). Perfil, estoque e trocas só aceitam esses valores, e `tamanhos_do_catalogo()` devolve essa lista.
 
 A migração 002 abre só o necessário: leitura pública de `planos`, criação automática do perfil no cadastro (nome vem do formulário), leitura do próprio perfil e da própria assinatura e a função `eh_administrador()`.
 

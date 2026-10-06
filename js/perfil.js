@@ -51,7 +51,7 @@ function prepararTela({ perfil, equipes, tamanhos }, email) {
   modo = contexto.plano || !completo ? "preferencias" : "meu-perfil";
   mostrarNome(perfil.nome);
 
-  // Tamanhos oferecidos (lista oficial pendente no Guia §9; o banco decide a lista)
+  // Tamanhos oferecidos: lista oficial P, M, G e GG, vinda do banco
   for (const t of tamanhos) {
     const opcao = document.createElement("option");
     opcao.value = t;
