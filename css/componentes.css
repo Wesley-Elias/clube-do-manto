@@ -283,3 +283,6 @@ h1, h2, h3, p { margin: 0; }
   .cabecalho-fluxo .botao { padding: 0 var(--espaco-12); }
   .cabecalho-fluxo .logo { gap: var(--espaco-4); }
 }
+
+/* Títulos que recebem foco por script (troca de estado) não mostram contorno */
+[tabindex="-1"]:focus { outline: none; }
