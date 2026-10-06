@@ -135,6 +135,14 @@ a.menu-mobile__item::after { content: "→"; font: var(--tipo-botao); color: var
   cursor: pointer;
 }
 .faixa__pausa:focus-visible { outline-color: var(--texto-sobre-destaque); outline-offset: -4px; }
+/* Movimento reduzido: tokens.css para todas as animações; aqui a faixa volta a rolar
+   apenas quando a própria pessoa aperta ▶. */
+@media (prefers-reduced-motion: reduce) {
+  .faixa[data-escolha-do-usuario="true"] .faixa__trilho {
+    animation-duration: var(--faixa-duracao) !important;
+    animation-iteration-count: infinite !important;
+  }
+}
 @keyframes faixa-rolar { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (min-width: 1200px) { .faixa__lista { font: var(--tipo-faixa-desktop); letter-spacing: var(--ls-plano); } }
 

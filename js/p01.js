@@ -42,12 +42,18 @@ copia.removeAttribute("aria-label");
 trilho.append(copia);
 
 const botaoPausa = faixa.querySelector(".faixa__pausa");
-botaoPausa.addEventListener("click", () => {
-  const pausar = faixa.dataset.pausada !== "true";
+function pausarFaixa(pausar) {
   faixa.dataset.pausada = String(pausar);
   botaoPausa.setAttribute("aria-pressed", String(pausar));
   botaoPausa.setAttribute("aria-label", pausar ? "Retomar faixa de equipes" : "Pausar faixa de equipes");
   botaoPausa.textContent = pausar ? "▶" : "❚❚";
+}
+// Com "reduzir movimento" ligado no sistema, a faixa começa parada e o botão mostra ▶.
+// Se a pessoa apertar ▶, a escolha dela vale e a faixa passa a rolar.
+if (matchMedia("(prefers-reduced-motion: reduce)").matches) pausarFaixa(true);
+botaoPausa.addEventListener("click", () => {
+  faixa.dataset.escolhaDoUsuario = "true";
+  pausarFaixa(faixa.dataset.pausada !== "true");
 });
 
 // ---------- Dúvidas frequentes ----------
