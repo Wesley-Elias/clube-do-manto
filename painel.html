@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seu painel · Clube do Manto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/cliente.css">
+  <script type="module" src="js/painel.js"></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header data-cabecalho-cliente="C01" class="cab-cliente"></header>
+
+  <main id="conteudo" class="area-cliente" aria-busy="true" data-painel>
+    <div class="container">
+      <div class="area-cliente__topo">
+        <h1 class="area-cliente__titulo" data-titulo tabindex="-1">Meu painel</h1>
+        <p class="area-cliente__sub" data-subtitulo>Carregando sua assinatura, seus kits e suas trocas…</p>
+      </div>
+
+      <!-- Falha ao carregar -->
+      <section class="cartao cartao--falha" data-falha hidden aria-labelledby="titulo-falha">
+        <span class="cartao--falha__icone" aria-hidden="true">!</span>
+        <h2 class="cartao__titulo" id="titulo-falha">Não foi possível carregar seu painel</h2>
+        <p class="cartao__texto">Verifique sua conexão e tente novamente.</p>
+        <button class="botao botao--primaria" type="button" data-tentar>Tentar novamente</button>
+      </section>
+
+      <div data-conteudo>
+        <div class="indicadores">
+          <section class="indicador" aria-labelledby="ind-assinatura">
+            <div class="indicador__topo">
+              <h2 class="chamada" id="ind-assinatura">Assinatura</h2>
+              <span data-ind="assinatura-chip"><span class="chip chip--neutro"><span aria-hidden="true">…</span>Carregando</span></span>
+            </div>
+            <p class="indicador__valor" data-ind="assinatura-valor"><span class="traco" aria-hidden="true"></span></p>
+            <p class="indicador__texto" data-ind="assinatura-texto">Carregando…</p>
+            <a class="indicador__acao" data-ind="assinatura-acao" hidden></a>
+          </section>
+          <section class="indicador" aria-labelledby="ind-kits">
+            <div class="indicador__topo"><h2 class="chamada" id="ind-kits">Kits montados</h2></div>
+            <p class="indicador__valor" data-ind="kits-valor"><span class="traco" aria-hidden="true"></span></p>
+            <p class="indicador__texto" data-ind="kits-texto">Carregando…</p>
+            <a class="indicador__acao" href="proxima-etapa.html?tela=C05" data-ind="kits-acao" hidden>Ver kits e histórico</a>
+          </section>
+          <section class="indicador" aria-labelledby="ind-trocas">
+            <div class="indicador__topo"><h2 class="chamada" id="ind-trocas">Benefício de trocas</h2></div>
+            <p class="indicador__valor" data-ind="trocas-valor"><span class="traco" aria-hidden="true"></span></p>
+            <p class="indicador__texto" data-ind="trocas-texto">Carregando…</p>
+            <a class="indicador__acao" href="proxima-etapa.html?tela=C08" data-ind="trocas-acao" hidden>Consultar minhas trocas</a>
+          </section>
+        </div>
+
+        <div class="painel-grade">
+          <div class="painel-grade__principal">
+            <section class="cartao" aria-labelledby="titulo-destaque" data-destaque>
+              <div class="cartao__topo">
+                <h2 class="cartao__titulo" id="titulo-destaque">Seu kit</h2>
+                <span class="chip chip--neutro"><span aria-hidden="true">…</span>Carregando</span>
+              </div>
+              <p class="cartao__texto">Carregando as informações do kit…</p>
+            </section>
+
+            <section class="cartao" aria-labelledby="titulo-anteriores" data-anteriores>
+              <h2 class="cartao__titulo" id="titulo-anteriores">Kits anteriores</h2>
+              <p class="cartao__texto">Carregando seu histórico…</p>
+            </section>
+          </div>
+
+          <div class="painel-grade__lateral">
+            <section class="cartao" aria-labelledby="titulo-preferencias" data-preferencias>
+              <h2 class="cartao__titulo" id="titulo-preferencias">Suas preferências</h2>
+              <dl class="preferencias">
+                <div><dt>Tamanho</dt><dd data-pref="tamanho">—</dd></div>
+                <div><dt>Favorita</dt><dd data-pref="favorita">—</dd></div>
+                <div><dt>Rival</dt><dd data-pref="rival">—</dd></div>
+              </dl>
+              <p class="cartao__nota" data-pref="nota">Carregando suas preferências…</p>
+              <a class="link" href="perfil.html" data-pref="acao" hidden>Editar perfil</a>
+            </section>
+
+            <section class="cartao" aria-labelledby="titulo-trocas" data-trocas>
+              <h2 class="cartao__titulo" id="titulo-trocas">Trocas recentes</h2>
+              <p class="cartao__texto">Carregando suas trocas…</p>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="rodape-fluxo">
+    <div class="container rodape-fluxo__interno">
+      <p>© 2026 Clube do Manto</p>
+      <div class="rodape-fluxo__links"><span>Termos de uso</span><span>Política de privacidade</span></div>
+    </div>
+  </footer>
+</body>
+</html>

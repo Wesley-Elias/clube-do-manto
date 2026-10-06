@@ -1,6 +1,6 @@
 # Clube do Manto — site (HTML, CSS, JavaScript + Supabase)
 
-Primeira etapa da implementação: **P01** (apresentação e planos), **P02** (cadastro) e **P03** (login e recuperação de senha). Segue o design final do Figma e a especificação em `design-final/especificacao/`.
+Implementado até aqui: **P01** (apresentação e planos), **P02** (cadastro), **P03** (login e recuperação de senha), **C01** (painel do cliente) e **C02** (preferências e Meu perfil). Segue o design final do Figma e a especificação em `design-final/especificacao/`.
 
 ## Páginas
 
@@ -11,7 +11,9 @@ Primeira etapa da implementação: **P01** (apresentação e planos), **P02** (c
 | `entrar.html` | P03 login | pelo menu ou com plano; validação; entrando; credenciais incorretas; falha de comunicação; destino por papel |
 | `recuperar-senha.html` | P03 recuperação | e-mail inválido; enviando; orientação após envio; reenviar; falha no envio |
 | `redefinir-senha.html` | P03 nova senha | link expirado; link inválido; senhas diferentes; salvando; falha ao salvar; senha alterada (não autentica) |
-| `proxima-etapa.html` | provisória | marca C01–C05, A01 e P04 até essas telas existirem; exige sessão nas telas da conta; botão Sair |
+| `painel.html` | C01 | carregando; falha com Tentar novamente; perfil incompleto; sem assinatura; ativa com kit do mês, sem kit do mês ou primeiro kit; cancelada; trocas recentes; menu mobile |
+| `perfil.html` | C02 | preferências no primeiro acesso (2 etapas) ou com plano (3 etapas, segue para C03); Meu perfil; campos obrigatórios; favorita igual à rival; salvando; salvo; falha |
+| `proxima-etapa.html` | provisória | marca C03–C08, A01 e P04 até essas telas existirem; exige sessão nas telas da conta; botão Sair |
 
 ## Regras que o código garante
 
@@ -36,12 +38,17 @@ js/planos.js          regras dos planos e Resumo do plano
 js/contexto.js        intenção de plano e destino na URL
 js/sessao.js          sessão, destino após login e Sair
 js/formulario.js      validação junto ao campo, mostrar senha, processamento
-supabase/migrations/  001 = esquema estrutural; 002 = acesso desta etapa
+css/cliente.css       cabeçalho do cliente, C01 e C02
+js/cliente.js         sessão obrigatória, cabeçalho do cliente e formatação
+js/busca-equipe.js    seleção de equipe com busca (teclado e leitor de tela)
+supabase/migrations/  001 = esquema; 002 = acesso público e login; 003 = painel e perfil
 ```
 
 ## Supabase
 
 Projeto **clube-do-manto** (região São Paulo, plano gratuito), com as migrações 001 e 002 aplicadas. `js/config.js` já aponta para ele. A chave em `config.js` é a **publicável** (pública por natureza); a proteção vem das políticas de RLS. Nunca coloque a chave `service_role` no site.
+
+A migração 003 cadastra as equipes provisórias (clubes internacionais e seleções, sem clubes brasileiros), oferece `tamanhos_do_catalogo()` (tamanhos com estoque; enquanto o estoque estiver vazio, a lista provisória P, M, G, GG), grava o perfil só pela função `salvar_perfil()`, que valida tamanho, equipes e favorita diferente da rival, e libera a leitura dos próprios kits, itens e trocas.
 
 A migração 002 abre só o necessário: leitura pública de `planos`, criação automática do perfil no cadastro (nome vem do formulário), leitura do próprio perfil e da própria assinatura e a função `eh_administrador()`.
 

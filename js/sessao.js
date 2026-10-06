@@ -2,15 +2,17 @@
 import { supabase } from "./supabase.js";
 import { comContexto } from "./contexto.js";
 
-// Telas das próximas etapas da implementação. Enquanto não existem,
-// apontam para a página de etapa futura, que preserva o contexto.
+// Endereço de cada tela. As que ainda não existem apontam para a página
+// de etapa futura, que preserva o contexto.
 export const TELAS = {
   A01: "proxima-etapa.html?tela=A01",
-  C01: "proxima-etapa.html?tela=C01",
-  C02: "proxima-etapa.html?tela=C02",
+  C01: "painel.html",
+  C02: "perfil.html",
   C03: "proxima-etapa.html?tela=C03",
   C04: "proxima-etapa.html?tela=C04",
   C05: "proxima-etapa.html?tela=C05",
+  C06: "proxima-etapa.html?tela=C06",
+  C08: "proxima-etapa.html?tela=C08",
 };
 
 export async function sessaoAtual() {

@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meu perfil · Clube do Manto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/fluxo.css">
+  <link rel="stylesheet" href="css/cliente.css">
+  <script type="module" src="js/perfil.js"></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header data-cabecalho-cliente="C02" class="cab-cliente"></header>
+
+  <!-- Etapas: só no primeiro preenchimento ou quando há plano escolhido -->
+  <nav class="etapas-fluxo" aria-label="Etapas do cadastro" data-onboarding hidden>
+    <ol class="container etapas-fluxo__lista">
+      <li class="etapa-fluxo etapa-fluxo--concluida">
+        <span class="etapa-fluxo__numero" aria-hidden="true">✓</span>
+        <span class="etapa-fluxo__textos"><span class="etapa-fluxo__titulo">Crie sua conta</span><span class="etapa-fluxo__sub">Conta criada</span></span>
+      </li>
+      <li class="etapas-fluxo__conector" aria-hidden="true"></li>
+      <li class="etapa-fluxo etapa-fluxo--atual" aria-current="step" data-etapa-preferencias>
+        <span class="etapa-fluxo__numero" data-etapa-numero>2</span>
+        <span class="etapa-fluxo__textos"><span class="etapa-fluxo__titulo">Defina suas preferências</span><span class="etapa-fluxo__sub" data-etapa-sub>Etapa atual</span></span>
+      </li>
+      <li class="etapas-fluxo__conector" aria-hidden="true" data-com-plano hidden></li>
+      <li class="etapa-fluxo" data-com-plano hidden>
+        <span class="etapa-fluxo__numero">3</span>
+        <span class="etapa-fluxo__textos"><span class="etapa-fluxo__titulo">Confirme a assinatura</span><span class="etapa-fluxo__sub">Próxima etapa</span></span>
+      </li>
+    </ol>
+  </nav>
+
+  <main id="conteudo" class="area-cliente" data-perfil>
+    <div class="container">
+      <!-- Topo do "Meu perfil" -->
+      <div class="area-cliente__topo" data-meu-perfil hidden>
+        <a class="area-cliente__voltar" href="painel.html"><span aria-hidden="true">←</span>Voltar ao painel</a>
+        <h1 class="area-cliente__titulo">Meu perfil</h1>
+        <p class="area-cliente__sub">Confira seu nome, tamanho e equipes preferidas.</p>
+      </div>
+
+      <div class="perfil-grade">
+        <section class="cartao-form" aria-labelledby="titulo-perfil">
+          <p class="pequeno" data-carregando role="status">Carregando seu perfil…</p>
+
+          <!-- Falha ao carregar o perfil -->
+          <div data-falha-carga hidden>
+            <div class="alerta" role="alert">
+              <span class="alerta__icone" aria-hidden="true">!</span>
+              <div><p class="alerta__titulo">Não foi possível carregar seu perfil</p><p class="alerta__texto">Verifique sua conexão e tente novamente.</p></div>
+            </div>
+            <button class="botao botao--primaria" type="button" data-recarregar style="margin-top:var(--espaco-24)">Tentar novamente</button>
+          </div>
+
+          <!-- Formulário -->
+          <div data-etapa="formulario" hidden>
+            <div style="display:flex;flex-direction:column;gap:var(--espaco-16);margin-bottom:var(--espaco-24)" data-onboarding hidden>
+              <h1 class="cartao-form__titulo" id="titulo-perfil" tabindex="-1">Defina suas preferências</h1>
+              <p class="lead">Informe seu tamanho e as equipes que orientam a seleção dos seus mantos.</p>
+            </div>
+            <h2 class="visualmente-oculto" data-meu-perfil hidden>Dados do perfil</h2>
+
+            <form novalidate>
+              <p class="obrigatorios">Todos os campos são obrigatórios.</p>
+
+              <div class="alerta alerta--sucesso" role="status" tabindex="-1" data-sucesso hidden>
+                <span class="alerta__icone" aria-hidden="true">✓</span>
+                <div><p class="alerta__titulo">Alterações salvas.</p><p class="alerta__texto">Suas preferências serão usadas nas próximas operações.</p></div>
+              </div>
+
+              <div class="alerta" role="alert" tabindex="-1" data-alerta data-alerta-topo hidden>
+                <span class="alerta__icone" aria-hidden="true">!</span>
+                <div><p class="alerta__titulo"></p><p class="alerta__texto"></p></div>
+              </div>
+
+              <div class="cartao-form__campos">
+                <div class="campo" data-meu-perfil hidden>
+                  <label class="campo__rotulo" for="nome">Nome</label>
+                  <div class="campo__caixa"><input class="campo__entrada" id="nome" name="nome" type="text" autocomplete="name" placeholder="Seu nome"></div>
+                  <p class="campo__erro" id="erro-nome"></p>
+                </div>
+                <p class="perfil-email" data-meu-perfil hidden>E-mail: <strong data-email></strong></p>
+
+                <div class="campo">
+                  <label class="campo__rotulo" for="tamanho">Tamanho da camisa</label>
+                  <div class="campo__caixa campo__caixa--selecao">
+                    <select class="campo__entrada" id="tamanho" name="tamanho" aria-describedby="ajuda-tamanho">
+                      <option value="">Selecione seu tamanho</option>
+                    </select>
+                    <span class="campo__seta" aria-hidden="true"></span>
+                  </div>
+                  <p class="campo__ajuda" id="ajuda-tamanho">Escolha um tamanho disponível no catálogo.</p>
+                  <p class="campo__erro" id="erro-tamanho"></p>
+                </div>
+
+                <div class="campo busca-equipe" data-busca="favorita">
+                  <label class="campo__rotulo" for="favorita">Equipe favorita</label>
+                  <div class="campo__caixa">
+                    <input class="campo__entrada" id="favorita" name="favorita" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="lista-favorita" autocomplete="off" spellcheck="false" placeholder="Busque ou selecione uma equipe" aria-describedby="ajuda-favorita">
+                    <button class="busca-equipe__abrir" type="button" tabindex="-1" aria-label="Mostrar equipes"></button>
+                  </div>
+                  <ul class="busca-equipe__lista" id="lista-favorita" role="listbox" aria-label="Equipes" hidden></ul>
+                  <p class="campo__ajuda" id="ajuda-favorita">Clubes internacionais e seleções. Ajuda a orientar a curadoria.</p>
+                  <p class="campo__erro" id="erro-favorita"></p>
+                </div>
+
+                <div class="campo busca-equipe" data-busca="rival">
+                  <label class="campo__rotulo" for="rival">Equipe rival</label>
+                  <div class="campo__caixa">
+                    <input class="campo__entrada" id="rival" name="rival" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="lista-rival" autocomplete="off" spellcheck="false" placeholder="Busque ou selecione uma equipe" aria-describedby="ajuda-rival">
+                    <button class="busca-equipe__abrir" type="button" tabindex="-1" aria-label="Mostrar equipes"></button>
+                  </div>
+                  <ul class="busca-equipe__lista" id="lista-rival" role="listbox" aria-label="Equipes" hidden></ul>
+                  <p class="campo__ajuda" id="ajuda-rival">Essa equipe ficará fora dos seus kits, inclusive dos especiais.</p>
+                  <p class="campo__erro" id="erro-rival"></p>
+                </div>
+              </div>
+
+              <div class="alerta" role="alert" tabindex="-1" data-alerta-base hidden>
+                <span class="alerta__icone" aria-hidden="true">!</span>
+                <div><p class="alerta__titulo"></p><p class="alerta__texto"></p></div>
+              </div>
+
+              <button class="botao botao--primaria botao--largo" type="submit" data-enviar>Salvar e continuar</button>
+              <p class="nota-rodape" data-nota></p>
+            </form>
+          </div>
+
+          <!-- Preferências salvas (primeiro preenchimento) -->
+          <div data-etapa="salvo" hidden>
+            <div style="display:flex;flex-direction:column;gap:var(--espaco-16)">
+              <h1 class="cartao-form__titulo" id="titulo-salvo" tabindex="-1">Preferências salvas!</h1>
+              <p class="lead">Seu perfil está pronto. Agora você pode continuar.</p>
+              <dl class="resumo-salvo">
+                <div><dt>Tamanho da camisa</dt><dd data-salvo="tamanho"></dd></div>
+                <div><dt>Equipe favorita</dt><dd data-salvo="favorita"></dd></div>
+                <div><dt>Equipe rival</dt><dd data-salvo="rival"></dd></div>
+              </dl>
+              <a class="botao botao--primaria botao--largo" href="painel.html" data-continuar>Continuar para o painel</a>
+              <p class="nota-rodape" data-nota-salvo>Seu perfil foi salvo sem ativar uma assinatura. Continue para acessar seu painel.</p>
+            </div>
+          </div>
+        </section>
+
+        <aside class="apoio" aria-label="Sobre as preferências">
+          <!-- Primeiro preenchimento sem plano -->
+          <div class="cartao-apoio" data-apoio="sem-plano" hidden>
+            <p class="chamada chamada--no-escuro">Suas escolhas</p>
+            <p class="cartao-apoio__titulo">Como usamos suas preferências</p>
+            <dl class="usos">
+              <div><dt>Tamanho</dt><dd>Define o tamanho das camisas dos seus kits.</dd></div>
+              <div><dt>Equipe favorita</dt><dd>Orienta a curadoria, conforme a disponibilidade. A escolha não garante o envio dessa equipe.</dd></div>
+              <div><dt>Equipe rival</dt><dd>Fica bloqueada em todos os kits, inclusive em camisas especiais.</dd></div>
+            </dl>
+            <p class="usos__fim">Salvar seu perfil não contrata uma assinatura. Você pode escolher um plano depois.</p>
+          </div>
+
+          <!-- Com plano escolhido -->
+          <div class="resumo-plano" data-apoio="com-plano" data-resumo-plano hidden>
+            <p class="chamada chamada--no-escuro">Plano selecionado</p>
+            <p class="resumo-plano__nome" data-resumo="nome"></p>
+            <p class="resumo-plano__preco"><span class="resumo-plano__valor" data-resumo="valor"></span><span class="resumo-plano__periodo">/ mês</span></p>
+            <p class="resumo-plano__composicao" data-resumo="composicao"></p>
+            <hr class="resumo-plano__picote">
+            <ul class="resumo-plano__lista">
+              <li data-resumo="trocas"></li>
+              <li>Garantia anti-repetição</li>
+              <li>Bloqueio do time rival</li>
+              <li>Sem fidelidade</li>
+            </ul>
+            <hr class="resumo-plano__picote">
+            <a class="botao botao--sec-escuro botao--largo" href="proxima-etapa.html?tela=C03" data-contexto>Alterar plano</a>
+          </div>
+          <div class="orientacao" data-apoio="com-plano" hidden>
+            <p class="orientacao__titulo">Falta só revisar</p>
+            <p>Depois de salvar, você revisa o plano e suas preferências antes de confirmar a assinatura.</p>
+          </div>
+
+          <!-- Meu perfil -->
+          <div class="cartao" data-apoio="meu-perfil" hidden>
+            <h2 class="cartao__titulo">Suas preferências</h2>
+            <ul class="lista-check">
+              <li>Seu tamanho e suas equipes orientam a seleção futura dos kits.</li>
+              <li>A equipe rival fica fora da seleção, inclusive nas camisas especiais.</li>
+              <li>Alterar o perfil preserva os kits e o histórico já registrados.</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="rodape-fluxo">
+    <div class="container rodape-fluxo__interno">
+      <p>© 2026 Clube do Manto</p>
+      <div class="rodape-fluxo__links"><span>Termos de uso</span><span>Política de privacidade</span></div>
+    </div>
+  </footer>
+</body>
+</html>

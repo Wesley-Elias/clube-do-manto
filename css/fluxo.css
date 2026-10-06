@@ -106,7 +106,7 @@
   gap: var(--espaco-12);
 }
 .cartao-apoio__titulo { font: var(--tipo-plano); letter-spacing: var(--ls-plano); text-transform: uppercase; }
-.cartao-apoio p:not(.chamada):not(.cartao-apoio__titulo):not(.cartao-apoio__nota):not(.cartao-apoio__info) { color: var(--texto-no-escuro-suave); }
+.cartao-apoio p:not(.chamada):not(.cartao-apoio__titulo):not(.cartao-apoio__nota):not(.cartao-apoio__info):not(.usos__fim) { color: var(--texto-no-escuro-suave); }
 .cartao-apoio .botao { margin-top: var(--espaco-8); }
 .cartao-apoio--borda { border: var(--borda-fina) solid rgba(143, 224, 107, 0.35); }
 .cartao-apoio__divisor { border: 0; border-top: 1.5px dashed rgba(169, 196, 178, 0.45); margin: var(--espaco-4) 0; }

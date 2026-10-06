@@ -1,0 +1,143 @@
+// Área do cliente: exige sessão, monta o cabeçalho do cliente (desktop e menu mobile)
+// e reúne utilidades de leitura usadas por C01 e C02.
+import { supabase } from "./supabase.js";
+import { comContexto } from "./contexto.js";
+import { sessaoAtual, sair, TELAS } from "./sessao.js";
+
+const ITENS = [
+  { tela: "C01", rotulo: "Painel" },
+  { tela: "C04", rotulo: "Assinatura" },
+  { tela: "C05", rotulo: "Kits e histórico" },
+  { tela: "C08", rotulo: "Trocas" },
+  { tela: "C02", rotulo: "Perfil" },
+];
+
+// Sem sessão, volta ao login preservando a intenção de plano.
+export async function exigirSessao(contexto = {}) {
+  let sessao = null;
+  try {
+    sessao = await sessaoAtual();
+  } catch (erro) {
+    console.error(erro);
+  }
+  if (!sessao) {
+    location.replace(comContexto("entrar.html", { plano: contexto.plano || null, destino: null }));
+    return null;
+  }
+  return sessao;
+}
+
+function el(tag, atributos = {}, ...filhos) {
+  const elemento = document.createElement(tag);
+  for (const [chave, valor] of Object.entries(atributos)) {
+    if (valor === null || valor === undefined || valor === false) continue;
+    if (chave === "class") elemento.className = valor;
+    else elemento.setAttribute(chave, valor === true ? "" : valor);
+  }
+  elemento.append(...filhos.filter((f) => f !== null && f !== undefined));
+  return elemento;
+}
+export { el };
+
+function logo() {
+  return el("a", { class: "logo", href: TELAS.C01 }, el("span", { class: "logo__marca", "aria-hidden": "true" }, "///"), "Clube do Manto");
+}
+
+// Monta o cabeçalho dentro de <header data-cabecalho-cliente="C01">.
+export function montarCabecalho(telaAtual) {
+  const cabecalho = document.querySelector("[data-cabecalho-cliente]");
+  const interno = el("div", { class: "container cab-cliente__interno" });
+  const nav = el("nav", { class: "cab-cliente__nav", "aria-label": "Área do cliente" });
+  for (const item of ITENS) {
+    const atual = item.tela === telaAtual;
+    nav.append(el("a", { class: "cab-cliente__item", href: TELAS[item.tela], "aria-current": atual ? "page" : null }, item.rotulo));
+  }
+  const nome = el("span", { class: "cab-cliente__nome", "data-nome-usuario": true });
+  const botaoSair = el("button", { class: "botao botao--sec-escuro", type: "button", "data-sair": true }, "Sair");
+  const botaoMenu = el("button", { class: "botao botao--sec-escuro cab-cliente__menu-botao", type: "button", "aria-expanded": "false", "aria-controls": "menu-cliente" }, "Menu");
+  interno.append(logo(), nav, el("div", { class: "cab-cliente__conta" }, nome, botaoSair), botaoMenu);
+
+  // Menu mobile: painel sobreposto com os mesmos destinos
+  const fechar = el("button", { class: "botao botao--sec-escuro", type: "button" }, "Fechar menu");
+  const lista = el("ul", { class: "menu-cliente__lista" });
+  for (const item of ITENS) {
+    const atual = item.tela === telaAtual;
+    const link = el("a", { class: "menu-cliente__item", href: TELAS[item.tela], "aria-current": atual ? "page" : null }, item.rotulo);
+    if (atual) link.append(el("span", { class: "menu-cliente__atual" }, "Página atual"));
+    lista.append(el("li", {}, link));
+  }
+  const sairMenu = el("button", { class: "botao botao--sec-escuro botao--largo", type: "button", "data-sair": true }, "Sair");
+  const menu = el("div", { class: "menu-cliente", id: "menu-cliente", hidden: true },
+    el("div", { class: "container" },
+      el("div", { class: "menu-cliente__topo" }, logo(), fechar),
+      el("p", { class: "menu-cliente__nome", "data-nome-usuario": true }),
+      lista,
+      sairMenu));
+  cabecalho.className = "cab-cliente";
+  cabecalho.replaceChildren(interno, menu);
+
+  function abrir() {
+    menu.hidden = false;
+    botaoMenu.setAttribute("aria-expanded", "true");
+    fechar.focus();
+  }
+  function fecharMenu(devolverFoco = true) {
+    menu.hidden = true;
+    botaoMenu.setAttribute("aria-expanded", "false");
+    if (devolverFoco) botaoMenu.focus();
+  }
+  botaoMenu.addEventListener("click", abrir);
+  fechar.addEventListener("click", () => fecharMenu());
+  menu.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") fecharMenu();
+  });
+  matchMedia("(min-width: 1024px)").addEventListener("change", (e) => {
+    if (e.matches && !menu.hidden) fecharMenu(false);
+  });
+
+  cabecalho.querySelectorAll("[data-sair]").forEach((botao) =>
+    botao.addEventListener("click", () => {
+      cabecalho.querySelectorAll("[data-sair]").forEach((b) => (b.disabled = true));
+      sair();
+    }),
+  );
+}
+
+export function mostrarNome(nomeCompleto) {
+  const primeiro = (nomeCompleto || "").trim().split(/\s+/)[0] || "";
+  document.querySelectorAll("[data-nome-usuario]").forEach((n) => (n.textContent = primeiro));
+}
+
+export function perfilCompleto(perfil) {
+  return Boolean(perfil && perfil.tamanho && perfil.equipe_preferida_id && perfil.rival_id);
+}
+
+export async function carregarPerfil() {
+  const { data, error } = await supabase
+    .from("perfis")
+    .select("nome, tamanho, equipe_preferida_id, rival_id")
+    .maybeSingle();
+  if (error) throw error;
+  return data;
+}
+
+// ---------- Formatação ----------
+const MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+
+// competencia vem como "AAAA-MM-01"
+export function nomeDoMes(competencia) {
+  return MESES[Number(competencia.slice(5, 7)) - 1];
+}
+export function competenciaExtenso(competencia) {
+  return `${nomeDoMes(competencia)}/${competencia.slice(0, 4)}`;
+}
+export function competenciaAtual(hoje = new Date()) {
+  return `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, "0")}-01`;
+}
+export function dataCurta(iso) {
+  return new Date(iso).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
+export function chip(texto, familia, simbolo) {
+  return el("span", { class: `chip chip--${familia}` }, el("span", { "aria-hidden": "true" }, simbolo), texto);
+}

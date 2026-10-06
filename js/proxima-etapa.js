@@ -14,6 +14,8 @@ const NOMES = {
   C03: "Confirmação da assinatura",
   C04: "Minha assinatura",
   C05: "Kits e histórico",
+  C06: "Detalhes do kit",
+  C08: "Minhas trocas",
   A01: "Painel administrativo",
 };
 const FILTROS = { clubes: "Clubes internacionais", selecoes: "Seleções", especiais: "Especiais" };
