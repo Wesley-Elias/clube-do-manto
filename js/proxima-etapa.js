@@ -1,5 +1,5 @@
-// Página provisória para as telas das próximas etapas (C01–C05, A01, P04).
-// Telas da conta exigem sessão: sem ela, volta ao login guardando o destino.
+// Página provisória para as telas que ainda não existem (P04 e A01).
+// A01 exige sessão: sem ela, volta ao login.
 import { avisarSemConfiguracao } from "./supabase.js";
 import { lerContexto, comContexto } from "./contexto.js";
 import { PLANOS } from "./planos.js";
@@ -9,19 +9,12 @@ avisarSemConfiguracao();
 
 const NOMES = {
   P04: "Coleção",
-  C01: "Painel do cliente",
-  C02: "Meu perfil",
-  C03: "Confirmação da assinatura",
-  C04: "Minha assinatura",
-  C05: "Kits e histórico",
-  C06: "Detalhes do kit",
-  C08: "Minhas trocas",
   A01: "Painel administrativo",
 };
 const FILTROS = { clubes: "Clubes internacionais", selecoes: "Seleções", especiais: "Especiais" };
 
 const params = new URLSearchParams(location.search);
-const tela = NOMES[params.get("tela")] ? params.get("tela") : "C01";
+const tela = NOMES[params.get("tela")] ? params.get("tela") : "A01";
 const contexto = lerContexto();
 
 document.querySelector("[data-codigo]").textContent = tela;
@@ -43,8 +36,7 @@ function detalhe(texto) {
     console.error(erro);
   }
   if (tela !== "P04" && !sessao) {
-    const destino = tela === "C04" || tela === "C05" ? tela : null;
-    location.replace(comContexto("entrar.html", { plano: contexto.plano, destino }));
+    location.replace(comContexto("entrar.html", { plano: contexto.plano }));
     return;
   }
   if (sessao) {
