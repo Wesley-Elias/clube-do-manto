@@ -226,7 +226,7 @@ a.menu-mobile__item::after { content: "→"; font: var(--tipo-botao); color: var
   flex-direction: column;
   gap: var(--espaco-8);
 }
-.cartao-plano__topo .selo { align-self: flex-start; }
+.cartao-plano__corpo .selo { align-self: flex-start; }
 .cartao-plano__nome { font: var(--tipo-plano); letter-spacing: var(--ls-plano); text-transform: uppercase; }
 .cartao-plano__preco { display: flex; align-items: baseline; gap: 6px; color: var(--texto-preco); }
 .cartao-plano__moeda { font: 700 18px/1.1 var(--fonte-texto); }

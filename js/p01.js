@@ -137,13 +137,13 @@ function cartao(slug, p, { falha = false } = {}) {
   }
   art.innerHTML = `
     <div class="cartao-plano__topo">
-      ${selo}
       <h3 class="cartao-plano__nome" id="plano-${slug}">${p.nome}</h3>
       <p class="cartao-plano__preco">${preco}</p>
     </div>
     <div class="cartao-plano__corpo">
       <div class="cartao-plano__icones">${icones(p)}</div>
       <p class="cartao-plano__composicao">${composicaoCurta(p)}</p>
+      ${selo}
       <ul class="beneficios">
         <li>Perfil com tamanho e preferências</li>
         <li>${textoTrocas(p)}</li>
