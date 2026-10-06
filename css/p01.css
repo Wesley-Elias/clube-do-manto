@@ -76,6 +76,9 @@ a.menu-mobile__item::after { content: "→"; font: var(--tipo-botao); color: var
   text-transform: uppercase;
   color: var(--texto-no-escuro);
   margin: var(--espaco-12) 0 var(--espaco-20);
+  /* O token usa entrelinha 0,92; no navegador o acento de "MÊS" invade a linha de cima.
+     1,1 mantém o bloco compacto sem sobreposição. */
+  line-height: 1.1;
 }
 .hero__texto { font: var(--tipo-lead); color: var(--texto-no-escuro-suave); max-width: 592px; }
 .hero__acoes { display: flex; flex-direction: column; gap: var(--espaco-12); margin-top: var(--espaco-24); }
@@ -89,7 +92,7 @@ a.menu-mobile__item::after { content: "→"; font: var(--tipo-botao); color: var
 @media (min-width: 1200px) {
   .hero { padding-block: 72px 88px; }
   .hero__grade { grid-template-columns: 1fr 1fr; gap: var(--espaco-32); }
-  .hero__titulo { font: var(--tipo-hero-desktop); letter-spacing: var(--ls-hero); margin: var(--espaco-20) 0 var(--espaco-24); }
+  .hero__titulo { font: var(--tipo-hero-desktop); line-height: 1.1; letter-spacing: var(--ls-hero); margin: var(--espaco-20) 0 var(--espaco-24); }
   .hero__acoes { margin-top: var(--espaco-32); }
 }
 
