@@ -14,7 +14,6 @@ ativarMostrarSenha();
 if (contexto.plano) {
   document.querySelectorAll("[data-com-plano]").forEach((el) => (el.hidden = false));
   document.querySelectorAll("[data-sem-plano]").forEach((el) => (el.hidden = true));
-  document.querySelector(".fluxo").classList.add("fluxo--faixa");
   document.querySelector("[data-subtitulo]").textContent = "Crie seu acesso e continue configurando a assinatura.";
   preencherResumo(document.querySelector("[data-resumo-plano]"), contexto.plano);
 }

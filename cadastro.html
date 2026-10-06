@@ -22,7 +22,7 @@
   </header>
 
   <!-- Etapas: só aparecem quando há um plano escolhido -->
-  <nav class="etapas-fluxo" aria-label="Etapas da assinatura" data-com-plano hidden>
+  <nav class="etapas-fluxo" aria-label="Etapas do cadastro">
     <ol class="container etapas-fluxo__lista">
       <li class="etapa-fluxo etapa-fluxo--atual" aria-current="step">
         <span class="etapa-fluxo__numero">1</span>
@@ -33,8 +33,8 @@
         <span class="etapa-fluxo__numero">2</span>
         <span class="etapa-fluxo__textos"><span class="etapa-fluxo__titulo">Defina suas preferências</span><span class="etapa-fluxo__sub">Tamanho, favorito e rival</span></span>
       </li>
-      <li class="etapas-fluxo__conector" aria-hidden="true"></li>
-      <li class="etapa-fluxo">
+      <li class="etapas-fluxo__conector" aria-hidden="true" data-com-plano hidden></li>
+      <li class="etapa-fluxo" data-com-plano hidden>
         <span class="etapa-fluxo__numero">3</span>
         <span class="etapa-fluxo__textos"><span class="etapa-fluxo__titulo">Confirme a assinatura</span><span class="etapa-fluxo__sub">Revise o plano e o perfil</span></span>
       </li>
@@ -47,7 +47,6 @@
         <!-- Formulário -->
         <div data-etapa="formulario">
           <div style="display:flex;flex-direction:column;gap:var(--espaco-12);margin-bottom:var(--espaco-24)">
-            <p class="chamada">Cadastro</p>
             <h1 class="cartao-form__titulo" id="titulo-cadastro">Crie sua conta</h1>
             <p class="lead" data-subtitulo>Cadastre-se para acessar o Clube do Manto e definir suas preferências.</p>
             <p class="pequeno">Todos os campos são obrigatórios.</p>
@@ -81,7 +80,10 @@
               </div>
               <div class="campo">
                 <label class="campo__rotulo" for="confirmacao">Confirme sua senha</label>
-                <div class="campo__caixa"><input class="campo__entrada" id="confirmacao" name="confirmacao" type="password" autocomplete="new-password" placeholder="Repita sua senha" required></div>
+                <div class="campo__caixa">
+                  <input class="campo__entrada" id="confirmacao" name="confirmacao" type="password" autocomplete="new-password" placeholder="Repita sua senha" required>
+                  <button class="campo__mostrar" type="button" aria-pressed="false" aria-controls="confirmacao">Mostrar</button>
+                </div>
                 <p class="campo__erro" id="erro-confirmacao"></p>
               </div>
             </div>
@@ -133,11 +135,13 @@
           <p class="chamada chamada--no-escuro">Comece pela sua conta</p>
           <p class="cartao-apoio__titulo">Sua conta primeiro</p>
           <p>Crie seu acesso e complete seu perfil. Você pode escolher um plano quando quiser.</p>
-          <p class="alerta alerta--info" style="color:var(--texto-principal)"><span class="alerta__icone" aria-hidden="true">i</span><span class="alerta__texto">Criar a conta não ativa uma assinatura.</span></p>
-          <a class="botao botao--sec-escuro" href="index.html#planos">Conhecer planos</a>
+          <hr class="cartao-apoio__divisor">
+          <p class="cartao-apoio__info"><span class="cartao-apoio__info-icone" aria-hidden="true">i</span>Criar a conta não ativa uma assinatura.</p>
+          <a class="botao botao--sec-escuro botao--largo" href="index.html#planos">Conhecer planos</a>
         </div>
         <div class="orientacao" data-sem-plano>
           <p class="orientacao__titulo">O que vem a seguir</p>
+          <p>Você informa seu tamanho, time favorito e rival para orientar a seleção dos kits.</p>
           <p>Com o perfil pronto, você acessa seu painel. A assinatura pode ser feita depois.</p>
         </div>
 
@@ -154,7 +158,8 @@
             <li>Bloqueio do time rival</li>
             <li>Sem fidelidade</li>
           </ul>
-          <a class="botao botao--sec-escuro" href="index.html?retorno=cadastro#planos">Alterar plano</a>
+          <hr class="resumo-plano__picote">
+          <a class="botao botao--sec-escuro botao--largo" href="index.html?retorno=cadastro#planos">Alterar plano</a>
         </div>
         <div class="orientacao" data-com-plano hidden>
           <p class="orientacao__titulo">O que vem a seguir</p>
