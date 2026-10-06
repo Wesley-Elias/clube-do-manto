@@ -21,7 +21,7 @@ export async function exigirSessao(contexto = {}) {
     console.error(erro);
   }
   if (!sessao) {
-    location.replace(comContexto("entrar.html", { plano: contexto.plano || null, destino: null }));
+    location.replace(comContexto("entrar.html", { plano: contexto.plano || null, destino: contexto.destino || null }));
     return null;
   }
   return sessao;

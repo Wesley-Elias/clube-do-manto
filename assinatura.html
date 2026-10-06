@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Minha assinatura · Clube do Manto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/cliente.css">
+  <link rel="stylesheet" href="css/conta.css">
+  <script type="module" src="js/assinatura.js"></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header data-cabecalho-cliente="C04" class="cab-cliente"></header>
+
+  <main id="conteudo" class="area-cliente" aria-busy="true" data-c04>
+    <div class="container">
+      <div class="area-cliente__topo">
+        <h1 class="area-cliente__titulo" tabindex="-1" data-titulo>Minha assinatura</h1>
+        <p class="area-cliente__sub" data-subtitulo>Acompanhe seu plano, seus benefícios e o ciclo de trocas.</p>
+        <div class="area-cliente__aviso" data-avisos></div>
+      </div>
+      <div data-conteudo>
+        <section class="cartao cartao--estado" aria-live="polite">
+          <span class="chip chip--neutro"><span aria-hidden="true">…</span>Carregando</span>
+          <h2 class="cartao__titulo">Carregando sua assinatura…</h2>
+          <p class="cartao__texto">Buscando a situação do plano e as informações do ciclo de trocas.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Cancelar assinatura -->
+  <dialog class="dialogo" aria-labelledby="titulo-cancelar" aria-describedby="texto-cancelar" data-dialogo-cancelar>
+    <div class="dialogo__caixa">
+      <div class="pilha pilha--16" data-cancelar-topo>
+        <h2 class="dialogo__titulo" id="titulo-cancelar" tabindex="-1" data-foco-inicial>Cancelar sua assinatura?</h2>
+        <p class="dialogo__texto" id="texto-cancelar">Novos kits e operações de troca ficam indisponíveis. Sua conta, seus kits e as trocas já usadas permanecem no histórico.</p>
+      </div>
+      <p class="dialogo__plano">Plano <strong data-cancelar-plano></strong></p>
+      <div class="dialogo__acoes">
+        <button class="botao botao--sec-claro" type="button" data-fechar-dialogo data-manter>Manter assinatura</button>
+        <button class="botao botao--escura" type="button" data-confirmar-cancelamento>Confirmar cancelamento</button>
+      </div>
+    </div>
+  </dialog>
+
+  <footer class="rodape-fluxo">
+    <div class="container rodape-fluxo__interno">
+      <p>© 2026 Clube do Manto</p>
+      <div class="rodape-fluxo__links"><span>Termos de uso</span><span>Política de privacidade</span></div>
+    </div>
+  </footer>
+</body>
+</html>

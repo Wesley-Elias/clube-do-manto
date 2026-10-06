@@ -191,7 +191,7 @@ function renderizarDestaque(d, completo, status) {
       cabecalhoCartao(`Seu kit de ${nomeDoMes(d.kitDoMes.competencia)}`, chip("Montado", "sucesso", "✓")),
       el("p", { class: "cartao__texto" }, composicaoDoKit(d.kitDoMes)),
       grade,
-      el("a", { class: "link", href: `${TELAS.C06}&competencia=${d.kitDoMes.competencia}` }, "Ver detalhes do kit"),
+      el("a", { class: "link", href: `${TELAS.C06}?competencia=${d.kitDoMes.competencia}` }, "Ver detalhes do kit"),
     );
   } else if (!d.kits.length) {
     filhos.push(

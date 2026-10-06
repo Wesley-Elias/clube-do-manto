@@ -1,0 +1,93 @@
+/* Cartão de plano e selo — compartilhados pela P01 e pela C03 (escolha do plano).
+   Usa apenas os tokens semânticos de tokens.css. */
+
+.selo {
+  display: inline-block;
+  padding: 5px var(--espaco-12);
+  border-radius: var(--raio-pilula);
+  background: var(--fundo-destaque);
+  color: var(--texto-sobre-destaque);
+  font: var(--tipo-chip);
+}
+
+/* ---------- Planos ---------- */
+.planos { display: grid; gap: var(--vao-grade); }
+.planos[aria-busy="true"] .cartao-plano { opacity: 0.6; }
+@media (min-width: 900px) { .planos { grid-template-columns: repeat(3, 1fr); } }
+.planos__observacao { margin-top: var(--espaco-48); text-align: center; font: var(--tipo-tabela); color: var(--texto-secundario); }
+
+.cartao-plano {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--fundo-superficie);
+  border: var(--borda-fina) solid var(--borda-padrao);
+  border-radius: var(--raio-cartao);
+  box-shadow: var(--sombra-cartao);
+  overflow: hidden;
+}
+.cartao-plano__topo {
+  background: var(--fundo-escuro);
+  color: var(--texto-no-escuro);
+  padding: 22px var(--espaco-24) var(--espaco-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-8);
+}
+.cartao-plano__corpo .selo { align-self: flex-start; }
+.cartao-plano__nome { font: var(--tipo-plano); letter-spacing: var(--ls-plano); text-transform: uppercase; }
+.cartao-plano__preco { display: flex; align-items: baseline; gap: 6px; color: var(--texto-preco); }
+.cartao-plano__moeda { font: 700 18px/1.1 var(--fonte-texto); }
+.cartao-plano__valor { font: var(--tipo-preco); }
+.cartao-plano__periodo { font: var(--tipo-navegacao); color: var(--texto-no-escuro-suave); }
+.cartao-plano__corpo {
+  flex: 1;
+  border-top: var(--borda-grossa) dashed var(--borda-picote);
+  padding: var(--espaco-24);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+/* Picotes laterais do ingresso, sobre a linha tracejada */
+.cartao-plano__topo { position: relative; }
+.cartao-plano__topo::before,
+.cartao-plano__topo::after {
+  content: "";
+  position: absolute;
+  bottom: -13px;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--fundo-claro);
+  border: var(--borda-fina) solid var(--borda-padrao);
+  z-index: 1;
+}
+.cartao-plano__topo::before { left: -13px; }
+.cartao-plano__topo::after { right: -13px; }
+.cartao-plano__icones { display: flex; align-items: center; gap: 6px; min-height: var(--alvo-minimo); }
+.cartao-plano__composicao { font: var(--tipo-corpo-forte); }
+.beneficios { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font: var(--tipo-lista); }
+.beneficios li { display: flex; gap: 10px; align-items: flex-start; }
+.beneficios li::before {
+  content: "";
+  flex: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--marca-verde) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2.6 6.2l2.2 2.2 4.6-4.9' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center no-repeat;
+}
+.cartao-plano__espaco { flex: 1; min-height: var(--espaco-8); }
+.cartao-plano__aviso {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: var(--espaco-12);
+  border-radius: var(--raio-botao);
+  background: var(--estado-neutro-fundo);
+  color: var(--texto-principal);
+  font: var(--tipo-tabela);
+}
+.cartao-plano__aviso-icone { flex: none; font: var(--tipo-corpo-forte); }
+
+/* Esqueleto enquanto carrega */
+.esqueleto { background: linear-gradient(90deg, var(--borda-suave), var(--fundo-claro), var(--borda-suave)); background-size: 200% 100%; animation: brilho 1.4s ease infinite; border-radius: var(--raio-pequeno); }
+@keyframes brilho { to { background-position: -200% 0; } }
+
