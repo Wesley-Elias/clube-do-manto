@@ -8,11 +8,12 @@ export const TELAS = {
   A01: "proxima-etapa.html?tela=A01",
   C01: "painel.html",
   C02: "perfil.html",
-  C03: "proxima-etapa.html?tela=C03",
-  C04: "proxima-etapa.html?tela=C04",
-  C05: "proxima-etapa.html?tela=C05",
-  C06: "proxima-etapa.html?tela=C06",
-  C08: "proxima-etapa.html?tela=C08",
+  C03: "confirmar-plano.html",
+  C04: "assinatura.html",
+  C05: "kits.html",
+  C06: "kit.html",
+  C07: "solicitar-troca.html",
+  C08: "trocas.html",
 };
 
 export async function sessaoAtual() {

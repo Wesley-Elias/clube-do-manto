@@ -55,7 +55,8 @@ body { background: var(--fundo-claro); }
 }
 @media (max-width: 400px) {
   .cab-cliente .botao { padding: 0 var(--espaco-12); }
-  .cab-cliente .logo { gap: var(--espaco-4); }
+  /* Com fonte substituta, o logo não pode empurrar o botão Menu para fora da tela */
+  .cab-cliente .logo { gap: var(--espaco-4); min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 }
 
 /* Menu mobile do cliente */

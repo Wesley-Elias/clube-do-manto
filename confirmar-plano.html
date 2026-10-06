@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Revise sua assinatura · Clube do Manto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/planos.css">
+  <link rel="stylesheet" href="css/fluxo.css">
+  <link rel="stylesheet" href="css/cliente.css">
+  <link rel="stylesheet" href="css/conta.css">
+  <script type="module" src="js/confirmar-plano.js"></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header data-cabecalho-cliente="C04" class="cab-cliente"></header>
+
+  <!-- Etapas: somente na primeira ativação -->
+  <nav class="etapas-fluxo" aria-label="Etapas da assinatura" data-etapas hidden>
+    <ol class="container etapas-fluxo__lista">
+      <li class="etapa-fluxo etapa-fluxo--concluida">
+        <span class="etapa-fluxo__numero" aria-hidden="true">✓</span>
+        <span class="etapa-fluxo__textos"><span class="etapa-fluxo__titulo">Crie sua conta</span><span class="etapa-fluxo__sub">Conta criada</span></span>
+      </li>
+      <li class="etapas-fluxo__conector" aria-hidden="true"></li>
+      <li class="etapa-fluxo etapa-fluxo--concluida" data-etapa-perfil>
+        <span class="etapa-fluxo__numero" aria-hidden="true" data-etapa-numero>✓</span>
+        <span class="etapa-fluxo__textos"><span class="etapa-fluxo__titulo">Defina suas preferências</span><span class="etapa-fluxo__sub" data-etapa-sub>Preferências salvas</span></span>
+      </li>
+      <li class="etapas-fluxo__conector" aria-hidden="true"></li>
+      <li class="etapa-fluxo etapa-fluxo--atual" aria-current="step" data-etapa-confirmar>
+        <span class="etapa-fluxo__numero" data-etapa-numero>3</span>
+        <span class="etapa-fluxo__textos"><span class="etapa-fluxo__titulo">Confirme a assinatura</span><span class="etapa-fluxo__sub" data-etapa-sub>Revisão final</span></span>
+      </li>
+    </ol>
+  </nav>
+
+  <main id="conteudo" class="area-cliente" aria-busy="true" data-c03>
+    <div class="container" data-conteudo>
+      <div class="area-cliente__topo">
+        <h1 class="area-cliente__titulo" tabindex="-1">Assinatura</h1>
+        <p class="area-cliente__sub" role="status">Carregando o plano e suas preferências…</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Escolher plano (primeira ativação ou reativação) -->
+  <dialog class="dialogo dialogo--largo" aria-labelledby="titulo-escolha" data-dialogo-planos>
+    <div class="dialogo__caixa">
+      <div class="dialogo__topo">
+        <h2 class="dialogo__titulo" id="titulo-escolha" tabindex="-1" data-foco-inicial>Escolha seu plano</h2>
+        <button class="botao botao--sec-claro" type="button" data-fechar-dialogo>Fechar</button>
+      </div>
+      <p class="dialogo__texto" data-escolha-texto>Seu perfil já está preenchido. Selecione um plano e revise a assinatura antes de confirmar.</p>
+      <div class="planos planos--dialogo" data-escolha-planos></div>
+      <p class="pequeno">Preços oficiais: Torcedor R$ 99 · Fanático R$ 169 · Colecionador R$ 299 por mês.</p>
+    </div>
+  </dialog>
+
+  <footer class="rodape-fluxo">
+    <div class="container rodape-fluxo__interno">
+      <p>© 2026 Clube do Manto</p>
+      <div class="rodape-fluxo__links"><span>Termos de uso</span><span>Política de privacidade</span></div>
+    </div>
+  </footer>
+</body>
+</html>
