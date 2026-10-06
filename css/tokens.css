@@ -92,8 +92,10 @@
   --fonte-texto: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* Display (sempre MAIÚSCULAS, peso 900 salvo faixa = 800) */
-  --tipo-hero-desktop: 900 112px/0.92 var(--fonte-display);
-  --tipo-hero-mobile: 900 54px/0.94 var(--fonte-display);
+  --tipo-hero-desktop: 900 112px/1.1 var(--fonte-display);  /* Figma: 0.92; ver nota abaixo */
+  --tipo-hero-mobile: 900 54px/1.1 var(--fonte-display);    /* Figma: 0.94 */
+  /* No navegador, entrelinha abaixo de 1 faz o acento de letras maiúsculas (ex.: "MÊS")
+     invadir a linha de cima. Ajuste de 06/10/2026 após teste na P01. */
   --tipo-secao-desktop: 900 64px/1 var(--fonte-display);
   --tipo-secao-mobile: 900 42px/1 var(--fonte-display);
   --tipo-titulo-admin: 900 48px/1 var(--fonte-display);
