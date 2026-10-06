@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recuperar acesso · Clube do Manto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/fluxo.css">
+  <script type="module" src="js/recuperar.js"></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header class="cabecalho-fluxo">
+    <div class="container cabecalho-fluxo__interno">
+      <a class="logo" href="index.html"><span class="logo__marca" aria-hidden="true">///</span>Clube do Manto</a>
+      <a class="botao botao--sec-escuro" href="entrar.html" data-contexto>Voltar ao login</a>
+    </div>
+  </header>
+
+  <main id="conteudo" class="fluxo fluxo--faixa">
+    <div class="container fluxo__grade fluxo__grade--unica">
+      <section class="cartao-form" aria-labelledby="titulo-recuperar">
+        <!-- Solicitação do link -->
+        <div data-etapa="solicitacao">
+          <div style="display:flex;flex-direction:column;gap:var(--espaco-12);margin-bottom:var(--espaco-24)">
+            <p class="chamada">Recuperação de acesso</p>
+            <h1 class="cartao-form__titulo" id="titulo-recuperar">Recupere seu acesso</h1>
+            <p class="lead">Informe o e-mail cadastrado para solicitar um link de recuperação.</p>
+          </div>
+          <form novalidate>
+            <div class="alerta" role="alert" tabindex="-1" data-alerta hidden>
+              <span class="alerta__icone" aria-hidden="true">!</span>
+              <div><p class="alerta__titulo"></p><p class="alerta__texto"></p></div>
+            </div>
+            <div class="campo">
+              <label class="campo__rotulo" for="email">E-mail</label>
+              <div class="campo__caixa"><input class="campo__entrada" id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="voce@exemplo.com" required></div>
+              <p class="campo__erro" id="erro-email"></p>
+            </div>
+            <button class="botao botao--primaria botao--largo" type="submit" data-enviar>Enviar link de recuperação</button>
+            <p class="cartao-form__alternativa"><a class="link" href="entrar.html" data-contexto>Voltar ao login</a></p>
+          </form>
+        </div>
+
+        <!-- Orientação após o envio (não revela se o e-mail existe) -->
+        <div data-etapa="enviado" hidden>
+          <div style="display:flex;flex-direction:column;gap:var(--espaco-16)">
+            <span class="icone-estado" aria-hidden="true">@</span>
+            <h1 class="cartao-form__titulo" tabindex="-1">Confira seu e-mail</h1>
+            <p class="lead" role="status">Se houver uma conta associada ao e-mail informado, enviaremos as instruções de recuperação. Confira também a pasta de spam.</p>
+            <div class="alerta" role="alert" tabindex="-1" data-alerta-reenvio hidden>
+              <span class="alerta__icone" aria-hidden="true">!</span>
+              <div><p class="alerta__titulo"></p><p class="alerta__texto"></p></div>
+            </div>
+            <div class="cartao-form__links" style="gap:var(--espaco-12)">
+              <a class="botao botao--primaria" href="entrar.html" data-contexto>Voltar ao login</a>
+              <button class="botao botao--sec-claro" type="button" data-reenviar>Reenviar link</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="rodape-fluxo">
+    <div class="container rodape-fluxo__interno">
+      <span>© 2026 Clube do Manto</span>
+      <span class="rodape-fluxo__links"><span>Termos de uso</span><span>Política de privacidade</span></span>
+    </div>
+  </footer>
+</body>
+</html>

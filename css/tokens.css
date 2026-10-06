@@ -1,0 +1,240 @@
+/* ==========================================================================
+   Clube do Manto — tokens de design (Direção Gramado)
+   Fonte: Figma EQ0hscKur8omKhkA4B0R3m, página "05 • Design system",
+   coleções "Manto • Primitivos", "Manto • Tokens", "Manto • Dimensões"
+   e 23 estilos de texto "Manto/…". Extraído em 06/10/2026.
+   Use sempre os tokens semânticos (--cor-*, --texto-*, ...) nos componentes;
+   os primitivos (--p-*) existem só para alimentar os semânticos.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Figtree:wght@400;600;700&display=swap");
+
+:root {
+  /* ---------- Primitivos (não usar direto nos componentes) ---------- */
+  --p-verde-noite: #0b3220;
+  --p-verde-noite-2: #0f3e29;
+  --p-verde-gramado: #126b34;
+  --p-verde-camisa: #14773a;
+  --p-verde-grama-clara: #8ee06a;
+  --p-laranja-bola: #ff7a3d;
+  --p-neutro-cal: #f3f7f1;
+  --p-neutro-fundo: #f2f6ef;
+  --p-neutro-branco: #ffffff;
+  --p-neutro-tinta: #0e1e15;
+  --p-neutro-musgo: #4a5d51;
+  --p-neutro-nevoa: #a9c4b2;
+  --p-neutro-linha: #d3ddd4;
+  --p-neutro-linha-suave: #e3eae4;
+  --p-neutro-cabecalho-tabela: #e7eee8;
+  --p-neutro-contorno-filtro: #8fa596;
+  --p-neutro-picote: #b9c8bd;
+  --p-estado-solicitada-fundo: #fcefd2;
+  --p-estado-solicitada-texto: #6b4600;
+  --p-estado-concluida-fundo: #ddf3e4;
+  --p-estado-concluida-texto: #14632f;
+  --p-estado-rejeitada-fundo: #fbe3e1;
+  --p-estado-rejeitada-texto: #a12a20;
+
+  /* ---------- Cores semânticas ---------- */
+  /* Fundos */
+  --fundo-escuro: var(--p-verde-noite);            /* cabeçalhos, hero, rodapé, Resumo do plano */
+  --fundo-escuro-ilustracao: var(--p-verde-noite-2);
+  --fundo-claro: var(--p-neutro-fundo);            /* fundo da página */
+  --fundo-superficie: var(--p-neutro-branco);      /* cartões, campos, diálogos */
+  --fundo-cabecalho-tabela: var(--p-neutro-cabecalho-tabela);
+  --fundo-destaque: var(--p-laranja-bola);         /* faixa de equipes, chamada final */
+
+  /* Texto */
+  --texto-principal: var(--p-neutro-tinta);
+  --texto-secundario: var(--p-neutro-musgo);
+  --texto-no-escuro: var(--p-neutro-cal);
+  --texto-no-escuro-suave: var(--p-neutro-nevoa);
+  --texto-chamada-no-escuro: var(--p-verde-grama-clara);  /* "eyebrow" sobre fundo escuro */
+  --texto-chamada-no-claro: var(--p-verde-gramado);       /* "eyebrow" sobre fundo claro */
+  --texto-preco: var(--p-laranja-bola);   /* SÓ sobre fundo escuro; no claro use --texto-principal */
+  --texto-sobre-destaque: var(--p-verde-noite);           /* texto sobre laranja */
+  --texto-sobre-acao-escura: var(--p-neutro-branco);
+
+  /* Ações */
+  --acao-primaria: var(--p-laranja-bola);          /* CTA principal; texto --texto-sobre-destaque */
+  --acao-escura: var(--p-verde-noite);
+  --acao-selecionada: var(--p-verde-gramado);      /* filtro/opção selecionada, foco */
+  --acao-contorno-no-escuro: var(--p-neutro-cal);
+  --acao-desativada-fundo: var(--p-neutro-linha-suave);
+  --acao-desativada-texto: var(--p-neutro-musgo);
+
+  /* Marca e ícones */
+  --marca-destaque: var(--p-laranja-bola);         /* logo "///", item ativo do menu admin */
+  --marca-verde: var(--p-verde-gramado);
+  --marca-estrela: var(--p-verde-grama-clara);
+  --icone-comum: var(--p-neutro-tinta);
+
+  /* Bordas */
+  --borda-padrao: var(--p-neutro-linha);
+  --borda-suave: var(--p-neutro-linha-suave);
+  --borda-picote: var(--p-neutro-picote);          /* linha tracejada do Cartão de plano */
+  --borda-filtro: var(--p-neutro-contorno-filtro); /* filtros e campos em repouso */
+  --borda-no-escuro: rgba(255, 255, 255, 0.12);   /* divisória inferior dos cabeçalhos */
+
+  /* Estados (chips, alertas, validação) */
+  --estado-solicitada-fundo: var(--p-estado-solicitada-fundo);  /* aviso / em aberto */
+  --estado-solicitada-texto: var(--p-estado-solicitada-texto);
+  --estado-concluida-fundo: var(--p-estado-concluida-fundo);    /* sucesso / ativo */
+  --estado-concluida-texto: var(--p-estado-concluida-texto);
+  --estado-rejeitada-fundo: var(--p-estado-rejeitada-fundo);    /* erro / cancelada */
+  --estado-rejeitada-texto: var(--p-estado-rejeitada-texto);
+  --estado-neutro-fundo: var(--p-neutro-cabecalho-tabela);      /* sem plano, inativo, sem saldo */
+  --estado-neutro-texto: var(--p-neutro-musgo);
+  --cor-erro: var(--p-estado-rejeitada-texto);                  /* borda/mensagem de campo inválido */
+
+  /* ---------- Tipografia ---------- */
+  --fonte-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --fonte-texto: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Display (sempre MAIÚSCULAS, peso 900 salvo faixa = 800) */
+  --tipo-hero-desktop: 900 112px/0.92 var(--fonte-display);
+  --tipo-hero-mobile: 900 54px/0.94 var(--fonte-display);
+  --tipo-secao-desktop: 900 64px/1 var(--fonte-display);
+  --tipo-secao-mobile: 900 42px/1 var(--fonte-display);
+  --tipo-titulo-admin: 900 48px/1 var(--fonte-display);
+  --tipo-plano: 900 30px/1 var(--fonte-display);
+  --tipo-preco: 900 56px/0.9 var(--fonte-display);
+  --tipo-logo: 900 24px/1 var(--fonte-display);
+  --tipo-faixa-desktop: 800 22px/1 var(--fonte-display);
+  --tipo-faixa-mobile: 800 18px/1 var(--fonte-display);
+  --ls-hero: 0.005em;
+  --ls-secao: 0.01em;
+  --ls-plano: 0.03em;   /* também logo e faixa */
+
+  /* Texto */
+  --tipo-lead: 400 18px/1.55 var(--fonte-texto);
+  --tipo-corpo: 400 16px/1.5 var(--fonte-texto);
+  --tipo-corpo-forte: 700 16px/1.4 var(--fonte-texto);
+  --tipo-lista: 400 15px/1.35 var(--fonte-texto);
+  --tipo-tabela: 400 14px/1.5 var(--fonte-texto);
+  --tipo-tabela-forte: 700 14px/1.5 var(--fonte-texto);
+  --tipo-pequeno: 400 13px/1.4 var(--fonte-texto);
+
+  /* Rótulos */
+  --tipo-chamada: 700 14px/1.2 var(--fonte-texto);            /* MAIÚSCULAS, ls 0.12em */
+  --tipo-cabecalho-tabela: 700 12px/1.25 var(--fonte-texto);  /* MAIÚSCULAS, ls 0.07em */
+  --tipo-botao: 700 15px/1.1 var(--fonte-texto);
+  --tipo-navegacao: 600 15px/1.2 var(--fonte-texto);
+  --tipo-filtro: 600 14px/1.2 var(--fonte-texto);
+  --tipo-chip: 700 13px/1.3 var(--fonte-texto);
+  --ls-chamada: 0.12em;
+  --ls-cabecalho-tabela: 0.07em;
+
+  /* ---------- Espaçamento (escala de 4) ---------- */
+  --espaco-4: 4px;
+  --espaco-8: 8px;
+  --espaco-12: 12px;
+  --espaco-16: 16px;
+  --espaco-20: 20px;
+  --espaco-24: 24px;
+  --espaco-32: 32px;
+  --espaco-40: 40px;
+  --espaco-48: 48px;
+  --espaco-64: 64px;
+  /* Usados só em seções da área pública */
+  --espaco-56: 56px;
+  --espaco-72: 72px;
+  --espaco-80: 80px;
+  --espaco-96: 96px;
+
+  /* ---------- Raios ---------- */
+  --raio-pequeno: 6px;
+  --raio-botao: 10px;     /* botões, campos, alertas, opções de troca */
+  --raio-tabela: 12px;    /* tabelas, itens de dúvida */
+  --raio-cartao: 16px;    /* cartões, Resumo do plano, diálogos */
+  --raio-pilula: 999px;   /* chips e filtros */
+
+  /* ---------- Sombras ---------- */
+  --sombra-cartao: 0 14px 28px -12px rgba(11, 50, 32, 0.18);  /* Cartão de plano */
+  --sombra-dialogo: 0 24px 48px -16px rgba(11, 50, 32, 0.32); /* proposta: diálogos e menus sobrepostos */
+  --anel-foco: 0 0 0 4px rgba(18, 107, 52, 0.25);             /* campo em foco */
+
+  /* ---------- Bordas ---------- */
+  --borda-fina: 1px;
+  --borda-filtro-largura: 1.5px;  /* filtros e campos em repouso */
+  --borda-grossa: 2px;            /* foco, erro, botões secundários, opção selecionada */
+
+  /* ---------- Medidas e layout ---------- */
+  --alvo-minimo: 44px;            /* altura de botões e alvos de toque */
+  --altura-campo: 52px;
+  --altura-filtro: 40px;
+  --altura-cabecalho-desktop: 76px;
+  --altura-cabecalho-mobile: 69px;
+  --largura-maxima: 1440px;
+  --largura-conteudo: 1216px;     /* 12 colunas de 72px + 11 vãos de 32px */
+  --margem-lateral: 20px;         /* mobile (360) */
+  --vao-grade: 16px;              /* mobile */
+  --secao-vertical: var(--espaco-56);
+
+  /* ---------- Movimento ---------- */
+  --duracao-rapida: 120ms;
+  --duracao-media: 200ms;
+  --curva-padrao: cubic-bezier(0.2, 0, 0, 1);
+  --faixa-duracao: 40s;          /* uma volta completa da faixa de equipes */
+}
+
+/* Tablet — proposta a revisar (não desenhada no Figma) */
+@media (min-width: 768px) {
+  :root {
+    --margem-lateral: 40px;
+    --vao-grade: 24px;
+    --secao-vertical: var(--espaco-72);
+  }
+}
+
+/* Desktop — referência 1440 */
+@media (min-width: 1200px) {
+  :root {
+    --margem-lateral: 112px;
+    --vao-grade: 32px;
+    --secao-vertical: var(--espaco-96);
+  }
+}
+
+/* ---------- Base mínima ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fundo-claro);
+  color: var(--texto-principal);
+  font: var(--tipo-corpo);
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  width: 100%;
+  max-width: calc(var(--largura-conteudo) + 2 * var(--margem-lateral));
+  margin-inline: auto;
+  padding-inline: var(--margem-lateral);
+}
+
+:focus-visible {
+  outline: 3px solid var(--acao-selecionada);
+  outline-offset: 2px;
+}
+.no-escuro :focus-visible,
+[data-fundo="escuro"] :focus-visible {
+  outline-color: var(--marca-estrela);
+}
+
+.visualmente-oculto {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

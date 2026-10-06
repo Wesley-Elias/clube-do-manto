@@ -1,0 +1,285 @@
+/* Clube do Manto — componentes compartilhados (P01, P02, P03).
+   Usa apenas os tokens semânticos de tokens.css. */
+
+html { scroll-behavior: smooth; }
+body { min-height: 100vh; display: flex; flex-direction: column; }
+main { flex: 1 0 auto; }
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+h1, h2, h3, p { margin: 0; }
+
+/* ---------- Tipografia utilitária ---------- */
+.chamada {
+  font: var(--tipo-chamada);
+  letter-spacing: var(--ls-chamada);
+  text-transform: uppercase;
+  color: var(--texto-chamada-no-claro);
+}
+.no-escuro .chamada, .chamada--no-escuro { color: var(--texto-chamada-no-escuro); }
+
+.titulo-secao {
+  font: var(--tipo-secao-mobile);
+  letter-spacing: var(--ls-secao);
+  text-transform: uppercase;
+  color: var(--texto-principal);
+}
+.lead { font: var(--tipo-lead); color: var(--texto-secundario); }
+.pequeno { font: var(--tipo-pequeno); color: var(--texto-secundario); }
+
+@media (min-width: 1200px) {
+  .titulo-secao { font: var(--tipo-secao-desktop); letter-spacing: var(--ls-secao); }
+}
+
+/* ---------- Logo provisório ---------- */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-8);
+  font: var(--tipo-logo);
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--texto-no-escuro);
+  letter-spacing: var(--ls-plano);
+  min-height: var(--alvo-minimo);
+}
+.logo__marca { color: var(--marca-destaque); letter-spacing: -0.08em; }
+
+/* ---------- Botão ---------- */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaco-8);
+  min-height: var(--alvo-minimo);
+  padding: 0 var(--espaco-20);
+  border: var(--borda-grossa) solid transparent;
+  border-radius: var(--raio-botao);
+  font: var(--tipo-botao);
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--duracao-rapida) var(--curva-padrao),
+              filter var(--duracao-rapida) var(--curva-padrao);
+}
+.botao--largo { width: 100%; }
+.botao--primaria { background: var(--acao-primaria); color: var(--texto-sobre-destaque); }
+.botao--primaria:hover { filter: brightness(1.06); }
+.botao--primaria:active { filter: brightness(0.94); }
+.botao--escura { background: var(--acao-escura); color: var(--texto-sobre-acao-escura); }
+.botao--escura:hover { filter: brightness(1.25); }
+.botao--sec-escuro { border-color: var(--acao-contorno-no-escuro); color: var(--texto-no-escuro); background: transparent; }
+.botao--sec-escuro:hover { background: rgba(243, 247, 241, 0.08); }
+.botao--sec-claro { border-color: var(--marca-verde); color: var(--texto-principal); background: transparent; }
+.botao--sec-claro:hover { background: rgba(18, 107, 52, 0.06); }
+.botao:disabled,
+.botao[aria-disabled="true"] {
+  background: var(--acao-desativada-fundo);
+  color: var(--acao-desativada-texto);
+  border-color: transparent;
+  cursor: not-allowed;
+  filter: none;
+}
+.botao[aria-busy="true"] { cursor: progress; }
+.botao__giro {
+  width: 16px; height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: giro 0.8s linear infinite;
+}
+@keyframes giro { to { transform: rotate(360deg); } }
+
+/* ---------- Link de texto ---------- */
+.link {
+  font: var(--tipo-corpo-forte);
+  color: var(--texto-chamada-no-claro);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--alvo-minimo);
+}
+
+/* ---------- Campo de texto ---------- */
+.campo { display: flex; flex-direction: column; gap: var(--espaco-8); }
+.campo__rotulo { font: var(--tipo-corpo-forte); color: var(--texto-principal); }
+.campo__caixa {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-12);
+  height: var(--altura-campo);
+  padding: 0 var(--espaco-16);
+  background: var(--fundo-superficie);
+  border: var(--borda-filtro-largura) solid var(--borda-filtro);
+  border-radius: var(--raio-botao);
+}
+.campo__caixa:focus-within {
+  border: var(--borda-grossa) solid var(--acao-selecionada);
+  box-shadow: var(--anel-foco);
+}
+.campo__entrada {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: var(--tipo-corpo);
+  color: var(--texto-principal);
+  height: 100%;
+}
+.campo__entrada::placeholder { color: var(--texto-secundario); opacity: 1; }
+.campo__mostrar {
+  background: none;
+  border: 0;
+  padding: 0 var(--espaco-4);
+  min-height: var(--alvo-minimo);
+  font: var(--tipo-filtro);
+  color: var(--texto-chamada-no-claro);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.campo__mostrar:focus-visible { outline-offset: -2px; }
+.campo__ajuda { font: var(--tipo-pequeno); color: var(--texto-secundario); }
+.campo__erro {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  font: var(--tipo-pequeno);
+  color: var(--cor-erro);
+}
+.campo__erro::before {
+  content: "!";
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--cor-erro);
+  color: var(--texto-sobre-acao-escura);
+  font: var(--tipo-chip);
+}
+.campo--erro .campo__caixa { border: var(--borda-grossa) solid var(--cor-erro); }
+.campo--erro .campo__erro { display: flex; }
+.campo--erro .campo__ajuda { display: none; }
+
+/* ---------- Alerta ---------- */
+.alerta {
+  display: flex;
+  gap: var(--espaco-12);
+  align-items: flex-start;
+  padding: var(--espaco-16) var(--espaco-20);
+  border-radius: var(--raio-botao);
+  border-left: 4px solid var(--cor-erro);
+  background: var(--estado-rejeitada-fundo);
+  color: var(--texto-principal);
+}
+.alerta[hidden] { display: none; }
+.alerta__icone {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--cor-erro);
+  color: var(--texto-sobre-acao-escura);
+  font: var(--tipo-chip);
+}
+.alerta__titulo { font: var(--tipo-corpo-forte); }
+.alerta__texto { font: var(--tipo-tabela); }
+.alerta--info { border-left-color: var(--marca-verde); background: var(--estado-concluida-fundo); }
+.alerta--info .alerta__icone { background: var(--marca-verde); }
+
+/* ---------- Cabeçalho e rodapé dos fluxos (P02, P03) ---------- */
+.cabecalho-fluxo {
+  background: var(--fundo-escuro);
+  border-bottom: var(--borda-fina) solid var(--borda-no-escuro);
+}
+.cabecalho-fluxo__interno {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-16);
+  padding-block: 12px;
+}
+@media (min-width: 768px) { .cabecalho-fluxo__interno { padding-block: 18px; } }
+
+.rodape-fluxo { background: var(--fundo-escuro); color: var(--texto-no-escuro-suave); font: var(--tipo-pequeno); }
+.rodape-fluxo__interno {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-12) var(--espaco-32);
+  padding-block: 28px;
+}
+.rodape-fluxo__links { display: flex; flex-wrap: wrap; gap: var(--espaco-12) var(--espaco-32); }
+
+/* ---------- Resumo do plano ---------- */
+.resumo-plano {
+  background: var(--fundo-escuro);
+  color: var(--texto-no-escuro);
+  border-radius: var(--raio-cartao);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-16);
+}
+.resumo-plano__nome { font: var(--tipo-plano); letter-spacing: var(--ls-plano); text-transform: uppercase; }
+.resumo-plano__preco { display: flex; align-items: baseline; gap: var(--espaco-8); flex-wrap: wrap; }
+.resumo-plano__valor { font: var(--tipo-preco); color: var(--texto-preco); text-transform: uppercase; }
+.resumo-plano__periodo { font: var(--tipo-corpo); color: var(--texto-no-escuro-suave); }
+.resumo-plano__composicao { font: var(--tipo-corpo-forte); }
+.resumo-plano__picote { border: 0; border-top: 1.5px dashed rgba(169, 196, 178, 0.45); margin: 0; }
+.resumo-plano__lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font: var(--tipo-lista); }
+.resumo-plano__lista li { display: flex; gap: 10px; }
+.resumo-plano__lista li::before { content: "✓"; color: var(--marca-estrela); font: var(--tipo-chip); }
+
+/* ---------- Bloco de orientação (borda verde à esquerda) ---------- */
+.orientacao {
+  border-left: 3px solid var(--marca-verde);
+  padding: var(--espaco-4) 0 var(--espaco-4) var(--espaco-20);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.orientacao__titulo { font: var(--tipo-corpo-forte); }
+.orientacao p:not(.orientacao__titulo) { color: var(--texto-secundario); }
+
+/* ---------- Aviso de configuração (somente desenvolvimento) ---------- */
+.aviso-config {
+  background: var(--estado-solicitada-fundo);
+  color: var(--estado-solicitada-texto);
+  font: var(--tipo-tabela);
+  padding: var(--espaco-8) var(--margem-lateral);
+  text-align: center;
+}
+
+/* ---------- Atalho "Pular para o conteúdo" (visível só com foco) ---------- */
+.pular {
+  position: absolute;
+  left: var(--espaco-16);
+  top: -100px;
+  z-index: 100;
+  padding: var(--espaco-12) var(--espaco-16);
+  border-radius: var(--raio-botao);
+  background: var(--acao-primaria);
+  color: var(--texto-sobre-destaque);
+  font: var(--tipo-botao);
+}
+.pular:focus { top: var(--espaco-16); }
+
+/* O atributo hidden sempre vence o display dos componentes */
+[hidden] { display: none !important; }
+
+/* Cabeçalho do fluxo em telas estreitas: logo e botão cabem em 360 px */
+@media (max-width: 400px) {
+  .cabecalho-fluxo .botao { padding: 0 var(--espaco-12); }
+  .cabecalho-fluxo .logo { gap: var(--espaco-4); }
+}

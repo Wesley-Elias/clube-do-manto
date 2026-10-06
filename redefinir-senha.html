@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nova senha · Clube do Manto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/fluxo.css">
+  <script type="module" src="js/redefinir.js"></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header class="cabecalho-fluxo">
+    <div class="container cabecalho-fluxo__interno">
+      <a class="logo" href="index.html"><span class="logo__marca" aria-hidden="true">///</span>Clube do Manto</a>
+      <a class="botao botao--sec-escuro" href="entrar.html" data-contexto>Voltar ao login</a>
+    </div>
+  </header>
+
+  <main id="conteudo" class="fluxo fluxo--faixa">
+    <div class="container fluxo__grade fluxo__grade--unica">
+      <section class="cartao-form" aria-label="Redefinição de senha" aria-busy="true">
+        <!-- Validando o link -->
+        <div data-etapa="validando">
+          <p class="lead" role="status"><span class="botao__giro" aria-hidden="true" style="display:inline-block;vertical-align:middle;margin-right:8px"></span>Validando o link de recuperação…</p>
+        </div>
+
+        <!-- Nova senha -->
+        <div data-etapa="nova-senha" hidden>
+          <div style="display:flex;flex-direction:column;gap:var(--espaco-12);margin-bottom:var(--espaco-24)">
+            <p class="chamada">Recuperação de acesso</p>
+            <h1 class="cartao-form__titulo" tabindex="-1">Defina uma nova senha</h1>
+            <p class="lead">Preencha a nova senha e confirme para recuperar o acesso.</p>
+          </div>
+          <form novalidate>
+            <div class="alerta" role="alert" tabindex="-1" data-alerta hidden>
+              <span class="alerta__icone" aria-hidden="true">!</span>
+              <div><p class="alerta__titulo"></p><p class="alerta__texto"></p></div>
+            </div>
+            <div class="cartao-form__campos">
+              <div class="campo">
+                <label class="campo__rotulo" for="senha">Nova senha</label>
+                <div class="campo__caixa">
+                  <input class="campo__entrada" id="senha" name="senha" type="password" autocomplete="new-password" placeholder="Digite a nova senha" required>
+                  <button class="campo__mostrar" type="button" aria-pressed="false" aria-controls="senha">Mostrar</button>
+                </div>
+                <p class="campo__erro" id="erro-senha"></p>
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="confirmacao">Confirmar nova senha</label>
+                <div class="campo__caixa"><input class="campo__entrada" id="confirmacao" name="confirmacao" type="password" autocomplete="new-password" placeholder="Repita a nova senha" required></div>
+                <p class="campo__erro" id="erro-confirmacao"></p>
+              </div>
+            </div>
+            <button class="botao botao--primaria botao--largo" type="submit" data-enviar>Salvar nova senha</button>
+          </form>
+        </div>
+
+        <!-- Senha salva: não autentica -->
+        <div data-etapa="alterada" hidden>
+          <div style="display:flex;flex-direction:column;gap:var(--espaco-16)">
+            <span class="icone-estado icone-estado--sucesso" aria-hidden="true">✓</span>
+            <h1 class="cartao-form__titulo" tabindex="-1">Senha alterada</h1>
+            <p class="lead" role="status">Sua senha foi redefinida. Volte ao login e entre com a nova senha.</p>
+            <a class="botao botao--primaria" href="entrar.html" data-contexto style="align-self:flex-start">Voltar ao login</a>
+          </div>
+        </div>
+
+        <!-- Link expirado -->
+        <div data-etapa="expirado" hidden>
+          <div style="display:flex;flex-direction:column;gap:var(--espaco-16)">
+            <span class="icone-estado icone-estado--erro" aria-hidden="true">!</span>
+            <h1 class="cartao-form__titulo" tabindex="-1">Este link expirou</h1>
+            <p class="lead">Solicite um novo link de recuperação para continuar.</p>
+            <div class="cartao-form__links" style="gap:var(--espaco-12)">
+              <a class="botao botao--primaria" href="recuperar-senha.html" data-contexto>Solicitar novo link</a>
+              <a class="botao botao--sec-claro" href="entrar.html" data-contexto>Voltar ao login</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Link inválido -->
+        <div data-etapa="invalido" hidden>
+          <div style="display:flex;flex-direction:column;gap:var(--espaco-16)">
+            <span class="icone-estado icone-estado--erro" aria-hidden="true">!</span>
+            <h1 class="cartao-form__titulo" tabindex="-1">Este link é inválido</h1>
+            <p class="lead">O link não pôde ser validado. Solicite um novo link de recuperação.</p>
+            <div class="cartao-form__links" style="gap:var(--espaco-12)">
+              <a class="botao botao--primaria" href="recuperar-senha.html" data-contexto>Solicitar novo link</a>
+              <a class="botao botao--sec-claro" href="entrar.html" data-contexto>Voltar ao login</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="rodape-fluxo">
+    <div class="container rodape-fluxo__interno">
+      <span>© 2026 Clube do Manto</span>
+      <span class="rodape-fluxo__links"><span>Termos de uso</span><span>Política de privacidade</span></span>
+    </div>
+  </footer>
+</body>
+</html>

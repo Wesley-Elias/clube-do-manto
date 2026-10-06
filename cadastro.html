@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Criar conta · Clube do Manto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/fluxo.css">
+  <script type="module" src="js/cadastro.js"></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header class="cabecalho-fluxo">
+    <div class="container cabecalho-fluxo__interno">
+      <a class="logo" href="index.html"><span class="logo__marca" aria-hidden="true">///</span>Clube do Manto</a>
+      <a class="botao botao--sec-escuro" href="index.html">Voltar ao início</a>
+    </div>
+  </header>
+
+  <!-- Etapas: só aparecem quando há um plano escolhido -->
+  <nav class="etapas-fluxo" aria-label="Etapas da assinatura" data-com-plano hidden>
+    <ol class="container etapas-fluxo__lista">
+      <li class="etapa-fluxo etapa-fluxo--atual" aria-current="step">
+        <span class="etapa-fluxo__numero">1</span>
+        <span class="etapa-fluxo__textos"><span class="etapa-fluxo__titulo">Crie sua conta</span><span class="etapa-fluxo__sub">Etapa atual</span></span>
+      </li>
+      <li class="etapas-fluxo__conector" aria-hidden="true"></li>
+      <li class="etapa-fluxo">
+        <span class="etapa-fluxo__numero">2</span>
+        <span class="etapa-fluxo__textos"><span class="etapa-fluxo__titulo">Defina suas preferências</span><span class="etapa-fluxo__sub">Tamanho, favorito e rival</span></span>
+      </li>
+      <li class="etapas-fluxo__conector" aria-hidden="true"></li>
+      <li class="etapa-fluxo">
+        <span class="etapa-fluxo__numero">3</span>
+        <span class="etapa-fluxo__textos"><span class="etapa-fluxo__titulo">Confirme a assinatura</span><span class="etapa-fluxo__sub">Revise o plano e o perfil</span></span>
+      </li>
+    </ol>
+  </nav>
+
+  <main id="conteudo" class="fluxo">
+    <div class="container fluxo__grade">
+      <section class="cartao-form" aria-labelledby="titulo-cadastro">
+        <!-- Formulário -->
+        <div data-etapa="formulario">
+          <div style="display:flex;flex-direction:column;gap:var(--espaco-12);margin-bottom:var(--espaco-24)">
+            <p class="chamada">Cadastro</p>
+            <h1 class="cartao-form__titulo" id="titulo-cadastro">Crie sua conta</h1>
+            <p class="lead" data-subtitulo>Cadastre-se para acessar o Clube do Manto e definir suas preferências.</p>
+            <p class="pequeno">Todos os campos são obrigatórios.</p>
+          </div>
+
+          <form novalidate>
+            <div class="alerta" role="alert" tabindex="-1" data-alerta hidden>
+              <span class="alerta__icone" aria-hidden="true">!</span>
+              <div><p class="alerta__titulo"></p><p class="alerta__texto"></p></div>
+            </div>
+
+            <div class="cartao-form__campos">
+              <div class="campo">
+                <label class="campo__rotulo" for="nome">Nome</label>
+                <div class="campo__caixa"><input class="campo__entrada" id="nome" name="nome" type="text" autocomplete="name" placeholder="Seu nome" required></div>
+                <p class="campo__erro" id="erro-nome"></p>
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="email">E-mail</label>
+                <div class="campo__caixa"><input class="campo__entrada" id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="voce@exemplo.com" required></div>
+                <p class="campo__erro" id="erro-email"></p>
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="senha">Senha</label>
+                <div class="campo__caixa">
+                  <input class="campo__entrada" id="senha" name="senha" type="password" autocomplete="new-password" placeholder="Crie uma senha" aria-describedby="ajuda-senha" required>
+                  <button class="campo__mostrar" type="button" aria-pressed="false" aria-controls="senha">Mostrar</button>
+                </div>
+                <p class="campo__ajuda" id="ajuda-senha">Use uma senha exclusiva para esta conta.</p>
+                <p class="campo__erro" id="erro-senha"></p>
+              </div>
+              <div class="campo">
+                <label class="campo__rotulo" for="confirmacao">Confirme sua senha</label>
+                <div class="campo__caixa"><input class="campo__entrada" id="confirmacao" name="confirmacao" type="password" autocomplete="new-password" placeholder="Repita sua senha" required></div>
+                <p class="campo__erro" id="erro-confirmacao"></p>
+              </div>
+            </div>
+
+            <button class="botao botao--primaria botao--largo" type="submit" data-enviar>Criar conta</button>
+            <p class="cartao-form__alternativa">Já tem uma conta? <a class="link" href="entrar.html" data-contexto>Entrar</a></p>
+          </form>
+        </div>
+
+        <!-- Sucesso: conta criada e sessão aberta -->
+        <div data-etapa="sucesso" hidden>
+          <div style="display:flex;flex-direction:column;gap:var(--espaco-16)">
+            <span class="icone-estado icone-estado--sucesso" aria-hidden="true">✓</span>
+            <p class="chamada">Cadastro concluído</p>
+            <h1 class="cartao-form__titulo" tabindex="-1">Conta criada!</h1>
+            <p class="lead">Agora vamos preparar seu perfil para orientar a seleção dos próximos mantos.</p>
+            <div class="orientacao">
+              <p class="orientacao__titulo">Na próxima etapa, você informa:</p>
+              <ul class="lista-proximos">
+                <li>Seu tamanho</li>
+                <li>Seu time favorito</li>
+                <li>Seu time rival</li>
+              </ul>
+            </div>
+            <a class="botao botao--primaria botao--largo" href="proxima-etapa.html?tela=C02" data-contexto>Definir minhas preferências</a>
+            <p class="pequeno" data-com-plano hidden>Você confirmará a assinatura depois de definir seu perfil.</p>
+          </div>
+        </div>
+
+        <!-- Confirmação de e-mail exigida pelo Supabase Auth -->
+        <div data-etapa="confirmacao" hidden>
+          <div style="display:flex;flex-direction:column;gap:var(--espaco-16)">
+            <span class="icone-estado" aria-hidden="true">@</span>
+            <p class="chamada">Cadastro concluído</p>
+            <h1 class="cartao-form__titulo" tabindex="-1">Confirmação de e-mail necessária</h1>
+            <p class="lead">Confirme seu e-mail antes de entrar para continuar o cadastro.</p>
+            <div class="orientacao">
+              <p class="orientacao__titulo">Depois da confirmação:</p>
+              <p>Acesse sua conta para completar o perfil<span data-com-plano hidden> e confirmar o plano</span>.</p>
+            </div>
+            <a class="botao botao--primaria botao--largo" href="entrar.html" data-contexto>Ir para o login</a>
+          </div>
+        </div>
+      </section>
+
+      <aside class="apoio" aria-label="Apoio ao cadastro">
+        <!-- Acesso pelo menu: nenhum plano é assumido -->
+        <div class="cartao-apoio" data-sem-plano>
+          <p class="chamada chamada--no-escuro">Comece pela sua conta</p>
+          <p class="cartao-apoio__titulo">Sua conta primeiro</p>
+          <p>Crie seu acesso e complete seu perfil. Você pode escolher um plano quando quiser.</p>
+          <p class="alerta alerta--info" style="color:var(--texto-principal)"><span class="alerta__icone" aria-hidden="true">i</span><span class="alerta__texto">Criar a conta não ativa uma assinatura.</span></p>
+          <a class="botao botao--sec-escuro" href="index.html#planos">Conhecer planos</a>
+        </div>
+        <div class="orientacao" data-sem-plano>
+          <p class="orientacao__titulo">O que vem a seguir</p>
+          <p>Com o perfil pronto, você acessa seu painel. A assinatura pode ser feita depois.</p>
+        </div>
+
+        <!-- Com plano escolhido na P01 -->
+        <div class="resumo-plano" data-com-plano data-resumo-plano hidden>
+          <p class="chamada chamada--no-escuro">Plano selecionado</p>
+          <p class="resumo-plano__nome" data-resumo="nome"></p>
+          <p class="resumo-plano__preco"><span class="resumo-plano__valor" data-resumo="valor"></span><span class="resumo-plano__periodo">/ mês</span></p>
+          <p class="resumo-plano__composicao" data-resumo="composicao"></p>
+          <hr class="resumo-plano__picote">
+          <ul class="resumo-plano__lista">
+            <li data-resumo="trocas"></li>
+            <li>Garantia anti-repetição</li>
+            <li>Bloqueio do time rival</li>
+            <li>Sem fidelidade</li>
+          </ul>
+          <a class="botao botao--sec-escuro" href="index.html?retorno=cadastro#planos">Alterar plano</a>
+        </div>
+        <div class="orientacao" data-com-plano hidden>
+          <p class="orientacao__titulo">O que vem a seguir</p>
+          <p>Você informa seu tamanho, time favorito e rival para orientar a seleção dos kits.</p>
+          <p>Depois, você revisa e confirma sua assinatura.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="rodape-fluxo">
+    <div class="container rodape-fluxo__interno">
+      <span>© 2026 Clube do Manto</span>
+      <span class="rodape-fluxo__links"><span>Termos de uso</span><span>Política de privacidade</span></span>
+    </div>
+  </footer>
+</body>
+</html>

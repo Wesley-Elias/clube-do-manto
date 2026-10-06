@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entrar · Clube do Manto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/fluxo.css">
+  <script type="module" src="js/entrar.js"></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header class="cabecalho-fluxo">
+    <div class="container cabecalho-fluxo__interno">
+      <a class="logo" href="index.html"><span class="logo__marca" aria-hidden="true">///</span>Clube do Manto</a>
+      <a class="botao botao--sec-escuro" href="index.html">Voltar ao início</a>
+    </div>
+  </header>
+
+  <main id="conteudo" class="fluxo fluxo--faixa">
+    <div class="container fluxo__grade">
+      <section class="cartao-form" aria-labelledby="titulo-entrar">
+        <div style="display:flex;flex-direction:column;gap:var(--espaco-12)">
+          <p class="chamada">Área do cliente</p>
+          <h1 class="cartao-form__titulo" id="titulo-entrar">Entre na sua conta</h1>
+          <p class="lead" data-subtitulo>Use seu e-mail e senha para acessar o Clube do Manto.</p>
+        </div>
+
+        <form novalidate>
+          <div class="alerta" role="alert" tabindex="-1" data-alerta hidden>
+            <span class="alerta__icone" aria-hidden="true">!</span>
+            <div><p class="alerta__titulo"></p><p class="alerta__texto"></p></div>
+          </div>
+
+          <div class="cartao-form__campos">
+            <div class="campo">
+              <label class="campo__rotulo" for="email">E-mail</label>
+              <div class="campo__caixa"><input class="campo__entrada" id="email" name="email" type="email" autocomplete="username" inputmode="email" placeholder="voce@exemplo.com" required></div>
+              <p class="campo__erro" id="erro-email"></p>
+            </div>
+            <div class="campo">
+              <label class="campo__rotulo" for="senha">Senha</label>
+              <div class="campo__caixa">
+                <input class="campo__entrada" id="senha" name="senha" type="password" autocomplete="current-password" placeholder="Digite sua senha" required>
+                <button class="campo__mostrar" type="button" aria-pressed="false" aria-controls="senha">Mostrar</button>
+              </div>
+              <p class="campo__erro" id="erro-senha"></p>
+            </div>
+          </div>
+          <p class="cartao-form__direita"><a class="link" href="recuperar-senha.html" data-contexto>Esqueci minha senha</a></p>
+
+          <button class="botao botao--primaria botao--largo" type="submit" data-enviar>Entrar</button>
+          <p class="cartao-form__alternativa">Ainda não tem uma conta? <a class="link" href="cadastro.html" data-contexto>Criar conta</a></p>
+        </form>
+      </section>
+
+      <aside class="apoio" aria-label="Apoio ao acesso">
+        <!-- Acesso pelo menu: nenhum plano é assumido -->
+        <div class="cartao-apoio" data-sem-plano>
+          <p class="chamada chamada--no-escuro">Área do cliente</p>
+          <p class="cartao-apoio__titulo">Seu clube, em um só lugar</p>
+          <p>Acompanhe seus kits e suas trocas e mantenha suas preferências atualizadas.</p>
+        </div>
+        <div class="orientacao" data-sem-plano>
+          <p>Você pode acessar sua conta mesmo sem uma assinatura ativa. Escolha um plano quando quiser.</p>
+        </div>
+
+        <!-- Com plano escolhido na P01 -->
+        <div class="resumo-plano" data-com-plano data-resumo-plano hidden>
+          <p class="chamada chamada--no-escuro">Plano selecionado</p>
+          <p class="resumo-plano__nome" data-resumo="nome"></p>
+          <p class="resumo-plano__preco"><span class="resumo-plano__valor" data-resumo="valor"></span><span class="resumo-plano__periodo">/ mês</span></p>
+          <p class="resumo-plano__composicao" data-resumo="composicao"></p>
+          <hr class="resumo-plano__picote">
+          <ul class="resumo-plano__lista">
+            <li data-resumo="trocas"></li>
+            <li>Garantia anti-repetição</li>
+            <li>Bloqueio do time rival</li>
+            <li>Sem fidelidade</li>
+          </ul>
+          <a class="botao botao--sec-escuro" href="index.html?retorno=entrar#planos">Alterar plano</a>
+        </div>
+        <div class="orientacao" data-com-plano hidden>
+          <p class="orientacao__titulo">Continue de onde parou</p>
+          <p>Após entrar, você continua a contratação com o plano escolhido. Se necessário, completa suas preferências antes da confirmação.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="rodape-fluxo">
+    <div class="container rodape-fluxo__interno">
+      <span>© 2026 Clube do Manto</span>
+      <span class="rodape-fluxo__links"><span>Termos de uso</span><span>Política de privacidade</span></span>
+    </div>
+  </footer>
+</body>
+</html>
