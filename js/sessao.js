@@ -5,7 +5,14 @@ import { comContexto } from "./contexto.js";
 // Endereço de cada tela. As que ainda não existem apontam para a página
 // de etapa futura, que preserva o contexto.
 export const TELAS = {
-  A01: "proxima-etapa.html?tela=A01",
+  P04: "colecao.html",
+  A01: "admin.html",
+  A02: "catalogo.html",
+  A03: "equipe.html",
+  A04: "camisa.html",
+  A05: "estoque.html",
+  A06: "proxima-etapa.html?tela=A06",
+  A09: "proxima-etapa.html?tela=A09",
   C01: "painel.html",
   C02: "perfil.html",
   C03: "confirmar-plano.html",

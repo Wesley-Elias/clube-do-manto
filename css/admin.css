@@ -1,0 +1,113 @@
+/* Administração — A01 a A05. Mesmo sistema da área do cliente, com foco em leitura.
+   Complementa cliente.css e conta.css; usa apenas os tokens semânticos. */
+
+@media (min-width: 1024px) {
+  .area-admin .area-cliente__titulo { font: var(--tipo-titulo-admin); letter-spacing: var(--ls-secao); }
+}
+.area-admin .area-cliente__topo .chamada { margin: 0; }
+.area-admin .area-cliente__titulo { overflow-wrap: anywhere; }
+.area-admin .area-cliente__topo--linha .botao { flex: none; }
+@media (max-width: 599px) { .area-admin .area-cliente__topo--linha > .botao { width: 100%; } }
+
+.cartao--admin { align-items: stretch; }
+.cartao--admin .cartao__titulo { font-size: 30px; }
+.area-admin > .container > * + * { margin-top: var(--espaco-16); }
+@media (min-width: 1024px) { .area-admin > .container > * + * { margin-top: var(--espaco-24); } }
+.area-admin > .container > .area-cliente__topo + * { margin-top: 0; }
+
+/* A01 — atalhos */
+.atalhos-admin { display: grid; gap: var(--espaco-16); }
+@media (min-width: 640px) { .atalhos-admin { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .atalhos-admin { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--espaco-24); } }
+.atalho-admin {
+  background: var(--fundo-superficie);
+  border: var(--borda-fina) solid var(--borda-suave);
+  border-radius: var(--raio-cartao);
+  padding: var(--espaco-24) var(--espaco-20);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--espaco-12);
+}
+.atalho-admin__titulo { font: 900 32px/1 var(--fonte-display); letter-spacing: var(--ls-plano); text-transform: uppercase; color: var(--texto-principal); }
+.atalho-admin__texto { font: var(--tipo-tabela); color: var(--texto-secundario); flex: 1; margin-bottom: var(--espaco-12); }
+
+/* A02 — consulta */
+.cartao--consulta { gap: var(--espaco-20); }
+.consulta-admin { display: grid; gap: var(--espaco-12) var(--espaco-16); align-items: end; }
+.consulta-admin .campo__caixa { height: 48px; }
+.consulta-admin__limpar { justify-self: start; min-height: var(--alvo-minimo); }
+@media (min-width: 900px) {
+  .consulta-admin { grid-template-columns: minmax(0, 1fr) auto 260px auto; }
+  .consulta-admin__buscar { height: 48px; }
+  .consulta-admin__limpar { align-self: center; margin-top: 28px; }
+}
+.link--botao { background: none; border: 0; padding: 0; cursor: pointer; font: var(--tipo-tabela-forte); }
+.consulta-admin .link, .acoes-linha .link { font: var(--tipo-tabela-forte); }
+.contagem-admin { font: var(--tipo-tabela-forte); color: var(--texto-principal); margin-bottom: var(--espaco-12); }
+.nota-admin { font: var(--tipo-tabela); color: var(--texto-secundario); }
+
+/* Tabelas administrativas */
+.tabela-caixa { background: var(--fundo-superficie); border: var(--borda-fina) solid var(--borda-suave); border-radius: var(--raio-cartao); overflow: hidden; }
+.tabela--admin thead th { border-radius: 0 !important; }
+.tabela--admin td, .tabela--admin tbody th { padding-block: var(--espaco-12); }
+.acoes-linha { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-4) var(--espaco-16); }
+.acoes-linha .link { display: inline-flex; align-items: center; min-height: var(--alvo-minimo); }
+@media (max-width: 899px) {
+  .area-admin .tabela { position: relative; overflow: hidden; }
+  .tabela-caixa { background: none; border: 0; overflow: visible; }
+  .tabela--admin tr { background: var(--fundo-superficie); }
+}
+.cartao--admin .tabela thead th { border-radius: 0; }
+.cartao--admin .tabela thead th:first-child { border-top-left-radius: var(--raio-tabela); border-bottom-left-radius: var(--raio-tabela); }
+.cartao--admin .tabela thead th:last-child { border-top-right-radius: var(--raio-tabela); border-bottom-right-radius: var(--raio-tabela); }
+
+/* A03 / A04 — formulários */
+.cartao--form-admin { max-width: 800px; }
+.form-admin { display: flex; flex-direction: column; gap: var(--espaco-20); }
+.campo--grupo { border: 0; margin: 0; padding: 0; min-width: 0; }
+.campo--grupo legend { padding: 0; margin-bottom: var(--espaco-8); }
+.radios { display: flex; flex-wrap: wrap; gap: var(--espaco-8) var(--espaco-12); }
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-8);
+  min-height: var(--alvo-minimo);
+  padding: 0 var(--espaco-16);
+  border: var(--borda-fina) solid var(--borda-padrao);
+  border-radius: var(--raio-botao);
+  background: var(--fundo-superficie);
+  font: var(--tipo-corpo);
+  color: var(--texto-principal);
+  cursor: pointer;
+}
+.radio input { width: 18px; height: 18px; margin: 0; accent-color: var(--acao-selecionada); }
+.radio:has(input:checked) { border: var(--borda-grossa) solid var(--acao-selecionada); background: var(--fundo-claro); font-weight: 600; }
+.radio:has(input:focus-visible) { box-shadow: var(--anel-foco); }
+.radio:has(input:disabled) { cursor: not-allowed; background: var(--acao-desativada-fundo); color: var(--acao-desativada-texto); }
+.campo--grupo.campo--erro .radio { border-color: var(--cor-erro); }
+.campo__entrada:disabled { color: var(--acao-desativada-texto); cursor: not-allowed; }
+.campo__caixa:has(.campo__entrada:disabled) { background: var(--acao-desativada-fundo); }
+.campo__caixa--texto { height: auto; padding: var(--espaco-12) var(--espaco-16); }
+.campo__caixa--texto textarea { resize: vertical; min-height: 72px; font: var(--tipo-corpo); }
+.acoes-form { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--espaco-16); padding-top: var(--espaco-8); }
+@media (max-width: 599px) {
+  .acoes-form { flex-direction: column-reverse; align-items: stretch; }
+  .acoes-form .botao { width: 100%; }
+  .acoes-form .link { align-self: flex-start; min-height: var(--alvo-minimo); display: inline-flex; align-items: center; }
+}
+
+/* A05 — estoque */
+.alerta--topo { position: relative; }
+.filtro-modelo { max-width: 440px; }
+.saldo { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-8); }
+.saldo__valor { font: var(--tipo-corpo-forte); color: var(--texto-principal); }
+.dialogo .dados-caixa { gap: 0; padding-block: var(--espaco-4); }
+.dialogo .dados dd { overflow-wrap: anywhere; }
+
+/* O topo escuro acompanha a altura do título (textos longos no celular) */
+.area-admin .area-cliente__topo {
+  background: var(--fundo-escuro);
+  box-shadow: 0 0 0 100vmax var(--fundo-escuro);
+  clip-path: inset(0 -100vmax);
+}

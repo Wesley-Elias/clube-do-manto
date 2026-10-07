@@ -286,3 +286,23 @@ h1, h2, h3, p { margin: 0; }
 
 /* Títulos que recebem foco por script (troca de estado) não mostram contorno */
 [tabindex="-1"]:focus { outline: none; }
+
+/* ---------- Filtro (P04, A02) ---------- */
+.filtros { display: flex; flex-wrap: wrap; gap: var(--espaco-8); }
+.filtro {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--altura-filtro);
+  padding: 0 var(--espaco-16);
+  border: var(--borda-filtro-largura) solid var(--borda-filtro);
+  border-radius: var(--raio-pilula);
+  background: var(--fundo-superficie);
+  font: var(--tipo-filtro);
+  color: var(--texto-principal);
+  cursor: pointer;
+}
+.filtro:hover { border-color: var(--acao-selecionada); }
+.filtro[aria-pressed="true"] { background: var(--acao-selecionada); border-color: var(--acao-selecionada); color: var(--texto-sobre-acao-escura); }
+.filtro[aria-pressed="true"]::before { content: "✓"; }
+@media (pointer: coarse) { .filtro { min-height: var(--alvo-minimo); } }

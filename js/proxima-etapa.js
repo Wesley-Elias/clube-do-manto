@@ -1,5 +1,5 @@
-// Página provisória para as telas que ainda não existem (P04 e A01).
-// A01 exige sessão: sem ela, volta ao login.
+// Página provisória para as telas que ainda não existem (A06 e A09).
+// Exigem sessão: sem ela, volta ao login.
 import { avisarSemConfiguracao } from "./supabase.js";
 import { lerContexto, comContexto } from "./contexto.js";
 import { PLANOS } from "./planos.js";
@@ -8,13 +8,12 @@ import { sessaoAtual, sair } from "./sessao.js";
 avisarSemConfiguracao();
 
 const NOMES = {
-  P04: "Coleção",
-  A01: "Painel administrativo",
+  A06: "Assinantes",
+  A09: "Solicitações de troca",
 };
-const FILTROS = { clubes: "Clubes internacionais", selecoes: "Seleções", especiais: "Especiais" };
 
 const params = new URLSearchParams(location.search);
-const tela = NOMES[params.get("tela")] ? params.get("tela") : "A01";
+const tela = NOMES[params.get("tela")] ? params.get("tela") : "A06";
 const contexto = lerContexto();
 
 document.querySelector("[data-codigo]").textContent = tela;
@@ -35,7 +34,7 @@ function detalhe(texto) {
   } catch (erro) {
     console.error(erro);
   }
-  if (tela !== "P04" && !sessao) {
+  if (!sessao) {
     location.replace(comContexto("entrar.html", { plano: contexto.plano }));
     return;
   }
@@ -49,7 +48,5 @@ function detalhe(texto) {
     });
   }
   if (contexto.plano) detalhe(`Plano escolhido: ${PLANOS[contexto.plano].nome} (ainda sem assinatura ativa)`);
-  const filtro = FILTROS[params.get("filtro")];
-  if (filtro) detalhe(`Filtro de origem: ${filtro}`);
   if (!detalhes.children.length) detalhes.hidden = true;
 })();

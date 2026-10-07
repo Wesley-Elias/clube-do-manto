@@ -99,15 +99,15 @@ body { background: var(--fundo-claro); }
 }
 .area-cliente > .container { position: relative; }
 .area-cliente__topo { display: flex; flex-direction: column; gap: var(--espaco-8); padding-block: var(--espaco-24) var(--espaco-32); }
+/* Seta e texto num só fluxo de texto, para o sublinhado passar contínuo pelos dois. */
 .area-cliente__voltar {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display: inline-block;
   align-self: flex-start;
-  min-height: var(--alvo-minimo);
+  padding-block: 14px;
   font: var(--tipo-filtro);
   color: var(--texto-chamada-no-escuro);
 }
+.area-cliente__voltar > [aria-hidden]::after { content: "\00a0"; }
 .area-cliente__titulo {
   font: var(--tipo-secao-mobile);
   letter-spacing: var(--ls-secao);

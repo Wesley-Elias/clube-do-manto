@@ -1,0 +1,136 @@
+/* P04 — Coleção (galeria pública e detalhes do modelo).
+   Usa apenas os tokens semânticos de tokens.css. */
+
+.colecao { padding-bottom: var(--espaco-64); }
+@media (min-width: 1024px) { .colecao { padding-bottom: var(--espaco-96); } }
+
+/* Topo escuro */
+.colecao__topo { background: var(--fundo-escuro); padding-block: var(--espaco-32) var(--espaco-40); }
+.colecao__topo .container { display: flex; flex-direction: column; gap: var(--espaco-8); }
+.colecao__titulo {
+  font: var(--tipo-secao-mobile);
+  letter-spacing: var(--ls-secao);
+  text-transform: uppercase;
+  color: var(--texto-no-escuro);
+  overflow-wrap: anywhere;
+}
+.colecao__lead { font: var(--tipo-corpo); color: var(--texto-no-escuro-suave); }
+@media (min-width: 1024px) {
+  .colecao__topo { padding-block: var(--espaco-56); }
+  .colecao__titulo { font: var(--tipo-secao-desktop); letter-spacing: var(--ls-secao); }
+  .colecao__lead { font: var(--tipo-lead); }
+}
+
+.colecao__corpo { display: flex; flex-direction: column; gap: var(--espaco-24); padding-top: var(--espaco-32); }
+.colecao__resumo { display: flex; flex-direction: column; gap: var(--espaco-8); }
+.colecao__contagem { font: var(--tipo-corpo-forte); color: var(--texto-principal); flex: none; }
+.colecao__nota { font: var(--tipo-tabela); color: var(--texto-secundario); border-left: 3px solid var(--marca-verde); padding-left: var(--espaco-12); }
+@media (min-width: 768px) {
+  .colecao__resumo { flex-direction: row; align-items: center; gap: var(--espaco-24); }
+}
+.colecao__fim { display: flex; justify-content: center; padding-top: var(--espaco-8); }
+@media (max-width: 599px) { .colecao__fim .botao { width: 100%; } }
+
+/* Grade de cartões de camisa */
+.grade-camisas { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--espaco-16); }
+@media (min-width: 640px) { .grade-camisas { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--espaco-24); } }
+@media (min-width: 1024px) { .grade-camisas { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--espaco-32); } }
+
+.cartao-camisa {
+  margin: 0;
+  background: var(--fundo-superficie);
+  border: var(--borda-fina) solid var(--borda-suave);
+  border-radius: var(--raio-cartao);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.cartao-camisa__imagem {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 148px;
+  background: var(--estado-neutro-fundo);
+  color: var(--icone-comum);
+}
+.cartao-camisa__imagem--especial { color: var(--marca-verde); }
+.cartao-camisa__imagem .camisa-icone { width: 80px; height: auto; }
+.cartao-camisa__imagem .selo-especial {
+  position: absolute;
+  top: var(--espaco-12); left: var(--espaco-12);
+  padding: 4px 10px;
+  border-radius: var(--raio-pilula);
+  background: var(--fundo-destaque);
+  color: var(--texto-sobre-destaque);
+  font: var(--tipo-chip);
+}
+.cartao-camisa__dados { padding: var(--espaco-16); display: flex; flex-direction: column; gap: 4px; font: var(--tipo-tabela); color: var(--texto-secundario); flex: 1; }
+.cartao-camisa__equipe { font: var(--tipo-corpo-forte); color: var(--texto-principal); margin: 0 0 2px; }
+.cartao-camisa__link { align-self: flex-start; display: inline-flex; align-items: center; min-height: var(--alvo-minimo); margin-top: var(--espaco-4); font: var(--tipo-corpo-forte); }
+.cartao-camisa__legenda { font: var(--tipo-pequeno); margin-top: var(--espaco-8); }
+@media (min-width: 1024px) { .cartao-camisa__imagem { height: 148px; } }
+
+/* Esqueleto de carregamento */
+.cartao-camisa--esqueleto .cartao-camisa__imagem { background: var(--borda-suave); }
+.cartao-camisa--esqueleto .cartao-camisa__dados span { display: block; height: 14px; border-radius: var(--raio-pequeno); background: var(--borda-suave); }
+.cartao-camisa--esqueleto .cartao-camisa__dados span:first-child { width: 60%; height: 18px; }
+.cartao-camisa--esqueleto .cartao-camisa__dados span:last-child { width: 40%; }
+@media (prefers-reduced-motion: no-preference) {
+  .cartao-camisa--esqueleto { animation: pulso 1.4s ease-in-out infinite; }
+  @keyframes pulso { 50% { opacity: 0.55; } }
+}
+
+/* Sem resultados */
+.vazio-colecao {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--espaco-12);
+  padding: var(--espaco-32);
+  background: var(--fundo-superficie);
+  border: var(--borda-fina) solid var(--borda-suave);
+  border-radius: var(--raio-cartao);
+  font: var(--tipo-corpo);
+  color: var(--texto-secundario);
+}
+.vazio-colecao__titulo { font: var(--tipo-corpo-forte); color: var(--texto-principal); }
+
+/* ---------- Detalhes do modelo ---------- */
+.colecao__topo--detalhe { padding-bottom: 120px; }
+.detalhe-modelo { display: grid; gap: var(--espaco-24); margin-top: -96px; align-items: start; }
+@media (min-width: 1024px) {
+  .colecao__topo--detalhe { padding-bottom: 168px; }
+  .detalhe-modelo { grid-template-columns: 384px minmax(0, 1fr); gap: var(--espaco-32); margin-top: -128px; }
+}
+.detalhe-modelo__imagem .cartao-camisa__imagem { height: 148px; }
+.detalhe-modelo__sobre {
+  background: var(--fundo-superficie);
+  border: var(--borda-fina) solid var(--borda-suave);
+  border-radius: var(--raio-cartao);
+  padding: var(--espaco-24) var(--espaco-20);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-16);
+}
+@media (min-width: 768px) { .detalhe-modelo__sobre { padding: var(--espaco-40); } }
+.detalhe-modelo__titulo { font: 900 32px/1 var(--fonte-display); letter-spacing: var(--ls-plano); text-transform: uppercase; color: var(--texto-principal); }
+.dados-modelo { margin: 0; display: flex; flex-direction: column; }
+.dados-modelo div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--espaco-16);
+  padding-block: var(--espaco-12);
+  border-bottom: var(--borda-fina) solid var(--borda-suave);
+}
+.dados-modelo dt { font: var(--tipo-tabela); color: var(--texto-secundario); flex: none; }
+.dados-modelo dd { margin: 0; font: var(--tipo-corpo-forte); color: var(--texto-principal); text-align: right; min-width: 0; overflow-wrap: anywhere; }
+.detalhe-modelo__nota { background: var(--fundo-claro); border-radius: var(--raio-botao); padding: var(--espaco-12) var(--espaco-16); font: var(--tipo-tabela); color: var(--texto-secundario); }
+.detalhe-modelo__acoes { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-16) var(--espaco-24); }
+@media (max-width: 599px) { .detalhe-modelo__acoes .botao { width: 100%; } }
+
+/* Com fonte substituta, o logo não pode empurrar o botão para fora da tela */
+@media (max-width: 400px) {
+  .cabecalho-fluxo .logo { gap: var(--espaco-4); min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .cabecalho-fluxo .botao { flex: none; }
+}

@@ -14,7 +14,7 @@ export function marcarErro(campo, mensagem) {
 export function limparErros(form) {
   form.querySelectorAll(".campo--erro").forEach((bloco) => {
     bloco.classList.remove("campo--erro");
-    const campo = bloco.querySelector("input, select");
+    const campo = bloco.querySelector("input, select, textarea");
     campo.removeAttribute("aria-invalid");
   });
 }
