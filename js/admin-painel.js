@@ -43,7 +43,7 @@ function tabela(linhas) {
   return el("table", { class: "tabela" },
     el("caption", { class: "visualmente-oculto" }, "Solicitações de troca em Solicitada"),
     el("thead", {}, el("tr", {},
-      ...["Assinante e kit", "Camisa", "Modalidade", "Data", "Estado"].map((t) => el("th", { scope: "col" }, t)))),
+      ...["Assinante e kit", "Camisa", "Modalidade", "Data", "Estado", "Ação"].map((t) => el("th", { scope: "col" }, t)))),
     el("tbody", {}, ...linhas.map((l) => el("tr", {},
       el("th", { scope: "row" },
         el("span", { class: "tabela__principal" }, l.assinante),
@@ -53,7 +53,10 @@ function tabela(linhas) {
         el("span", { class: "tabela__apoio" }, `${l.categoria} • ${l.temporada} • ${l.tamanho_original}`)),
       el("td", { "data-rotulo": "Modalidade" }, `Troca de ${MODALIDADES[l.modalidade].toLowerCase()}`),
       el("td", { "data-rotulo": "Data" }, `Solicitada em ${dataCurta(l.solicitada_em)}`),
-      el("td", { "data-rotulo": "Estado" }, chipDeTroca("solicitada"))))));
+      el("td", { "data-rotulo": "Estado" }, chipDeTroca("solicitada")),
+      el("td", { "data-rotulo": "Ação" },
+        el("a", { class: "link", href: `${TELAS.A10}?troca=${l.troca_id}` }, "Abrir solicitação",
+          el("span", { class: "visualmente-oculto" }, ` de ${l.assinante}`)))))));
 }
 
 async function carregarAbertas() {

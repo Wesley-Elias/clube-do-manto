@@ -142,20 +142,6 @@
   font: var(--tipo-chip);
 }
 
-/* Página de etapa futura */
-.proxima { padding-block: var(--espaco-64); }
-.proxima .cartao-form { max-width: 720px; margin-inline: auto; }
-.codigo-tela {
-  display: inline-block;
-  padding: 5px var(--espaco-12);
-  border-radius: var(--raio-pilula);
-  background: var(--estado-neutro-fundo);
-  color: var(--estado-neutro-texto);
-  font: var(--tipo-chip);
-  align-self: flex-start;
-}
-.proxima__acoes { display: flex; flex-wrap: wrap; gap: var(--espaco-12); }
-
 /* Coluna única centralizada (recuperação de senha) */
 @media (min-width: 1024px) {
   .fluxo__grade--unica { grid-template-columns: minmax(0, 640px); justify-content: center; }
