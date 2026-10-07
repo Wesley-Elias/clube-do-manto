@@ -6,7 +6,7 @@ import { supabase, avisarSemConfiguracao } from "./supabase.js";
 import { lerContexto, comContexto } from "./contexto.js";
 import { PLANOS, formatarValor } from "./planos.js";
 import { TELAS } from "./sessao.js";
-import { exigirSessao, montarCabecalho, mostrarNome, perfilCompleto, carregarPerfil, el, chip } from "./cliente.js";
+import { exigirCliente, montarCabecalho, mostrarNome, perfilCompleto, carregarPerfil, el, chip } from "./cliente.js";
 import { cartaoPlano } from "./cartao-plano.js";
 import { criarDialogo } from "./dialogo.js";
 import { processando, ehFalhaDeComunicacao } from "./formulario.js";
@@ -462,6 +462,6 @@ async function iniciar() {
 
 (async () => {
   if (!supabase) return;
-  if (!(await exigirSessao(contexto))) return;
+  if (!(await exigirCliente(contexto))) return;
   await iniciar();
 })();

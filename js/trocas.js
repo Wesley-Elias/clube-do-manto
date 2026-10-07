@@ -3,7 +3,7 @@
 // no modelo, então nada disso é apresentado como registrado.
 import { supabase, avisarSemConfiguracao } from "./supabase.js";
 import { TELAS } from "./sessao.js";
-import { exigirSessao, montarCabecalho, mostrarNome, carregarPerfil, el, chip, competenciaExtenso, dataCurta } from "./cliente.js";
+import { exigirCliente, montarCabecalho, mostrarNome, carregarPerfil, el, chip, competenciaExtenso, dataCurta } from "./cliente.js";
 import { carregarAssinatura } from "./assinatura-comum.js";
 import {
   carregarKits, carregarItens, carregarTrocas, carregarCamisas,
@@ -172,6 +172,6 @@ async function iniciar() {
 
 (async () => {
   if (!supabase) return;
-  if (!(await exigirSessao({}))) return;
+  if (!(await exigirCliente({}))) return;
   await iniciar();
 })();

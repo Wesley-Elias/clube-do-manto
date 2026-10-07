@@ -166,3 +166,17 @@ addEventListener("pageshow", (e) => {
 });
 
 carregarPlanos();
+
+// Com sessão aberta, "Entrar" e "Criar conta" dão lugar a "Minha conta",
+// que leva de volta à área da pessoa (o login redireciona quem já entrou).
+sessaoAtual().then((sessao) => {
+  if (!sessao) return;
+  document.querySelectorAll(".nav__acoes, .menu-mobile__acoes").forEach((acoes) => {
+    const largo = acoes.classList.contains("menu-mobile__acoes") ? " botao--largo" : "";
+    const link = document.createElement("a");
+    link.className = "botao botao--primaria" + largo;
+    link.href = "entrar.html";
+    link.textContent = "Minha conta";
+    acoes.replaceChildren(link);
+  });
+}).catch((erro) => console.error(erro));

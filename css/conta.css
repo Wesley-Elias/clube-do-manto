@@ -133,8 +133,10 @@
 
 /* ---------- C05 a C08 ---------- */
 
-/* Topo com ação à direita (C08) */
+/* Topo com ação à direita (C08, A02 e A05). No mobile o botão desce para baixo do texto:
+   a faixa escura acompanha a altura do topo (pintura de borda, sem mudar o layout). */
 .area-cliente__topo--linha { flex-direction: row; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: var(--espaco-16); }
+.area-cliente:not(.area-cliente--sem-faixa) .area-cliente__topo--linha { border-image: linear-gradient(var(--fundo-escuro) 0 0) fill 0 / 0 / 0 100vmax; }
 .area-cliente__topo--linha > div { display: flex; flex-direction: column; gap: var(--espaco-8); }
 
 /* Cartão que envolve abas e tabela */

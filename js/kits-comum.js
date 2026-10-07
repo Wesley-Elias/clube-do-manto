@@ -79,6 +79,15 @@ export async function situacaoDasTrocas() {
   return data;
 }
 
+// Cartão "Benefício de trocas" do C01 e da C04: situação e limite do plano,
+// sem saldo nem datas de ciclo. Assinatura cancelada → Indisponível.
+export function resumoDoBeneficio(situacao, limite) {
+  const regra = `Limite do plano: ${limite === 1 ? "1 troca" : `${limite} trocas`} a cada 12 meses.`;
+  if (situacao === "disponivel") return { valor: "Disponível", textos: [regra, "Solicite a partir dos detalhes do kit."] };
+  if (situacao === "limite_atingido") return { valor: "Limite atingido", textos: [regra, "Você já usou o limite do ciclo atual."] };
+  return { valor: "Indisponível", textos: [regra, "Reative a assinatura para solicitar trocas."] };
+}
+
 // ---------- Ilustração provisória ----------
 export function ilustracaoCamisa(especial = false) {
   const ns = "http://www.w3.org/2000/svg";

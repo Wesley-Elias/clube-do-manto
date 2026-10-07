@@ -4,12 +4,13 @@ import { supabase } from "./supabase.js";
 import { comContexto } from "./contexto.js";
 import { sessaoAtual, sair, TELAS } from "./sessao.js";
 
+// Rótulos e ordem da especificação (cabeçalho do cliente)
 const ITENS = [
   { tela: "C01", rotulo: "Painel" },
-  { tela: "C04", rotulo: "Assinatura" },
+  { tela: "C02", rotulo: "Meu perfil" },
+  { tela: "C04", rotulo: "Minha assinatura" },
   { tela: "C05", rotulo: "Kits e histórico" },
-  { tela: "C08", rotulo: "Trocas" },
-  { tela: "C02", rotulo: "Perfil" },
+  { tela: "C08", rotulo: "Minhas trocas" },
 ];
 
 // Sem sessão, volta ao login preservando a intenção de plano.
@@ -23,6 +24,24 @@ export async function exigirSessao(contexto = {}) {
   if (!sessao) {
     location.replace(comContexto("entrar.html", { plano: contexto.plano || null, destino: contexto.destino || null }));
     return null;
+  }
+  return sessao;
+}
+
+// Telas do cliente (C01–C08): além da sessão, a conta administradora vai para a A01,
+// como no login. Se a consulta do papel falhar, a tela segue e trata as próprias falhas.
+export async function exigirCliente(contexto = {}) {
+  const sessao = await exigirSessao(contexto);
+  if (!sessao) return null;
+  try {
+    const { data, error } = await supabase.rpc("eh_administrador");
+    if (error) throw error;
+    if (data === true) {
+      location.replace(TELAS.A01);
+      return null;
+    }
+  } catch (erro) {
+    console.error(erro);
   }
   return sessao;
 }
@@ -72,6 +91,8 @@ export function montarCabecalhoArea({ itens, telaAtual, rotulo, inicio, idMenu, 
     if (atual) link.append(el("span", { class: "menu-cliente__atual" }, "Página atual"));
     lista.append(el("li", {}, link));
   }
+  // Caminho de volta à página inicial (P01), sem sair da conta
+  lista.append(el("li", {}, el("a", { class: "menu-cliente__item", href: "index.html" }, "Página inicial")));
   const sairMenu = el("button", { class: "botao botao--sec-escuro botao--largo", type: "button", "data-sair": true }, "Sair");
   const menu = el("div", { class: "menu-cliente", id: idMenu, hidden: true },
     el("div", { class: "container" },
@@ -81,6 +102,7 @@ export function montarCabecalhoArea({ itens, telaAtual, rotulo, inicio, idMenu, 
       sairMenu));
   cabecalho.className = "cab-cliente";
   cabecalho.replaceChildren(interno, menu);
+  document.querySelector(".rodape-fluxo__links")?.prepend(el("a", { class: "rodape-fluxo__link", href: "index.html" }, "Página inicial"));
 
   function abrir() {
     menu.hidden = false;

@@ -32,7 +32,7 @@
       <li class="etapas-fluxo__conector" aria-hidden="true" data-com-plano hidden></li>
       <li class="etapa-fluxo" data-com-plano hidden>
         <span class="etapa-fluxo__numero">3</span>
-        <span class="etapa-fluxo__textos"><span class="etapa-fluxo__titulo">Confirme a assinatura</span><span class="etapa-fluxo__sub">Próxima etapa</span></span>
+        <span class="etapa-fluxo__textos"><span class="etapa-fluxo__titulo" data-etapa-confirmar>Confirme a assinatura</span><span class="etapa-fluxo__sub">Próxima etapa</span></span>
       </li>
     </ol>
   </nav>
@@ -164,7 +164,7 @@
 
           <!-- Com plano escolhido -->
           <div class="resumo-plano" data-apoio="com-plano" data-resumo-plano hidden>
-            <p class="chamada chamada--no-escuro">Plano selecionado</p>
+            <p class="chamada chamada--no-escuro" data-chamada-plano>Plano selecionado</p>
             <p class="resumo-plano__nome" data-resumo="nome"></p>
             <p class="resumo-plano__preco"><span class="resumo-plano__valor" data-resumo="valor"></span><span class="resumo-plano__periodo">/ mês</span></p>
             <p class="resumo-plano__composicao" data-resumo="composicao"></p>
@@ -179,8 +179,8 @@
             <a class="botao botao--sec-escuro botao--largo" href="confirmar-plano.html?escolher=1" data-contexto>Alterar plano</a>
           </div>
           <div class="orientacao" data-apoio="com-plano" hidden>
-            <p class="orientacao__titulo">Falta só revisar</p>
-            <p>Depois de salvar, você revisa o plano e suas preferências antes de confirmar a assinatura.</p>
+            <p class="orientacao__titulo" data-orientacao-titulo>Falta só revisar</p>
+            <p data-orientacao-texto>Depois de salvar, você revisa o plano e suas preferências antes de confirmar a assinatura.</p>
           </div>
 
           <!-- Meu perfil -->

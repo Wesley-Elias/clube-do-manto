@@ -82,7 +82,7 @@ js/admin.js          sessão e papel de administrador, cabeçalho administrativo
 js/admin-painel.js, js/catalogo.js, js/equipe.js, js/camisa.js, js/estoque.js   A01 a A05
 js/admin-operacao.js  peças compartilhadas por A06 a A10
 js/assinantes.js, js/assinante.js, js/montar-kit.js, js/solicitacoes-troca.js, js/processar-troca.js   A06 a A10
-supabase/migrations/  001 = esquema; 002 = acesso público e login; 003 = painel e perfil; 004 = tamanhos oficiais; 005 = assinatura e trocas do cliente; 006 = coleção, catálogo e estoque; 007 = assinantes, kits e trocas da administração; 008 = foto da camisa
+supabase/migrations/  001 = esquema; 002 = acesso público e login; 003 = painel e perfil; 004 = tamanhos oficiais; 005 = assinatura e trocas do cliente; 006 = coleção, catálogo e estoque; 007 = assinantes, kits e trocas da administração; 008 = foto da camisa; 009 = recusa de clube brasileiro
 ```
 
 ## Supabase
@@ -100,6 +100,8 @@ A migração 006 cadastra seis modelos demonstrativos (os mesmos do design final
 A migração 007 cria as funções de A06 a A10: `admin_assinantes()`, `admin_assinante()`, `admin_montar_kit()`, `admin_trocas()`, `admin_troca()`, `admin_concluir_troca()` e `admin_rejeitar_troca()`. Todas conferem o papel de administrador; nenhuma tabela ganha leitura geral pela API.
 
 A migração 008 cria a coluna `camisas.imagem`, o bucket público `camisas` (JPG, PNG ou WebP até 2 MB, envio e remoção só por administradores) e a função `admin_definir_imagem_camisa()`.
+
+A migração 009 impede o cadastro de clubes brasileiros (decisão de 07/10/2026): `admin_salvar_equipe()` recusa clube com país BR no cadastro e na edição, e a tabela `equipes` ganha a mesma restrição. A seleção brasileira continua permitida.
 
 A migração 002 abre só o necessário: leitura pública de `planos`, criação automática do perfil no cadastro (nome vem do formulário), leitura do próprio perfil e da própria assinatura e a função `eh_administrador()`.
 

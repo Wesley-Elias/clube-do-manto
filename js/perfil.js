@@ -5,7 +5,7 @@ import { supabase, avisarSemConfiguracao } from "./supabase.js";
 import { lerContexto, comContexto, propagarContexto } from "./contexto.js";
 import { preencherResumo } from "./planos.js";
 import { TELAS } from "./sessao.js";
-import { exigirSessao, montarCabecalho, mostrarNome, perfilCompleto, carregarPerfil } from "./cliente.js";
+import { exigirCliente, montarCabecalho, mostrarNome, perfilCompleto, carregarPerfil } from "./cliente.js";
 import { criarBuscaEquipe } from "./busca-equipe.js";
 import { marcarErro, limparErros, processando, mostrarAlerta } from "./formulario.js";
 
@@ -27,6 +27,7 @@ const nota = form.querySelector("[data-nota]");
 const { nome, tamanho } = form.elements;
 
 let modo = "meu-perfil"; // "preferencias" (primeiro preenchimento ou com plano) | "meu-perfil"
+let reativacao = false; // plano escolhido para reativar uma assinatura cancelada
 let alerta = null;
 let favorita = null;
 let rival = null;
@@ -35,20 +36,23 @@ const mostrar = (seletor, visivel = true) => document.querySelectorAll(seletor).
 
 // ---------- Carga ----------
 async function carregar() {
-  const [perfil, equipes, tamanhos] = await Promise.all([
+  const [perfil, equipes, tamanhos, assinatura] = await Promise.all([
     carregarPerfil(),
     supabase.from("equipes").select("id, nome, natureza").eq("ativo", true).order("nome"),
     supabase.rpc("tamanhos_do_catalogo"),
+    contexto.plano ? supabase.from("assinaturas").select("status").maybeSingle() : Promise.resolve({ data: null, error: null }),
   ]);
   if (equipes.error) throw equipes.error;
   if (tamanhos.error) throw tamanhos.error;
+  if (assinatura.error) throw assinatura.error;
   if (!perfil) throw new Error("Perfil não encontrado");
-  return { perfil, equipes: equipes.data, tamanhos: tamanhos.data };
+  return { perfil, equipes: equipes.data, tamanhos: tamanhos.data, status: assinatura.data?.status || null };
 }
 
-function prepararTela({ perfil, equipes, tamanhos }, email) {
+function prepararTela({ perfil, equipes, tamanhos, status }, email) {
   const completo = perfilCompleto(perfil);
   modo = contexto.plano || !completo ? "preferencias" : "meu-perfil";
+  reativacao = Boolean(contexto.plano) && status === "cancelada";
   mostrarNome(perfil.nome);
 
   // Tamanhos oferecidos: lista oficial P, M, G e GG, vinda do banco
@@ -77,8 +81,15 @@ function prepararTela({ perfil, equipes, tamanhos }, email) {
       mostrar("[data-com-plano]");
       mostrar('[data-apoio="com-plano"]');
       preencherResumo(document.querySelector("[data-resumo-plano]"), contexto.plano);
-      botao.textContent = completo ? "Salvar e revisar assinatura" : "Salvar e continuar";
-      nota.textContent = "Na próxima etapa, você revisa o plano e as preferências antes de confirmar a assinatura.";
+      botao.textContent = completo ? (reativacao ? "Salvar e revisar reativação" : "Salvar e revisar assinatura") : "Salvar e continuar";
+      nota.textContent = reativacao
+        ? "Na próxima etapa, você revisa o plano e as preferências antes de confirmar a reativação."
+        : "Na próxima etapa, você revisa o plano e as preferências antes de confirmar a assinatura.";
+      if (reativacao) {
+        raiz.querySelector("[data-chamada-plano]").textContent = "Plano para reativar";
+        document.querySelector("[data-etapa-confirmar]").textContent = "Confirme a reativação";
+        raiz.querySelector("[data-orientacao-texto]").textContent = "Depois de salvar, você revisa o plano e suas preferências antes de confirmar a reativação.";
+      }
     } else {
       mostrar('[data-apoio="sem-plano"]');
       botao.textContent = "Salvar e continuar";
@@ -168,7 +179,7 @@ form.addEventListener("submit", async (e) => {
     if (modo === "preferencias") {
       mostrarAlerta(alerta, "Não foi possível salvar suas preferências", "Suas escolhas foram mantidas. Tente novamente em alguns instantes.");
     } else {
-      mostrarAlerta(alerta, "Não foi possível salvar.", "Confira os campos e use equipes diferentes para favorita e rival. Seus dados foram mantidos.");
+      mostrarAlerta(alerta, "Não foi possível salvar suas alterações", "Seus dados foram mantidos. Tente novamente em alguns instantes.");
     }
     botao.textContent = "Tentar novamente";
     botao.dataset.rotulo = "Tentar novamente";
@@ -192,7 +203,14 @@ function concluir(perfil) {
   if (contexto.plano) {
     continuar.textContent = "Continuar para confirmação";
     continuar.href = comContexto(TELAS.C03, { plano: contexto.plano, destino: null });
-    raiz.querySelector("[data-nota-salvo]").textContent = "Seu perfil foi salvo. Continue para revisar e confirmar o plano escolhido.";
+    raiz.querySelector("[data-nota-salvo]").textContent = reativacao
+      ? "Seu perfil foi salvo. Continue para revisar e confirmar a reativação."
+      : "Seu perfil foi salvo. Continue para revisar e confirmar o plano escolhido.";
+    // A lateral deixa de pedir para salvar
+    raiz.querySelector("[data-orientacao-titulo]").textContent = "Preferências salvas";
+    raiz.querySelector("[data-orientacao-texto]").textContent = reativacao
+      ? "Agora revise o plano e suas preferências antes de confirmar a reativação."
+      : "Agora revise o plano e suas preferências antes de confirmar a assinatura.";
   } else {
     continuar.href = TELAS.C01;
   }
@@ -232,6 +250,6 @@ raiz.querySelector("[data-recarregar]").addEventListener("click", () => location
 
 (async () => {
   if (!supabase) return;
-  const sessao = await exigirSessao(contexto);
+  const sessao = await exigirCliente(contexto);
   if (sessao) await iniciar(sessao);
 })();

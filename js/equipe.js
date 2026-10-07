@@ -2,6 +2,7 @@
 // Campos: nome, país e natureza (Clube/Seleção); situação só na edição.
 // A gravação passa por admin_salvar_equipe(), que recusa registro equivalente e
 // impede mudanças que contornariam a identidade de equipes com camisas ou histórico.
+// Clubes brasileiros não são cadastrados; a seleção brasileira é permitida.
 import { supabase, avisarSemConfiguracao } from "./supabase.js";
 import { TELAS } from "./sessao.js";
 import { el } from "./cliente.js";
@@ -88,7 +89,7 @@ function formulario() {
         el("span", { class: "campo__seta", "aria-hidden": "true" })),
       campoErro("pais")),
     grupoRadios("natureza", "Natureza", [["clube", "Clube"], ["selecao", "Seleção"]], equipe?.natureza || "", bloqueiaNatureza || bloqueiaIdentidade,
-      "Clubes brasileiros não recebem camisas no catálogo; a seleção brasileira é permitida."),
+      "Clubes brasileiros não fazem parte do catálogo; a seleção brasileira é permitida."),
     edicao ? grupoRadios("situacao", "Situação", [["ativa", "Ativa"], ["inativa", "Inativa"]], equipe.ativo ? "ativa" : "inativa", false,
       "Equipes inativas deixam de ser oferecidas em novos cadastros; o histórico é mantido.") : null,
     el("div", { class: "acoes-form" },
@@ -121,7 +122,7 @@ const MENSAGENS = {
   equipe_equivalente: ["nome", "Já existe uma equipe com este nome, país e natureza."],
   natureza_bloqueada: ["natureza", "A natureza não pode mudar porque a equipe já tem camisas no catálogo."],
   equipe_com_historico: ["nome", "Nome e país não podem mudar porque camisas desta equipe já entraram em kits."],
-  clube_brasileiro: ["pais", "Esta equipe tem camisas no catálogo e não pode virar um clube brasileiro."],
+  clube_brasileiro: ["pais", "Clubes brasileiros não fazem parte do catálogo. A seleção brasileira é permitida."],
 };
 
 async function salvar(e) {
@@ -143,6 +144,7 @@ async function salvar(e) {
   if (!nome) erros.push(["nome", "Informe o nome da equipe."]);
   if (!pais) erros.push(["pais", "Selecione o país da equipe."]);
   if (!natureza) erros.push(["natureza", "Escolha se a equipe é um clube ou uma seleção."]);
+  if (pais === "BR" && natureza === "clube") erros.push(["pais", MENSAGENS.clube_brasileiro[1]]);
   if (erros.length) {
     erros.forEach(([campo, msg]) => erroNoCampo(form, campo, msg));
     focarCampo(form, erros[0][0]);
@@ -185,7 +187,7 @@ async function salvar(e) {
     console.error(erro);
   }
   principal.replaceChildren(estrutura());
-  const podeTerCamisas = !(data.natureza === "clube" && data.pais_codigo === "BR") && data.ativo;
+  const podeTerCamisas = data.ativo;
   principal.querySelector("[data-sucesso]").append(el("div", { class: "alerta alerta--sucesso", tabindex: "-1" },
     el("span", { class: "alerta__icone", "aria-hidden": "true" }, "✓"),
     el("div", { class: "pilha" },

@@ -1,13 +1,14 @@
 // C01 — Painel do cliente.
 // Lê só os dados do próprio cliente (RLS): perfil, assinatura, kits e trocas.
-// Sem saldo de trocas nem datas de ciclo (decisão de 05/10): o benefício aparece como "Limite do plano".
+// Sem saldo de trocas nem datas de ciclo (decisão de 05/10): o benefício mostra o limite do plano
+// e a situação devolvida por situacao_trocas().
 import { supabase, avisarSemConfiguracao } from "./supabase.js";
 import { TELAS } from "./sessao.js";
 import {
-  exigirSessao, montarCabecalho, mostrarNome, perfilCompleto, carregarPerfil,
+  exigirCliente, montarCabecalho, mostrarNome, perfilCompleto, carregarPerfil,
   el, chip, nomeDoMes, competenciaExtenso, competenciaAtual, dataCurta,
 } from "./cliente.js";
-import { figuraCamisa } from "./kits-comum.js";
+import { figuraCamisa, situacaoDasTrocas, resumoDoBeneficio } from "./kits-comum.js";
 
 avisarSemConfiguracao();
 montarCabecalho("C01");
@@ -31,10 +32,10 @@ const ESTADOS_TROCA = {
 async function carregar() {
   const perfil = await carregarPerfil();
 
-  const [assinatura, kits, trocas, equipes] = await Promise.all([
+  const [assinatura, kits, trocas, equipes, situacao] = await Promise.all([
     supabase
       .from("assinaturas")
-      .select("status, planos(nome, qtd_comuns, qtd_especiais, possui_brinde)")
+      .select("status, planos(nome, qtd_comuns, qtd_especiais, trocas_anuais, possui_brinde)")
       .maybeSingle(),
     supabase
       .from("kits")
@@ -48,6 +49,7 @@ async function carregar() {
     perfil && (perfil.equipe_preferida_id || perfil.rival_id)
       ? supabase.from("equipes").select("id, nome").in("id", [perfil.equipe_preferida_id, perfil.rival_id].filter(Boolean))
       : Promise.resolve({ data: [], error: null }),
+    situacaoDasTrocas(),
   ]);
   for (const r of [assinatura, kits, trocas, equipes]) if (r.error) throw r.error;
 
@@ -65,7 +67,7 @@ async function carregar() {
     itens = r.data;
   }
   const nomes = Object.fromEntries(equipes.data.map((e) => [e.id, e.nome]));
-  return { perfil, assinatura: assinatura.data, kits: kits.data, kitDoMes, itens, troca: trocas.data[0] || null, nomes, atual };
+  return { perfil, assinatura: assinatura.data, kits: kits.data, kitDoMes, itens, troca: trocas.data[0] || null, nomes, atual, situacao };
 }
 
 // ---------- Textos de composição ----------
@@ -102,7 +104,7 @@ function ilustracaoCamisa() {
 
 // ---------- Renderização ----------
 function renderizar(d) {
-  const { perfil, assinatura, kits, kitDoMes, itens, troca, nomes } = d;
+  const { perfil, assinatura, kits, kitDoMes, itens, troca, nomes, situacao } = d;
   const completo = perfilCompleto(perfil);
   const status = assinatura?.status || null;
   const plano = assinatura?.planos || null;
@@ -133,14 +135,14 @@ function renderizar(d) {
   // Indicador: kits montados
   ind("kits-valor").textContent = String(kits.length);
   if (kits.length) ind("kits-texto").textContent = `Último kit: ${competenciaExtenso(kits[0].competencia)}`;
-  else if (status === "ativa") ind("kits-texto").textContent = "Seu primeiro kit aguarda montagem.";
-  else if (status === "cancelada") ind("kits-texto").textContent = "Ainda não há kit registrado.";
+  else if (status) ind("kits-texto").textContent = "Ainda não há kit registrado.";
   else ind("kits-texto").textContent = "Disponíveis após ativar a assinatura.";
 
-  // Indicador: benefício de trocas (sem saldo nem datas de ciclo)
+  // Indicador: benefício de trocas (limite do plano e situação, sem saldo nem datas de ciclo)
   if (status) {
-    ind("trocas-valor").textContent = "Limite do plano";
-    linhas(ind("trocas-texto"), ["Uso registrado no histórico.", "Consulte a elegibilidade antes de solicitar."]);
+    const beneficio = resumoDoBeneficio(status === "ativa" ? situacao : "cancelada", plano.trocas_anuais);
+    ind("trocas-valor").textContent = beneficio.valor;
+    linhas(ind("trocas-texto"), beneficio.textos);
   } else {
     ind("trocas-valor").replaceChildren(el("span", { class: "traco", "aria-hidden": "true" }), el("span", { class: "visualmente-oculto" }, "Indisponível"));
     ind("trocas-texto").textContent = "O benefício estará disponível após ativar a assinatura.";
@@ -196,13 +198,13 @@ function renderizarDestaque(d, completo, status) {
     );
   } else if (!d.kits.length) {
     filhos.push(
-      cabecalhoCartao("Seu primeiro kit", chip("Aguardando montagem", "aviso", "…")),
-      el("p", { class: "cartao__texto" }, "Seu primeiro kit ainda não foi montado. Quando estiver pronto, os detalhes aparecerão aqui."),
+      cabecalhoCartao("Seu primeiro kit", chip("Sem registro", "neutro", "–")),
+      el("p", { class: "cartao__texto" }, "Ainda não há um kit registrado para este mês. Quando houver, os detalhes aparecerão aqui."),
       el("a", { class: "link", href: TELAS.C04 }, "Ver minha assinatura"),
     );
   } else {
     filhos.push(
-      cabecalhoCartao(`Seu kit de ${nomeDoMes(d.atual)}`, chip("Aguardando montagem", "aviso", "…")),
+      cabecalhoCartao(`Seu kit de ${nomeDoMes(d.atual)}`, chip("Sem registro", "neutro", "–")),
       el("p", { class: "cartao__texto" }, "Ainda não há um kit registrado para este mês."),
       el("a", { class: "link", href: TELAS.C05 }, "Ver kits e histórico"),
     );
@@ -269,7 +271,7 @@ async function iniciar() {
     renderizar(dados);
   } catch (erro) {
     console.error(erro);
-    titulo.textContent = "Meu painel";
+    titulo.textContent = "Seu painel";
     subtitulo.textContent = "Tente carregar as informações novamente.";
     conteudo.hidden = true;
     falha.hidden = false;
@@ -289,6 +291,6 @@ falha.querySelector("[data-tentar]").addEventListener("click", async (e) => {
 
 (async () => {
   if (!supabase) return;
-  if (!(await exigirSessao())) return;
+  if (!(await exigirCliente())) return;
   await iniciar();
 })();

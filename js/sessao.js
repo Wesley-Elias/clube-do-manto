@@ -50,7 +50,8 @@ export async function resolverDestino(contexto) {
       supabase.from("assinaturas").select("status").maybeSingle(),
     ]);
     if (e1 || e2) throw e1 || e2;
-    if (assinatura?.status === "ativa") return comContexto(TELAS.C04, { destino: null, plano: null });
+    // Plano escolhido com assinatura ativa: a C04 explica como mudar (cancelar e reativar)
+    if (assinatura?.status === "ativa") return comContexto(TELAS.C04, { destino: null, plano: null }, { escolhido: contexto.plano });
     const tela = perfilCompleto(perfil) ? TELAS.C03 : TELAS.C02;
     return comContexto(tela, { plano: contexto.plano, destino: null });
   }

@@ -4,7 +4,7 @@
 // substituições: ele não representa quantidade entregue por mês.
 import { supabase, avisarSemConfiguracao } from "./supabase.js";
 import { TELAS } from "./sessao.js";
-import { exigirSessao, montarCabecalho, mostrarNome, carregarPerfil, el, chip, competenciaExtenso } from "./cliente.js";
+import { exigirCliente, montarCabecalho, mostrarNome, carregarPerfil, el, chip, competenciaExtenso } from "./cliente.js";
 import { carregarAssinatura } from "./assinatura-comum.js";
 import { carregarKits, carregarItens, composicaoRegistrada, descricaoCamisa, tipoDaCamisa } from "./kits-comum.js";
 
@@ -127,9 +127,10 @@ function renderizar() {
   const painel = el("section", { class: "cartao cartao--painel", role: "tabpanel", id: "painel-visao", "aria-labelledby": `aba-${aba}`, tabindex: "-1" },
     el("div", { class: "cartao__topo" }, abas(), el("p", { class: "pequeno" }, total)),
     aba === "kits" ? visaoKits() : visaoHistorico());
-  const rodape = el("div", { class: "acoes-fim" },
+  // Sem kits, o vazio já leva à assinatura: o botão do rodapé não se repete
+  const rodape = aba === "kits" && !dados.kits.length ? null : el("div", { class: "acoes-fim" },
     el("a", { class: "botao botao--sec-claro", href: TELAS.C04 }, "Ver minha assinatura"));
-  conteudo.replaceChildren(painel, rodape);
+  conteudo.replaceChildren(...[painel, rodape].filter(Boolean));
   if (dados.assinatura?.status === "cancelada") {
     painel.before(el("div", { class: "pilha" }, avisoCancelada()));
   }
@@ -174,6 +175,6 @@ async function iniciar() {
 
 (async () => {
   if (!supabase) return;
-  if (!(await exigirSessao({ destino: "C05" }))) return;
+  if (!(await exigirCliente({ destino: "C05" }))) return;
   await iniciar();
 })();

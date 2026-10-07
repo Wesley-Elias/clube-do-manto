@@ -90,6 +90,8 @@
 }
 .icone-estado--sucesso { background: var(--marca-verde); color: var(--texto-sobre-acao-escura); }
 .icone-estado--erro { background: var(--cor-erro); color: var(--texto-sobre-acao-escura); }
+/* P02: e-mail para onde foi o link de confirmação (endereços longos quebram a linha) */
+.email-enviado { color: var(--texto-principal); overflow-wrap: anywhere; }
 
 .lista-proximos { margin: 0; padding-left: var(--espaco-20); display: flex; flex-direction: column; gap: var(--espaco-4); }
 

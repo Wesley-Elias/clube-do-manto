@@ -3,7 +3,7 @@
 // Os rótulos descrevem registros do sistema, não recebimento ou transporte físico.
 import { supabase, avisarSemConfiguracao } from "./supabase.js";
 import { TELAS } from "./sessao.js";
-import { exigirSessao, montarCabecalho, mostrarNome, carregarPerfil, el, chip, competenciaExtenso, dataCurta } from "./cliente.js";
+import { exigirCliente, montarCabecalho, mostrarNome, carregarPerfil, el, chip, competenciaExtenso, dataCurta } from "./cliente.js";
 import { carregarAssinatura } from "./assinatura-comum.js";
 import {
   carregarKits, carregarItens, carregarTrocas, carregarCamisas, situacaoDasTrocas,
@@ -204,6 +204,6 @@ async function iniciar() {
 
 (async () => {
   if (!supabase) return;
-  if (!(await exigirSessao({ destino: "C05" }))) return;
+  if (!(await exigirCliente({ destino: "C05" }))) return;
   await iniciar();
 })();

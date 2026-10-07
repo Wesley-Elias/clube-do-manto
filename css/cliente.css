@@ -46,6 +46,10 @@ body { background: var(--fundo-claro); }
   background: var(--marca-destaque);
 }
 .cab-cliente__nome { font: var(--tipo-corpo-forte); color: var(--texto-no-escuro); }
+/* Itens do menu numa linha só; um nome muito longo é que encurta (reticências) */
+.cab-cliente__item { white-space: nowrap; }
+.cab-cliente__conta, .cab-cliente__conta .cab-cliente__nome { min-width: 0; }
+.cab-cliente__conta .cab-cliente__nome { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 @media (min-width: 1024px) {
   .cab-cliente, .cab-cliente__interno { min-height: var(--altura-cabecalho-desktop); }
