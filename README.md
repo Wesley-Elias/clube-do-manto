@@ -1,6 +1,6 @@
 # Clube do Manto — site (HTML, CSS, JavaScript + Supabase)
 
-Implementado até aqui: **P01** (apresentação e planos), **P02** (cadastro), **P03** (login e recuperação de senha) e a área do cliente **C01 a C08** (painel, perfil, confirmação da assinatura, minha assinatura, kits e histórico, detalhes do kit, solicitar troca e minhas trocas). Segue o design final do Figma e a especificação em `design-final/especificacao/`.
+Implementado até aqui: **P01** (apresentação e planos), **P02** (cadastro), **P03** (login e recuperação de senha), **P04** (coleção), a área do cliente **C01 a C08** (painel, perfil, confirmação da assinatura, minha assinatura, kits e histórico, detalhes do kit, solicitar troca e minhas trocas) e a administração **A01 a A05** (painel, catálogo, equipe, camisa e estoque). Segue o design final do Figma e a especificação em `design-final/especificacao/`.
 
 ## Páginas
 
@@ -19,7 +19,13 @@ Implementado até aqui: **P01** (apresentação e planos), **P02** (cadastro), *
 | `kit.html` | C06 | faixa de dados do kit; composição atual com Solicitar troca, Ver solicitação ou motivo do bloqueio; composição original e alterações (expansível); kit não encontrado; falha |
 | `solicitar-troca.html` | C07 | modalidades Modelo, Tamanho e Modelo e tamanho; tamanho de destino diferente do atual; resumo do pedido; enviando; solicitação registrada; bloqueios (camisa inexistente, não atual, pedido em aberto, assinatura inativa, limite atingido); recusa do banco e resultado não confirmado |
 | `trocas.html` | C08 | lista com detalhe expansível (`?troca=`); camisa do pedido e após a conclusão; vazia; aviso de assinatura cancelada; falha |
-| `proxima-etapa.html` | provisória | marca P04 e A01 até essas telas existirem; A01 exige sessão; botão Sair |
+| `colecao.html` | P04 | filtros Todas, Clubes internacionais, Seleções e Especiais (`?filtro=`); carregando; sem resultados; falha; detalhes do modelo (`?camisa=`) que voltam ao filtro de origem; modelo não encontrado |
+| `admin.html` | A01 | atalhos para Catálogo, Estoque, Assinantes e Trocas; solicitações em Solicitada; nenhum pedido; falha; acesso não autorizado; sem sessão → login |
+| `catalogo.html` | A02 | abas Equipes e Camisas (`?aba=`); busca e filtro na URL; Limpar; vazio; sem resultado; chips Ativo/Inativo; diálogo de inativação (processando, falha, resultado não confirmado) |
+| `equipe.html` | A03 | cadastro e edição (`?id=`); campos obrigatórios; registro equivalente; campos bloqueados quando a equipe tem camisas ou histórico; salvando; sucesso com atalho para cadastrar camisa; falha |
+| `camisa.html` | A04 | cadastro e edição (`?id=`, `?equipe=`); temporada AAAA ou AAAA/AAAA; classificação incoerente; clube brasileiro; modelo duplicado; campos bloqueados quando o modelo já entrou em kit; sucesso com Cadastrar estoque |
+| `estoque.html` | A05 | filtro por modelo (`?camisa=`); Disponível/Sem saldo; sem linhas; diálogos Cadastrar saldo (só tamanhos ainda não registrados) e Repor; quantidade inválida; processando; sucesso; resultado não confirmado atualiza a consulta antes de repetir |
+| `proxima-etapa.html` | provisória | marca A06 e A09 (menu administrativo) até essas telas existirem; exige sessão; botão Sair |
 
 ## Regras que o código garante
 
@@ -32,6 +38,10 @@ Implementado até aqui: **P01** (apresentação e planos), **P02** (cadastro), *
 - Botões que enviam ficam bloqueados até a resposta (sem clique duplicado).
 - Redefinir a senha encerra a sessão temporária do link e manda de volta ao login.
 - Sair limpa a sessão local e volta para `entrar.html`.
+- A coleção mostra só camisas ativas de equipes ativas e não promete disponibilidade nem um modelo específico. As ilustrações são genéricas e provisórias.
+- A área administrativa confere o papel no banco (`eh_administrador()`); um cliente que abre essas páginas vê "Você não possui acesso a esta área". Toda gravação do admin passa por funções `admin_*` que recusam quem não é administrador.
+- Catálogo é inativado, nunca apagado. Modelo já usado em kit não muda equipe, tipo, categoria nem temporada; equipe com camisas não muda natureza; equipe com histórico não muda nome nem país. Clubes brasileiros não recebem camisas.
+- O estoque só permite cadastrar o saldo de um tamanho novo (P, M, G ou GG) e repor unidades. Não há baixa arbitrária.
 - Contato, Termos de uso e Política de privacidade são texto, sem link.
 - `prefers-reduced-motion` para a faixa e as transições (regra em `tokens.css`).
 
@@ -57,7 +67,12 @@ js/cartao-plano.js    cartão de plano reutilizado por P01 e C03
 js/dialogo.js         diálogo modal (<dialog>) com foco preso e retorno ao gatilho
 js/assinatura-comum.js  planos, assinatura e blocos compartilhados por C03 e C04
 js/kits-comum.js      leitura de kits, itens, trocas e camisas; cartão de camisa e faixa de dados
-supabase/migrations/  001 = esquema; 002 = acesso público e login; 003 = painel e perfil; 004 = tamanhos oficiais; 005 = assinatura e trocas do cliente
+css/colecao.css       P04
+css/admin.css         A01 a A05 (atalhos, consulta, formulários, estoque)
+js/colecao.js         P04: galeria, filtros e detalhes
+js/admin.js          sessão e papel de administrador, cabeçalho administrativo, rótulos e países
+js/admin-painel.js, js/catalogo.js, js/equipe.js, js/camisa.js, js/estoque.js   A01 a A05
+supabase/migrations/  001 = esquema; 002 = acesso público e login; 003 = painel e perfil; 004 = tamanhos oficiais; 005 = assinatura e trocas do cliente; 006 = coleção, catálogo e estoque
 ```
 
 ## Supabase
@@ -69,6 +84,8 @@ A migração 003 cadastra as equipes provisórias (clubes internacionais e sele�
 A migração 004 fixa a lista oficial de tamanhos: **P, M, G e GG** (decisão de 06/10/2026). Perfil, estoque e trocas só aceitam esses valores, e `tamanhos_do_catalogo()` devolve essa lista.
 
 A migração 005 traz as regras de assinatura e troca do cliente: `ativar_assinatura()`, `cancelar_assinatura()`, `reativar_assinatura()`, `situacao_trocas()` e `solicitar_troca()`. Os ciclos de 12 meses são criados e renovados pelo banco, o período cancelado é descontado na reativação e as funções auxiliares ficam no esquema `private`, sem acesso pelo site.
+
+A migração 006 cadastra seis modelos demonstrativos (os mesmos do design final, marcados na descrição), libera a leitura do estoque só para administradores e cria as funções da administração: `admin_trocas_em_aberto()`, `admin_salvar_equipe()`, `admin_salvar_camisa()`, `admin_inativar_equipe()`, `admin_inativar_camisa()`, `admin_uso_da_equipe()`, `admin_uso_da_camisa()`, `admin_cadastrar_saldo()` e `admin_repor_estoque()`.
 
 A migração 002 abre só o necessário: leitura pública de `planos`, criação automática do perfil no cadastro (nome vem do formulário), leitura do próprio perfil e da própria assinatura e a função `eh_administrador()`.
 
@@ -83,7 +100,7 @@ Observações:
 - O envio de e-mails padrão do Supabase tem limite baixo por hora; para a apresentação, vale configurar um SMTP próprio ou desligar a confirmação.
 - O link de recuperação usa PKCE: precisa ser aberto no mesmo navegador em que foi pedido. Em outro navegador ele aparece como "Este link é inválido".
 
-Para tornar uma conta administradora, no SQL Editor:
+Para tornar uma conta administradora, no SQL Editor (a conta administradora entra direto na A01, sem passar pela área do cliente; para testar as duas áreas, use contas diferentes):
 
 ```sql
 INSERT INTO private.administradores (usuario_id)

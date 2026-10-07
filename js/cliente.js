@@ -39,39 +39,45 @@ function el(tag, atributos = {}, ...filhos) {
 }
 export { el };
 
-function logo() {
-  return el("a", { class: "logo", href: TELAS.C01 }, el("span", { class: "logo__marca", "aria-hidden": "true" }, "///"), "Clube do Manto");
+function logo(inicio) {
+  return el("a", { class: "logo", href: inicio }, el("span", { class: "logo__marca", "aria-hidden": "true" }, "///"), "Clube do Manto");
 }
 
 // Monta o cabeçalho dentro de <header data-cabecalho-cliente="C01">.
 export function montarCabecalho(telaAtual) {
+  montarCabecalhoArea({ itens: ITENS, telaAtual, rotulo: "Área do cliente", inicio: TELAS.C01, idMenu: "menu-cliente" });
+}
+
+// Cabeçalho das áreas internas (cliente e administração): mesmos componentes,
+// itens e rótulo próprios. No mobile, botão Menu abre um painel com os mesmos destinos.
+export function montarCabecalhoArea({ itens, telaAtual, rotulo, inicio, idMenu, nomeFixo = null }) {
   const cabecalho = document.querySelector("[data-cabecalho-cliente]");
   const interno = el("div", { class: "container cab-cliente__interno" });
-  const nav = el("nav", { class: "cab-cliente__nav", "aria-label": "Área do cliente" });
-  for (const item of ITENS) {
+  const nav = el("nav", { class: "cab-cliente__nav", "aria-label": rotulo });
+  for (const item of itens) {
     const atual = item.tela === telaAtual;
     nav.append(el("a", { class: "cab-cliente__item", href: TELAS[item.tela], "aria-current": atual ? "page" : null }, item.rotulo));
   }
-  const nome = el("span", { class: "cab-cliente__nome", "data-nome-usuario": true });
+  const nome = el("span", { class: "cab-cliente__nome", "data-nome-usuario": nomeFixo ? null : true }, nomeFixo);
   const botaoSair = el("button", { class: "botao botao--sec-escuro", type: "button", "data-sair": true }, "Sair");
-  const botaoMenu = el("button", { class: "botao botao--sec-escuro cab-cliente__menu-botao", type: "button", "aria-expanded": "false", "aria-controls": "menu-cliente" }, "Menu");
-  interno.append(logo(), nav, el("div", { class: "cab-cliente__conta" }, nome, botaoSair), botaoMenu);
+  const botaoMenu = el("button", { class: "botao botao--sec-escuro cab-cliente__menu-botao", type: "button", "aria-expanded": "false", "aria-controls": idMenu }, "Menu");
+  interno.append(logo(inicio), nav, el("div", { class: "cab-cliente__conta" }, nome, botaoSair), botaoMenu);
 
   // Menu mobile: painel sobreposto com os mesmos destinos
   const fechar = el("button", { class: "botao botao--sec-escuro", type: "button" }, "Fechar menu");
   const lista = el("ul", { class: "menu-cliente__lista" });
-  for (const item of ITENS) {
+  for (const item of itens) {
     const atual = item.tela === telaAtual;
     const link = el("a", { class: "menu-cliente__item", href: TELAS[item.tela], "aria-current": atual ? "page" : null }, item.rotulo);
     if (atual) link.append(el("span", { class: "menu-cliente__atual" }, "Página atual"));
     lista.append(el("li", {}, link));
   }
   const sairMenu = el("button", { class: "botao botao--sec-escuro botao--largo", type: "button", "data-sair": true }, "Sair");
-  const menu = el("div", { class: "menu-cliente", id: "menu-cliente", hidden: true },
+  const menu = el("div", { class: "menu-cliente", id: idMenu, hidden: true },
     el("div", { class: "container" },
-      el("div", { class: "menu-cliente__topo" }, logo(), fechar),
-      el("p", { class: "menu-cliente__nome", "data-nome-usuario": true }),
-      lista,
+      el("div", { class: "menu-cliente__topo" }, logo(inicio), fechar),
+      el("p", { class: "menu-cliente__nome", "data-nome-usuario": nomeFixo ? null : true }, nomeFixo),
+      el("nav", { "aria-label": rotulo }, lista),
       sairMenu));
   cabecalho.className = "cab-cliente";
   cabecalho.replaceChildren(interno, menu);

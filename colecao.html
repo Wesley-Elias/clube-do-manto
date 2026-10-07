@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coleção · Clube do Manto</title>
+  <meta name="description" content="Conheça os modelos de camisas de clubes internacionais, seleções e especiais do Clube do Manto.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/cliente.css">
+  <link rel="stylesheet" href="css/colecao.css">
+  <script type="module" src="js/colecao.js"></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header class="cabecalho-fluxo">
+    <div class="container cabecalho-fluxo__interno">
+      <a class="logo" href="index.html"><span class="logo__marca" aria-hidden="true">///</span>Clube do Manto</a>
+      <a class="botao botao--sec-escuro" href="index.html" data-voltar>Voltar ao início</a>
+    </div>
+  </header>
+
+  <main id="conteudo" class="colecao" aria-busy="true" data-p04>
+    <!-- Galeria -->
+    <div data-galeria>
+      <section class="colecao__topo" aria-labelledby="titulo-colecao">
+        <div class="container">
+          <p class="chamada chamada--no-escuro">Coleção</p>
+          <h1 class="colecao__titulo" id="titulo-colecao" tabindex="-1">Explore a coleção</h1>
+          <p class="colecao__lead">Conheça os modelos e consulte as características de cada camisa.</p>
+        </div>
+      </section>
+      <div class="container colecao__corpo">
+        <div class="filtros" role="group" aria-label="Filtrar modelos" data-filtros>
+          <button class="filtro" type="button" data-filtro="todas" aria-pressed="true">Todas</button>
+          <button class="filtro" type="button" data-filtro="clubes" aria-pressed="false">Clubes internacionais</button>
+          <button class="filtro" type="button" data-filtro="selecoes" aria-pressed="false">Seleções</button>
+          <button class="filtro" type="button" data-filtro="especiais" aria-pressed="false">Especiais</button>
+        </div>
+        <div class="colecao__resumo">
+          <p class="colecao__contagem" aria-live="polite" data-contagem>Carregando modelos…</p>
+          <p class="colecao__nota">A seleção do kit considera perfil, histórico e disponibilidade. A galeria não garante um modelo específico.</p>
+        </div>
+        <div data-lista>
+          <ul class="grade-camisas" aria-hidden="true">
+            <li class="cartao-camisa cartao-camisa--esqueleto"><div class="cartao-camisa__imagem"></div><div class="cartao-camisa__dados"><span></span><span></span></div></li>
+            <li class="cartao-camisa cartao-camisa--esqueleto"><div class="cartao-camisa__imagem"></div><div class="cartao-camisa__dados"><span></span><span></span></div></li>
+            <li class="cartao-camisa cartao-camisa--esqueleto"><div class="cartao-camisa__imagem"></div><div class="cartao-camisa__dados"><span></span><span></span></div></li>
+          </ul>
+        </div>
+        <div class="colecao__fim">
+          <a class="botao botao--primaria" href="index.html#planos">Conhecer os planos</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detalhes do modelo -->
+    <div data-detalhe hidden></div>
+  </main>
+
+  <footer class="rodape-fluxo">
+    <div class="container rodape-fluxo__interno">
+      <p>© 2026 Clube do Manto</p>
+      <div class="rodape-fluxo__links"><span>Termos de uso</span><span>Política de privacidade</span></div>
+    </div>
+  </footer>
+</body>
+</html>
