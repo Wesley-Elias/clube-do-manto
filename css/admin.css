@@ -100,7 +100,7 @@
 /* A05 — estoque */
 .alerta--topo { position: relative; }
 .filtro-modelo { max-width: 440px; }
-.saldo { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.saldo { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-8); }
 .saldo__valor { font: var(--tipo-corpo-forte); color: var(--texto-principal); }
 .dialogo .dados-caixa { gap: 0; padding-block: var(--espaco-4); }
 .dialogo .dados dd { overflow-wrap: anywhere; }
