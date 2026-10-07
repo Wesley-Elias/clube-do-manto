@@ -111,3 +111,91 @@
   box-shadow: 0 0 0 100vmax var(--fundo-escuro);
   clip-path: inset(0 -100vmax);
 }
+
+/* ---------- A06 a A10 — assinantes, montagem do kit e trocas ---------- */
+.chamada--neutra { color: var(--texto-secundario); }
+.cartao--admin > .botao, .cartao--admin > .link { align-self: flex-start; }
+@media (max-width: 599px) { .cartao--admin > .botao { align-self: stretch; } }
+
+/* Consulta com campo + seleção (A06) e duas seleções (A09) */
+@media (min-width: 900px) {
+  .consulta-admin--assinantes { grid-template-columns: minmax(0, 1fr) 240px auto auto; }
+  .consulta-admin--trocas { grid-template-columns: minmax(0, 1fr) 280px auto auto; }
+}
+.contagem-admin--linha { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-4) var(--espaco-16); }
+.contagem-admin--linha .link { min-height: var(--alvo-minimo); }
+
+/* Coluna lateral: titular, plano e trocas */
+.cartao--lateral { gap: var(--espaco-12); }
+.cartao-lateral__nome { font: 900 32px/1 var(--fonte-display); letter-spacing: var(--ls-plano); text-transform: uppercase; color: var(--texto-principal); overflow-wrap: anywhere; }
+.cartao-lateral__nome--grande { font-size: 40px; }
+.cartao-lateral__subtitulo { font: var(--tipo-corpo-forte); color: var(--texto-principal); }
+.cartao--lateral .cartao__nota:first-of-type { margin-top: calc(-1 * var(--espaco-4)); }
+.dados-lateral { margin: 0; display: flex; flex-direction: column; gap: var(--espaco-12); align-self: stretch; }
+.dados-lateral div { display: flex; flex-direction: column; gap: 2px; }
+.dados-lateral dt { font: var(--tipo-tabela); color: var(--texto-secundario); }
+.dados-lateral dd { margin: 0; font: var(--tipo-corpo-forte); color: var(--texto-principal); overflow-wrap: anywhere; }
+.cartao-lateral__linha { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-8); font: var(--tipo-tabela); color: var(--texto-secundario); }
+.divisor { align-self: stretch; border: 0; border-top: var(--borda-fina) solid var(--borda-padrao); margin: var(--espaco-4) 0; }
+
+/* Kit aberto na A07 e camisas registradas na A08 */
+.cartao--registros .tabela, .cartao--registros .kit-admin { margin-top: var(--espaco-16); }
+.kit-admin {
+  background: var(--fundo-claro);
+  border-radius: var(--raio-cartao);
+  padding: var(--espaco-20);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-12);
+}
+@media (min-width: 768px) { .kit-admin { padding: var(--espaco-24); } }
+.kit-admin__titulo { font: 900 30px/1 var(--fonte-display); letter-spacing: var(--ls-plano); text-transform: uppercase; color: var(--texto-principal); }
+.kit-admin .faixa-dados { margin-bottom: 0; }
+.kit-admin__rotulo { font: var(--tipo-pequeno); color: var(--texto-secundario); margin-top: var(--espaco-4); }
+.kit-admin__evento { font: var(--tipo-corpo); color: var(--texto-principal); }
+.kit-admin > .link { align-self: flex-start; min-height: var(--alvo-minimo); }
+.cartao--montagem .camisa-kit { align-self: stretch; }
+
+/* Listas de regras e verificações */
+.lista-regras { margin: 0; padding-left: var(--espaco-20); display: flex; flex-direction: column; gap: var(--espaco-8); font: var(--tipo-corpo); color: var(--texto-secundario); }
+.verificacoes { background: var(--fundo-claro); border-radius: var(--raio-cartao); padding: var(--espaco-20); display: flex; flex-direction: column; gap: var(--espaco-12); }
+.verificacoes__titulo { font: var(--tipo-corpo-forte); color: var(--texto-principal); }
+
+/* A10 — dados do pedido e colunas origem/resultado */
+.grade-troca { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--espaco-16); }
+@media (min-width: 768px) { .grade-troca { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.grade-troca div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.grade-troca dt { font: var(--tipo-tabela); color: var(--texto-secundario); }
+.grade-troca dd { margin: 0; font: var(--tipo-corpo-forte); color: var(--texto-principal); overflow-wrap: anywhere; }
+.colunas-troca { display: grid; gap: var(--espaco-20); }
+@media (min-width: 768px) { .colunas-troca { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--espaco-16); } }
+.coluna-troca { display: flex; flex-direction: column; gap: var(--espaco-12); min-width: 0; }
+
+/* Linha de botões (A08, A10) */
+.acoes-linha--botoes { gap: var(--espaco-12) var(--espaco-16); }
+@media (max-width: 599px) {
+  .acoes-linha--botoes { flex-direction: column; align-items: stretch; }
+  .acoes-linha--botoes .botao { width: 100%; }
+}
+.kit-admin .faixa-dados__valor { font: var(--tipo-corpo-forte); text-transform: none; overflow-wrap: anywhere; }
+
+/* A04 — foto do modelo */
+.foto-admin__corpo { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--espaco-16); }
+.foto-admin__previa {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 160px; height: 128px;
+  border: var(--borda-fina) solid var(--borda-suave);
+  border-radius: var(--raio-botao);
+  background: var(--estado-neutro-fundo);
+  color: var(--icone-comum);
+}
+.foto-admin__previa .camisa-icone { width: 72px; }
+.foto-admin__controles { display: flex; flex-direction: column; align-items: flex-start; gap: var(--espaco-8); flex: 1 1 220px; min-width: 0; }
+.foto-admin__escolha { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-8) var(--espaco-12); }
+.foto-admin__escolha .botao { cursor: pointer; }
+.foto-admin__escolha:has(input:focus-visible) .botao { box-shadow: var(--anel-foco); }
+.foto-admin__nome { font: var(--tipo-tabela); color: var(--texto-secundario); overflow-wrap: anywhere; min-width: 0; }
+.foto-admin.campo--erro .foto-admin__previa { border-color: var(--cor-erro); }

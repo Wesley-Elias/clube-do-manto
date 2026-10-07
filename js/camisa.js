@@ -2,11 +2,14 @@
 // Identidade do modelo = equipe + temporada + categoria. Tipo (Clube/Seleção/Especial)
 // é diferente de categoria (Home/Away/Third). Modelo já usado em kit não tem equipe,
 // tipo, categoria ou temporada redefinidos; a gravação passa por admin_salvar_camisa().
+// A foto é opcional: vai para o bucket "camisas" e é ligada ao modelo por
+// admin_definir_imagem_camisa(). Sem foto, o site mostra a ilustração genérica.
 import { supabase, avisarSemConfiguracao } from "./supabase.js";
 import { TELAS } from "./sessao.js";
 import { el } from "./cliente.js";
 import { marcarErro, limparErros, processando } from "./formulario.js";
 import { criarBuscaEquipe } from "./busca-equipe.js";
+import { figuraCamisa, ilustracaoCamisa } from "./kits-comum.js";
 import {
   montarCabecalhoAdmin, exigirAdministrador, mostrarFalhaGeral,
   TIPOS_CAMISA, CATEGORIAS, NATUREZAS, codigoDoErro, falhaIncerta,
@@ -24,6 +27,10 @@ let camisa = null;
 let emUso = false;
 let equipes = [];
 let buscaEquipe = null;
+let previaTemporaria = null;
+
+const FORMATOS_FOTO = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
+const TAMANHO_MAXIMO_FOTO = 2 * 1024 * 1024;
 
 function seguro(endereco) {
   return endereco && /^catalogo\.html(\?[\w=&%.\-+]*)?$/.test(endereco) ? endereco : null;
@@ -33,7 +40,7 @@ async function carregar() {
   const consultas = [supabase.from("equipes").select("id, nome, pais_codigo, natureza, ativo")];
   if (id) {
     consultas.push(
-      supabase.from("camisas").select("id, equipe_id, tipo, categoria, temporada, descricao, ativo").eq("id", Number(id)).maybeSingle(),
+      supabase.from("camisas").select("id, equipe_id, tipo, categoria, temporada, descricao, ativo, imagem").eq("id", Number(id)).maybeSingle(),
       supabase.rpc("admin_uso_da_camisa", { p_camisa: Number(id) }));
   }
   const [r1, r2, r3] = await Promise.all(consultas);
@@ -98,6 +105,7 @@ function formulario() {
         el("textarea", { class: "campo__entrada", id: "descricao", name: "descricao", rows: "3", maxlength: "280", "aria-describedby": "ajuda-descricao" }, camisa?.descricao || "")),
       el("p", { class: "campo__ajuda", id: "ajuda-descricao" }, "Até 280 caracteres. Sem promessa de disponibilidade."),
       campoErro("descricao")),
+    campoFoto(),
     edicao ? grupoRadios("situacao", "Situação", [["ativa", "Ativa"], ["inativa", "Inativa"]], camisa.ativo ? "ativa" : "inativa", false,
       "Camisas inativas saem da coleção e de novas montagens; o histórico é mantido.") : null,
     el("div", { class: "acoes-form" },
@@ -115,6 +123,85 @@ function formulario() {
 
   form.addEventListener("submit", salvar);
   return form;
+}
+
+// Foto do modelo: prévia, escolha do arquivo e, se já houver foto, remoção.
+function campoFoto() {
+  const previa = el("div", { class: "foto-admin__previa" }, figuraCamisa(camisa, camisa?.tipo === "especial"));
+  const entrada = el("input", { class: "visualmente-oculto", id: "foto", name: "foto", type: "file", accept: Object.keys(FORMATOS_FOTO).join(","), "aria-describedby": "ajuda-foto" });
+  const remover = camisa?.imagem
+    ? el("label", { class: "radio" }, el("input", { type: "checkbox", name: "remover_foto" }), el("span", {}, "Remover a foto atual"))
+    : null;
+
+  const nome = el("span", { class: "foto-admin__nome" }, "Nenhum arquivo escolhido");
+  const mostrarPrevia = (conteudo) => {
+    if (previaTemporaria) URL.revokeObjectURL(previaTemporaria);
+    previaTemporaria = null;
+    previa.replaceChildren(conteudo);
+  };
+  entrada.addEventListener("change", () => {
+    const arquivo = entrada.files[0];
+    nome.textContent = arquivo ? arquivo.name : "Nenhum arquivo escolhido";
+    if (remover) remover.querySelector("input").checked = false;
+    if (!arquivo || erroDaFoto(arquivo)) {
+      mostrarPrevia(figuraCamisa(camisa, camisa?.tipo === "especial"));
+      return;
+    }
+    const url = URL.createObjectURL(arquivo);
+    mostrarPrevia(el("img", { class: "camisa-foto", src: url, alt: "" }));
+    previaTemporaria = url;
+  });
+  remover?.querySelector("input").addEventListener("change", (e) => {
+    if (!e.target.checked) return mostrarPrevia(figuraCamisa(camisa, camisa?.tipo === "especial"));
+    entrada.value = "";
+    nome.textContent = "Nenhum arquivo escolhido";
+    mostrarPrevia(ilustracaoCamisa(camisa?.tipo === "especial"));
+  });
+
+  return el("div", { class: "campo foto-admin" },
+    el("label", { class: "campo__rotulo", for: "foto" }, "Foto do modelo (opcional)"),
+    el("div", { class: "foto-admin__corpo" },
+      previa,
+      el("div", { class: "foto-admin__controles" },
+        el("div", { class: "foto-admin__escolha" },
+          entrada,
+          el("label", { class: "botao botao--sec-claro", for: "foto" }, camisa?.imagem ? "Trocar foto" : "Escolher foto"),
+          nome),
+        el("p", { class: "campo__ajuda", id: "ajuda-foto" }, "JPG, PNG ou WebP de até 2 MB. Sem foto, a coleção e os kits mostram a ilustração genérica."),
+        remover)),
+    campoErro("foto"));
+}
+
+function erroDaFoto(arquivo) {
+  if (!FORMATOS_FOTO[arquivo.type]) return "Use uma foto em JPG, PNG ou WebP.";
+  if (arquivo.size > TAMANHO_MAXIMO_FOTO) return "A foto pode ter até 2 MB.";
+  return null;
+}
+
+// Envia a foto nova (ou remove a atual) depois que o modelo foi salvo.
+// Devolve true quando a foto ficou como o administrador pediu.
+async function atualizarFoto(camisaSalva, arquivo, removerAtual) {
+  const anterior = camisaSalva.imagem;
+  if (!arquivo && !(removerAtual && anterior)) return true;
+  const bucket = supabase.storage.from("camisas");
+  let caminho = null;
+  if (arquivo) {
+    caminho = `${camisaSalva.id}/${crypto.randomUUID()}.${FORMATOS_FOTO[arquivo.type]}`;
+    const envio = await bucket.upload(caminho, arquivo, { contentType: arquivo.type, upsert: false });
+    if (envio.error) {
+      console.error(envio.error);
+      return false;
+    }
+  }
+  const { error } = await supabase.rpc("admin_definir_imagem_camisa", { p_id: camisaSalva.id, p_imagem: caminho });
+  if (error) {
+    console.error(error);
+    if (caminho) await bucket.remove([caminho]);
+    return false;
+  }
+  // Arquivo antigo sai do armazenamento; se falhar, só sobra um arquivo sem uso.
+  if (anterior) await bucket.remove([anterior]).catch((erro) => console.error(erro));
+  return true;
 }
 
 // Clube e Seleção seguem a natureza da equipe: só a natureza dela e Especial
@@ -167,6 +254,8 @@ function validar(valores) {
   if (!valores.tipo) erros.push(["tipo", "Escolha o tipo da camisa."]);
   if (!valores.categoria) erros.push(["categoria", "Escolha a categoria: Home, Away ou Third."]);
   if (!/^\d{4}(\/\d{4})?$/.test(valores.temporada)) erros.push(["temporada", valores.temporada ? "Use o formato AAAA ou AAAA/AAAA." : "Informe a temporada."]);
+  const erroFoto = valores.foto && erroDaFoto(valores.foto);
+  if (erroFoto) erros.push(["foto", erroFoto]);
   if (equipe && !emUso) {
     if (equipe.natureza === "clube" && equipe.pais_codigo === "BR") erros.push(["equipe", MENSAGENS.clube_brasileiro[1]]);
     else if ((valores.tipo === "clube" || valores.tipo === "selecao") && valores.tipo !== equipe.natureza) {
@@ -191,6 +280,8 @@ async function salvar(e) {
     temporada: form.temporada.value.trim(),
     descricao: form.descricao.value.trim(),
     situacao: form.querySelector("input[name=situacao]:checked")?.value,
+    foto: form.foto.files[0] || null,
+    removerFoto: Boolean(form.querySelector("input[name=remover_foto]:checked")),
   };
   const erros = validar(valores);
   if (erros.length) {
@@ -210,9 +301,9 @@ async function salvar(e) {
     p_descricao: valores.descricao || null,
     p_ativo: valores.situacao ? valores.situacao === "ativa" : true,
   });
-  processando(botao, false);
 
   if (error) {
+    processando(botao, false);
     console.error(error);
     const codigo = codigoDoErro(error);
     const conhecido = MENSAGENS[codigo];
@@ -228,6 +319,9 @@ async function salvar(e) {
     return;
   }
 
+  const fotoOk = await atualizarFoto(data, valores.foto, valores.removerFoto);
+  processando(botao, false);
+
   const novo = !camisa;
   id = String(data.id);
   history.replaceState(null, "", `${TELAS.A04}?id=${data.id}&voltar=${encodeURIComponent(voltar)}`);
@@ -238,14 +332,19 @@ async function salvar(e) {
     camisa = data;
   }
   principal.replaceChildren(estrutura());
-  principal.querySelector("[data-sucesso]").append(el("div", { class: "alerta alerta--sucesso", tabindex: "-1" },
+  principal.querySelector("[data-sucesso]").append(...[el("div", { class: "alerta alerta--sucesso", tabindex: "-1" },
     el("span", { class: "alerta__icone", "aria-hidden": "true" }, "✓"),
     el("div", { class: "pilha" },
       el("p", { class: "alerta__titulo" }, novo ? "Camisa cadastrada" : "Camisa atualizada"),
       el("p", { class: "alerta__texto" }, novo ? "O modelo foi salvo. Cadastre o saldo por tamanho para que ele possa entrar nos kits." : "As alterações foram salvas no catálogo."),
       el("div", { class: "acoes-linha" },
         data.ativo ? el("a", { class: "link", href: `${TELAS.A05}?camisa=${data.id}${novo ? "&cadastrar=1" : ""}` }, novo ? "Cadastrar estoque" : "Ver estoque") : null,
-        el("a", { class: "link", href: voltar }, "Voltar ao catálogo")))));
+        el("a", { class: "link", href: voltar }, "Voltar ao catálogo")))),
+  fotoOk ? null : el("div", { class: "alerta alerta--aviso" },
+    el("span", { class: "alerta__icone", "aria-hidden": "true" }, "!"),
+    el("div", {},
+      el("p", { class: "alerta__titulo" }, "A foto não foi atualizada"),
+      el("p", { class: "alerta__texto" }, "Os dados do modelo foram salvos, mas a foto não. Escolha a foto de novo e salve.")))].filter(Boolean));
   principal.querySelector("[data-sucesso] .alerta").focus();
 }
 

@@ -2,8 +2,7 @@
 import { supabase } from "./supabase.js";
 import { comContexto } from "./contexto.js";
 
-// Endereço de cada tela. As que ainda não existem apontam para a página
-// de etapa futura, que preserva o contexto.
+// Endereço de cada tela.
 export const TELAS = {
   P04: "colecao.html",
   A01: "admin.html",
@@ -11,8 +10,11 @@ export const TELAS = {
   A03: "equipe.html",
   A04: "camisa.html",
   A05: "estoque.html",
-  A06: "proxima-etapa.html?tela=A06",
-  A09: "proxima-etapa.html?tela=A09",
+  A06: "assinantes.html",
+  A07: "assinante.html",
+  A08: "montar-kit.html",
+  A09: "solicitacoes-troca.html",
+  A10: "processar-troca.html",
   C01: "painel.html",
   C02: "perfil.html",
   C03: "confirmar-plano.html",

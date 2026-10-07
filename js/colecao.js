@@ -4,7 +4,7 @@
 // O filtro vive na URL (?filtro=), e o detalhe (?camisa=) volta para o mesmo filtro.
 import { supabase, avisarSemConfiguracao } from "./supabase.js";
 import { el } from "./cliente.js";
-import { ilustracaoCamisa } from "./kits-comum.js";
+import { figuraCamisa } from "./kits-comum.js";
 
 avisarSemConfiguracao();
 
@@ -50,7 +50,7 @@ function enderecoDetalhe(camisa) {
 async function carregar() {
   const { data, error } = await supabase
     .from("camisas")
-    .select("id, tipo, categoria, temporada, descricao, equipes!inner(nome, natureza, ativo)")
+    .select("id, tipo, categoria, temporada, descricao, imagem, equipes!inner(nome, natureza, ativo)")
     .eq("ativo", true)
     .eq("equipes.ativo", true);
   if (error) throw error;
@@ -65,7 +65,7 @@ async function carregar() {
 function imagem(camisa) {
   const especial = camisa.tipo === "especial";
   return el("div", { class: `cartao-camisa__imagem${especial ? " cartao-camisa__imagem--especial" : ""}` },
-    ilustracaoCamisa(especial),
+    figuraCamisa(camisa, especial),
     especial ? el("span", { class: "selo-especial" }, el("span", { "aria-hidden": "true" }, "★ "), "Especial") : null);
 }
 
@@ -150,7 +150,7 @@ function renderizarDetalhe(camisa) {
           el("p", { class: "cartao-camisa__equipe" }, camisa.equipes.nome),
           el("p", {}, `${camisa.temporada} • ${camisa.categoria}`),
           el("p", {}, rotuloTipo(camisa)),
-          el("p", { class: "cartao-camisa__legenda" }, "Ilustração genérica · sem uniforme real"))),
+          el("p", { class: "cartao-camisa__legenda" }, camisa.imagem ? "Foto ilustrativa do modelo" : "Ilustração genérica · sem uniforme real"))),
       el("section", { class: "detalhe-modelo__sobre", "aria-labelledby": "titulo-sobre" },
         el("h2", { class: "detalhe-modelo__titulo", id: "titulo-sobre" }, "Sobre o modelo"),
         dados,
