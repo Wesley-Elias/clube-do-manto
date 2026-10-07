@@ -53,6 +53,20 @@ function mostrarEtapa(nome) {
   }
 }
 
+// E-mail digitado errado: volta ao formulário com os dados mantidos para corrigir e enviar de novo.
+document.querySelector("[data-corrigir-email]").addEventListener("click", () => {
+  document.querySelectorAll("[data-etapa]").forEach((el) => (el.hidden = el.dataset.etapa !== "formulario"));
+  const primeira = document.querySelector(".etapa-fluxo--concluida");
+  if (primeira) {
+    primeira.classList.replace("etapa-fluxo--concluida", "etapa-fluxo--atual");
+    primeira.setAttribute("aria-current", "step");
+    primeira.querySelector(".etapa-fluxo__sub").textContent = "Etapa atual";
+  }
+  processando(botao, false);
+  campos.email.focus();
+  campos.email.select();
+});
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   if (botao.disabled) return;
@@ -82,6 +96,8 @@ form.addEventListener("submit", async (e) => {
       throw Object.assign(new Error("User already registered"), { code: "user_already_exists" });
     }
     // Sem sessão: o projeto exige confirmar o e-mail antes do primeiro acesso.
+    // A tela mostra o endereço usado, para a pessoa perceber se digitou errado.
+    document.querySelector("[data-email-enviado]").textContent = campos.email.value.trim();
     mostrarEtapa(data.session ? "sucesso" : "confirmacao");
   } catch (erro) {
     console.error(erro);
