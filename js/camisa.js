@@ -84,7 +84,7 @@ function formulario() {
       el("p", { class: "campo__ajuda", id: "ajuda-equipe" }, "Somente equipes cadastradas e ativas. Para uma equipe nova, cadastre-a antes no catálogo."),
       campoErro("equipe")),
     grupoRadios("tipo", "Tipo", Object.entries(TIPOS_CAMISA), camisa?.tipo || "", emUso,
-      "Clube e Seleção seguem a natureza da equipe. Especial é uma peça retrô ou histórica de qualquer equipe permitida."),
+      "Clube ou Seleção conforme a natureza da equipe escolhida. Especial é uma peça retrô ou histórica."),
     grupoRadios("categoria", "Categoria", CATEGORIAS.map((c) => [c, c]), camisa?.categoria || "", emUso),
     el("div", { class: "campo" },
       el("label", { class: "campo__rotulo", for: "temporada" }, "Temporada"),
@@ -110,9 +110,23 @@ function formulario() {
   buscaEquipe = criarBuscaEquipe(form.querySelector('[data-busca="equipe"]'), opcoes);
   const inicial = camisa?.equipe_id || equipeInicial;
   if (inicial && opcoes.some((e) => String(e.id) === String(inicial))) buscaEquipe.definir(inicial);
+  ajustarTipos(form, equipePorId(buscaEquipe.valor));
+  buscaEquipe.aoMudar((equipe) => ajustarTipos(form, equipe));
 
   form.addEventListener("submit", salvar);
   return form;
+}
+
+// Clube e Seleção seguem a natureza da equipe: só a natureza dela e Especial
+// ficam disponíveis. Sem equipe escolhida, apenas Especial pode ser marcado.
+function ajustarTipos(form, equipe) {
+  for (const natureza of Object.keys(NATUREZAS)) {
+    const opcao = form.querySelector(`input[name=tipo][value=${natureza}]`);
+    const permitido = !equipe || equipe.natureza === natureza;
+    opcao.closest(".radio").hidden = !permitido;
+    opcao.disabled = emUso || !equipe || !permitido;
+    if (!permitido || !equipe) opcao.checked = false;
+  }
 }
 
 function estrutura() {
