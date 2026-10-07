@@ -91,6 +91,8 @@ export function montarCabecalhoArea({ itens, telaAtual, rotulo, inicio, idMenu, 
     if (atual) link.append(el("span", { class: "menu-cliente__atual" }, "Página atual"));
     lista.append(el("li", {}, link));
   }
+  // Caminho de volta à página inicial (P01), sem sair da conta
+  lista.append(el("li", {}, el("a", { class: "menu-cliente__item", href: "index.html" }, "Página inicial")));
   const sairMenu = el("button", { class: "botao botao--sec-escuro botao--largo", type: "button", "data-sair": true }, "Sair");
   const menu = el("div", { class: "menu-cliente", id: idMenu, hidden: true },
     el("div", { class: "container" },
@@ -100,6 +102,7 @@ export function montarCabecalhoArea({ itens, telaAtual, rotulo, inicio, idMenu, 
       sairMenu));
   cabecalho.className = "cab-cliente";
   cabecalho.replaceChildren(interno, menu);
+  document.querySelector(".rodape-fluxo__links")?.prepend(el("a", { class: "rodape-fluxo__link", href: "index.html" }, "Página inicial"));
 
   function abrir() {
     menu.hidden = false;
