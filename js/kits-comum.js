@@ -1,6 +1,7 @@
 // Peças compartilhadas por C05, C06, C07 e C08 (kits, camisas e trocas).
 import { supabase } from "./supabase.js";
 import { el, chip, competenciaExtenso } from "./cliente.js";
+import { SUPABASE_URL } from "./config.js";
 
 export const TIPOS = { clube: "Clube internacional", selecao: "Seleção mundial", especial: "Especial retrô" };
 export const MODALIDADES = { modelo: "Modelo", tamanho: "Tamanho", ambos: "Modelo e tamanho" };
@@ -10,7 +11,7 @@ export const ESTADOS_TROCA = {
   rejeitada: ["Rejeitada", "erro", "×"],
 };
 
-const CAMPOS_CAMISA = "tipo, categoria, temporada, equipes(nome)";
+const CAMPOS_CAMISA = "tipo, categoria, temporada, imagem, equipes(nome)";
 
 export function chipDeTroca(estado) {
   const [rotulo, familia, simbolo] = ESTADOS_TROCA[estado];
@@ -98,6 +99,21 @@ export function ilustracaoCamisa(especial = false) {
   return svg;
 }
 
+// ---------- Foto do modelo ----------
+// Endereço público da foto guardada no bucket "camisas".
+export function urlDaFoto(caminho) {
+  return `${SUPABASE_URL}/storage/v1/object/public/camisas/${caminho}`;
+}
+
+// Foto do modelo quando cadastrada; sem foto (ou se ela não carregar), a ilustração.
+// A foto é decorativa: equipe, temporada e categoria estão sempre no texto ao lado.
+export function figuraCamisa(camisa, especial = false, ilustracao = ilustracaoCamisa(especial)) {
+  if (!camisa?.imagem) return ilustracao;
+  const foto = el("img", { class: "camisa-foto", src: urlDaFoto(camisa.imagem), alt: "", loading: "lazy", decoding: "async" });
+  foto.addEventListener("error", () => foto.replaceWith(ilustracao), { once: true });
+  return foto;
+}
+
 // Cartão de uma camisa do kit (C06, C07 e detalhe da C08)
 export function camisaDoKit(item, { rotulo, chipEstado = null, acao = null, motivo = null } = {}) {
   const camisa = item.camisas || item.camisa;
@@ -107,7 +123,7 @@ export function camisaDoKit(item, { rotulo, chipEstado = null, acao = null, moti
       el("h3", { class: "camisa-kit__posicao" }, rotulo),
       chipEstado),
     el("div", { class: "camisa-kit__corpo" },
-      el("div", { class: "camisa-kit__imagem" }, ilustracaoCamisa(especial), especial ? el("span", { class: "selo-especial" }, "Especial") : null),
+      el("div", { class: "camisa-kit__imagem" }, figuraCamisa(camisa, especial), especial ? el("span", { class: "selo-especial" }, "Especial") : null),
       el("div", { class: "camisa-kit__dados" },
         el("p", { class: "camisa-kit__equipe" }, camisa.equipes.nome),
         el("p", {}, descricaoCamisa(camisa)),

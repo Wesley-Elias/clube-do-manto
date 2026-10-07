@@ -23,7 +23,7 @@ Implementado até aqui: **P01** (apresentação e planos), **P02** (cadastro), *
 | `admin.html` | A01 | atalhos para Catálogo, Estoque, Assinantes e Trocas; solicitações em Solicitada; nenhum pedido; falha; acesso não autorizado; sem sessão → login |
 | `catalogo.html` | A02 | abas Equipes e Camisas (`?aba=`); busca e filtro na URL; Limpar; vazio; sem resultado; chips Ativo/Inativo; diálogo de inativação (processando, falha, resultado não confirmado) |
 | `equipe.html` | A03 | cadastro e edição (`?id=`); campos obrigatórios; registro equivalente; campos bloqueados quando a equipe tem camisas ou histórico; salvando; sucesso com atalho para cadastrar camisa; falha |
-| `camisa.html` | A04 | cadastro e edição (`?id=`, `?equipe=`); temporada AAAA ou AAAA/AAAA; classificação incoerente; clube brasileiro; modelo duplicado; campos bloqueados quando o modelo já entrou em kit; sucesso com Cadastrar estoque |
+| `camisa.html` | A04 | cadastro e edição (`?id=`, `?equipe=`); temporada AAAA ou AAAA/AAAA; classificação incoerente; clube brasileiro; modelo duplicado; campos bloqueados quando o modelo já entrou em kit; foto opcional (JPG, PNG ou WebP até 2 MB) com prévia, troca e remoção; falha no envio da foto avisada sem perder os dados; sucesso com Cadastrar estoque |
 | `estoque.html` | A05 | filtro por modelo (`?camisa=`); Disponível/Sem saldo; sem linhas; diálogos Cadastrar saldo (só tamanhos ainda não registrados) e Repor; quantidade inválida; processando; sucesso; resultado não confirmado atualiza a consulta antes de repetir |
 | `assinantes.html` | A06 | busca por nome ou referência e filtro Ativas/Canceladas na URL; Limpar filtros; nenhum assinante; sem resultado; falha |
 | `assinante.html` | A07 | perfil, plano e trocas da assinatura (sem saldo); kit da competência atual (montar, consultar ou motivo da inelegibilidade); abas Kits por mês e Histórico de modelos; kit aberto (`?kit=`) com composição atual, original e alterações; não encontrado |
@@ -49,6 +49,7 @@ Implementado até aqui: **P01** (apresentação e planos), **P02** (cadastro), *
 - A montagem do kit (`admin_montar_kit`) é integral: o kit inteiro é registrado com a baixa de estoque ou nada muda. Vale uma vez por cliente e competência (mês no fuso de São Paulo); repetir devolve o kit existente sem nova baixa. Só entram camisas ativas, no tamanho do perfil, com saldo, de equipe que não é a rival e de modelo nunca recebido pelo cliente (equipe + temporada + categoria).
 - Propostas operacionais aplicadas, ainda a consolidar: a equipe preferida tem prioridade entre os modelos elegíveis, sem peso numérico nem garantia; na conclusão de uma troca de modelo, a substituta é escolhida automaticamente no mesmo grupo (comum por comum, especial por especial); sem estoque elegível a solicitação continua Solicitada; a camisa devolvida não volta ao estoque.
 - Concluir troca (`admin_concluir_troca`) revalida pedido, assinatura ativa, limite do ciclo e item atual; rejeitar (`admin_rejeitar_troca`) muda só o estado. As referências CL-001 e TR-001 são calculadas pela ordem de cadastro, sem coluna nova.
+- A foto do modelo é opcional e aparece na galeria, no painel, nos kits e na administração. Sem foto, ou se ela não carregar, aparece a ilustração genérica. Só administradores enviam ou apagam fotos; a ligação da foto ao modelo passa por `admin_definir_imagem_camisa`, que confere se o arquivo existe na pasta da própria camisa.
 - Contato, Termos de uso e Política de privacidade são texto, sem link.
 - `prefers-reduced-motion` para a faixa e as transições (regra em `tokens.css`).
 
@@ -81,7 +82,7 @@ js/admin.js          sessão e papel de administrador, cabeçalho administrativo
 js/admin-painel.js, js/catalogo.js, js/equipe.js, js/camisa.js, js/estoque.js   A01 a A05
 js/admin-operacao.js  peças compartilhadas por A06 a A10
 js/assinantes.js, js/assinante.js, js/montar-kit.js, js/solicitacoes-troca.js, js/processar-troca.js   A06 a A10
-supabase/migrations/  001 = esquema; 002 = acesso público e login; 003 = painel e perfil; 004 = tamanhos oficiais; 005 = assinatura e trocas do cliente; 006 = coleção, catálogo e estoque; 007 = assinantes, kits e trocas da administração
+supabase/migrations/  001 = esquema; 002 = acesso público e login; 003 = painel e perfil; 004 = tamanhos oficiais; 005 = assinatura e trocas do cliente; 006 = coleção, catálogo e estoque; 007 = assinantes, kits e trocas da administração; 008 = foto da camisa
 ```
 
 ## Supabase
@@ -97,6 +98,8 @@ A migração 005 traz as regras de assinatura e troca do cliente: `ativar_assina
 A migração 006 cadastra seis modelos demonstrativos (os mesmos do design final, marcados na descrição), libera a leitura do estoque só para administradores e cria as funções da administração: `admin_trocas_em_aberto()`, `admin_salvar_equipe()`, `admin_salvar_camisa()`, `admin_inativar_equipe()`, `admin_inativar_camisa()`, `admin_uso_da_equipe()`, `admin_uso_da_camisa()`, `admin_cadastrar_saldo()` e `admin_repor_estoque()`.
 
 A migração 007 cria as funções de A06 a A10: `admin_assinantes()`, `admin_assinante()`, `admin_montar_kit()`, `admin_trocas()`, `admin_troca()`, `admin_concluir_troca()` e `admin_rejeitar_troca()`. Todas conferem o papel de administrador; nenhuma tabela ganha leitura geral pela API.
+
+A migração 008 cria a coluna `camisas.imagem`, o bucket público `camisas` (JPG, PNG ou WebP até 2 MB, envio e remoção só por administradores) e a função `admin_definir_imagem_camisa()`.
 
 A migração 002 abre só o necessário: leitura pública de `planos`, criação automática do perfil no cadastro (nome vem do formulário), leitura do próprio perfil e da própria assinatura e a função `eh_administrador()`.
 

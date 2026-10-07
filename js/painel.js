@@ -7,6 +7,7 @@ import {
   exigirSessao, montarCabecalho, mostrarNome, perfilCompleto, carregarPerfil,
   el, chip, nomeDoMes, competenciaExtenso, competenciaAtual, dataCurta,
 } from "./cliente.js";
+import { figuraCamisa } from "./kits-comum.js";
 
 avisarSemConfiguracao();
 montarCabecalho("C01");
@@ -56,7 +57,7 @@ async function carregar() {
   if (assinatura.data?.status === "ativa" && kitDoMes) {
     const r = await supabase
       .from("kit_itens")
-      .select("posicao, grupo, tamanho_atual, camisas!kit_itens_camisa_id_fkey(tipo, categoria, temporada, equipes(nome))")
+      .select("posicao, grupo, tamanho_atual, camisas!kit_itens_camisa_id_fkey(tipo, categoria, temporada, imagem, equipes(nome))")
       .eq("competencia", atual)
       .eq("estado", "atual")
       .order("posicao");
@@ -181,7 +182,7 @@ function renderizarDestaque(d, completo, status) {
       const c = item.camisas;
       const especial = item.grupo === "especial";
       grade.append(el("article", { class: "camisa" },
-        el("div", { class: "camisa__imagem" }, ilustracaoCamisa(), especial ? el("span", { class: "selo-especial" }, "Especial") : null),
+        el("div", { class: "camisa__imagem" }, figuraCamisa(c, especial, ilustracaoCamisa()), especial ? el("span", { class: "selo-especial" }, "Especial") : null),
         el("div", { class: "camisa__dados" },
           el("h3", { class: "camisa__equipe" }, c.equipes.nome),
           el("p", {}, `${c.temporada} • ${c.categoria}`),

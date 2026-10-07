@@ -178,3 +178,24 @@
   .acoes-linha--botoes .botao { width: 100%; }
 }
 .kit-admin .faixa-dados__valor { font: var(--tipo-corpo-forte); text-transform: none; overflow-wrap: anywhere; }
+
+/* A04 — foto do modelo */
+.foto-admin__corpo { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--espaco-16); }
+.foto-admin__previa {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 160px; height: 128px;
+  border: var(--borda-fina) solid var(--borda-suave);
+  border-radius: var(--raio-botao);
+  background: var(--estado-neutro-fundo);
+  color: var(--icone-comum);
+}
+.foto-admin__previa .camisa-icone { width: 72px; }
+.foto-admin__controles { display: flex; flex-direction: column; align-items: flex-start; gap: var(--espaco-8); flex: 1 1 220px; min-width: 0; }
+.foto-admin__escolha { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-8) var(--espaco-12); }
+.foto-admin__escolha .botao { cursor: pointer; }
+.foto-admin__escolha:has(input:focus-visible) .botao { box-shadow: var(--anel-foco); }
+.foto-admin__nome { font: var(--tipo-tabela); color: var(--texto-secundario); overflow-wrap: anywhere; min-width: 0; }
+.foto-admin.campo--erro .foto-admin__previa { border-color: var(--cor-erro); }
