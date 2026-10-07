@@ -50,7 +50,8 @@
           <div style="display:flex;flex-direction:column;gap:var(--espaco-16)">
             <span class="icone-estado" aria-hidden="true">@</span>
             <h1 class="cartao-form__titulo" tabindex="-1">Confira seu e-mail</h1>
-            <p class="lead" role="status">Se houver uma conta associada ao e-mail informado, enviaremos as instruções de recuperação. Confira também a pasta de spam.</p>
+            <p class="lead" role="status">Se houver uma conta associada a <strong class="email-enviado" data-email-enviado></strong>, enviaremos as instruções de recuperação. Confira também a pasta de spam.</p>
+            <p class="pequeno">E-mail errado? <button class="link" type="button" data-corrigir-email>Corrigir e-mail</button></p>
             <div class="alerta" role="alert" tabindex="-1" data-alerta-reenvio hidden>
               <span class="alerta__icone" aria-hidden="true">!</span>
               <div><p class="alerta__titulo"></p><p class="alerta__texto"></p></div>

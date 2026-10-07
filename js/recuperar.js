@@ -28,9 +28,20 @@ async function enviar() {
 function mostrarEnviado() {
   document.querySelector('[data-etapa="solicitacao"]').hidden = true;
   const etapa = document.querySelector('[data-etapa="enviado"]');
+  // Mostra o endereço usado, para a pessoa perceber se digitou errado
+  etapa.querySelector("[data-email-enviado]").textContent = email.value.trim();
   etapa.hidden = false;
   etapa.querySelector("h1").focus();
 }
+
+// E-mail errado: volta ao formulário com o endereço selecionado para corrigir
+document.querySelector("[data-corrigir-email]").addEventListener("click", () => {
+  document.querySelector('[data-etapa="enviado"]').hidden = true;
+  document.querySelector('[data-etapa="solicitacao"]').hidden = false;
+  processando(botao, false);
+  email.focus();
+  email.select();
+});
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
