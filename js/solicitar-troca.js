@@ -4,7 +4,7 @@
 // definida no processamento administrativo. Não há campo de motivo.
 import { supabase, avisarSemConfiguracao } from "./supabase.js";
 import { TELAS } from "./sessao.js";
-import { exigirSessao, montarCabecalho, mostrarNome, carregarPerfil, el, chip, competenciaExtenso } from "./cliente.js";
+import { exigirCliente, montarCabecalho, mostrarNome, carregarPerfil, el, chip, competenciaExtenso } from "./cliente.js";
 import { carregarAssinatura, alerta, codigoDoErro } from "./assinatura-comum.js";
 import { processando, ehFalhaDeComunicacao } from "./formulario.js";
 import { carregarKits, carregarItens, carregarTrocas, situacaoDasTrocas, camisaDoKit, faixaDeDados, MODALIDADES } from "./kits-comum.js";
@@ -95,16 +95,21 @@ function opcoesDeModalidade() {
 
 function campoTamanho() {
   const atual = dados.item.tamanho_atual;
-  const select = el("select", { class: "campo__entrada", id: "tamanho-destino", "aria-describedby": "ajuda-tamanho" },
+  // O tamanho atual fica na lista: escolhê-lo mostra o erro junto ao campo
+  const erro = destino && destino === atual;
+  const select = el("select", {
+    class: "campo__entrada", id: "tamanho-destino",
+    "aria-describedby": erro ? "ajuda-tamanho erro-tamanho" : "ajuda-tamanho",
+    "aria-invalid": erro ? "true" : null,
+  },
     el("option", { value: "" }, "Selecione o tamanho"),
-    ...dados.tamanhos.map((t) => el("option", { value: t, disabled: t === atual ? true : null }, t === atual ? `${t} (tamanho atual)` : t)));
+    ...dados.tamanhos.map((t) => el("option", { value: t }, t === atual ? `${t} (tamanho atual)` : t)));
   select.value = destino;
   select.addEventListener("change", () => {
     destino = select.value;
     renderizarFormulario();
     document.getElementById("tamanho-destino")?.focus();
   });
-  const erro = destino && destino === atual;
   return el("div", { class: "campo" + (erro ? " campo--erro" : "") },
     el("label", { class: "campo__rotulo", for: "tamanho-destino" }, "Tamanho de destino"),
     el("div", { class: "campo__caixa campo__caixa--selecao" }, select, el("span", { class: "campo__seta", "aria-hidden": "true" })),
@@ -283,6 +288,6 @@ async function iniciar() {
 
 (async () => {
   if (!supabase) return;
-  if (!(await exigirSessao({}))) return;
+  if (!(await exigirCliente({}))) return;
   await iniciar();
 })();

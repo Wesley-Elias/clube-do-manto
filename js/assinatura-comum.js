@@ -4,6 +4,7 @@ import { supabase } from "./supabase.js";
 import { PLANOS, deLinha, slugDoNome, formatarValor, composicaoCurta, textoTrocas } from "./planos.js";
 import { TELAS } from "./sessao.js";
 import { el, chip } from "./cliente.js";
+import { resumoDoBeneficio } from "./kits-comum.js";
 
 // Planos da tabela, por slug (torcedor, fanatico, colecionador), com ativo/indisponível.
 export async function carregarPlanos() {
@@ -80,7 +81,7 @@ export function caixaPreferencias(perfil, nomes, { editarHref, titulo = "Suas pr
 
 // ---------- Cartão branco do plano (C04 e revisão da reativação) ----------
 export function cartaoPlanoAtual(p, { chamada, chipEstado, inicio = null, rodape = "Composição aplicada aos próximos kits elegíveis." }) {
-  const especial = p.especiais ? " e especiais retrô/históricas" : "";
+  const especial = p.especiais ? "; especial retrô/histórica" : "";
   return el("section", { class: "cartao plano-atual", "aria-labelledby": "titulo-plano-atual" },
     el("div", { class: "cartao__topo" }, el("p", { class: "chamada" }, chamada), chipEstado),
     el("h2", { class: "plano-atual__titulo", id: "titulo-plano-atual" },
@@ -92,7 +93,7 @@ export function cartaoPlanoAtual(p, { chamada, chipEstado, inicio = null, rodape
       el("p", {}, p.brinde ? "Brinde previsto no kit." : "Sem brinde neste plano.")),
     el("ul", { class: "lista-check lista-check--compacta" },
       el("li", {}, `${textoTrocas(p)} de assinatura.`),
-      el("li", {}, `As camisas comuns podem ser de clubes internacionais ou seleções${especial}.`),
+      el("li", {}, `Comuns de clubes internacionais ou seleções${especial}.`),
       el("li", {}, "Bloqueio da equipe rival · Não repetição de modelos")),
     el("div", { class: "plano-atual__nota" },
       el("p", {}, inicio ? `Assinante desde ${inicio}. Histórico de ativação preservado.` : "Histórico de ativação preservado."),
@@ -100,12 +101,16 @@ export function cartaoPlanoAtual(p, { chamada, chipEstado, inicio = null, rodape
 }
 
 // ---------- Coluna de benefício de trocas (C04 e reativação) ----------
-export function colunaBeneficio() {
+// Na C04 mostra a situação e o limite do plano; na revisão da reativação, só a regra geral.
+export function colunaBeneficio({ situacao = null, limite = null } = {}) {
+  const beneficio = situacao
+    ? resumoDoBeneficio(situacao, limite)
+    : { valor: "Limite do plano", textos: ["Uso registrado no histórico.", "Consulte a elegibilidade antes de solicitar."] };
   return [
     el("section", { class: "indicador", "aria-labelledby": "titulo-beneficio" },
       el("h2", { class: "chamada", id: "titulo-beneficio" }, "Benefício de trocas"),
-      el("p", { class: "indicador__valor" }, "Limite do plano"),
-      el("p", { class: "indicador__texto" }, "Uso registrado no histórico.", el("br"), "Consulte a elegibilidade antes de solicitar."),
+      el("p", { class: "indicador__valor" }, beneficio.valor),
+      el("p", { class: "indicador__texto" }, beneficio.textos[0], el("br"), beneficio.textos[1]),
       el("a", { class: "indicador__acao", href: TELAS.C08 }, "Ver minhas trocas")),
     el("section", { class: "cartao cartao--ciclo", "aria-labelledby": "titulo-ciclo" },
       el("p", { class: "cartao--ciclo__chamada" }, "Seu ciclo de trocas"),

@@ -99,6 +99,8 @@
 
 /* A05 — estoque */
 .alerta--topo { position: relative; }
+/* Abaixo de 1024 px o topo é mais alto que a faixa: o aviso não encosta nela */
+@media (max-width: 1023px) { .area-admin > .container > .area-cliente__topo + .alerta--topo { margin-top: var(--espaco-16); } }
 .filtro-modelo { max-width: 440px; }
 .saldo { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-8); }
 .saldo__valor { font: var(--tipo-corpo-forte); color: var(--texto-principal); }

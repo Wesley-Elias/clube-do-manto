@@ -1,12 +1,14 @@
 // C04 — Minha assinatura: situação, plano, composição e benefícios; cancelar (diálogo)
-// e reativar (pela C03). Sem saldo de trocas e sem datas de ciclo (decisão de 05/10).
+// e reativar (pela C03). Sem saldo de trocas e sem datas de ciclo (decisão de 05/10):
+// o benefício mostra o limite do plano e a situação devolvida por situacao_trocas().
 // Não há mudança direta de plano durante a assinatura ativa.
 import { supabase, avisarSemConfiguracao } from "./supabase.js";
 import { TELAS } from "./sessao.js";
-import { exigirSessao, montarCabecalho, mostrarNome, carregarPerfil, el, chip, dataCurta } from "./cliente.js";
+import { exigirCliente, montarCabecalho, mostrarNome, carregarPerfil, el, chip, dataCurta } from "./cliente.js";
 import { criarDialogo } from "./dialogo.js";
 import { processando, ehFalhaDeComunicacao } from "./formulario.js";
 import { carregarAssinatura, cartaoPlanoAtual, colunaBeneficio, chipSituacao, alerta, codigoDoErro } from "./assinatura-comum.js";
+import { situacaoDasTrocas } from "./kits-comum.js";
 
 avisarSemConfiguracao();
 montarCabecalho("C04");
@@ -21,6 +23,7 @@ const reativada = new URLSearchParams(location.search).get("reativada") === "1";
 if (reativada) history.replaceState(null, "", TELAS.C04);
 
 let assinatura = null;
+let situacaoTrocas = null;
 
 // ---------- Renderização ----------
 function renderizar({ aviso = null } = {}) {
@@ -63,7 +66,7 @@ function renderizar({ aviso = null } = {}) {
 
   conteudo.replaceChildren(el("div", { class: "painel-grade painel-grade--colado" },
     el("div", { class: "painel-grade__principal" }, plano, gestao),
-    el("div", { class: "painel-grade__lateral" }, ...colunaBeneficio())));
+    el("div", { class: "painel-grade__lateral" }, ...colunaBeneficio({ situacao: ativa ? situacaoTrocas : "cancelada", limite: p.trocas }))));
   document.querySelector("[data-cancelar-plano]").textContent = p.nome;
 }
 
@@ -189,9 +192,10 @@ async function conferirDepoisDaFalha() {
 async function iniciar() {
   raiz.setAttribute("aria-busy", "true");
   try {
-    const [perfil, atual] = await Promise.all([carregarPerfil(), carregarAssinatura()]);
+    const [perfil, atual, situacao] = await Promise.all([carregarPerfil(), carregarAssinatura(), situacaoDasTrocas()]);
     mostrarNome(perfil?.nome);
     assinatura = atual;
+    situacaoTrocas = situacao;
     const aviso = reativada && atual?.status === "ativa"
       ? alerta("sucesso", "Assinatura reativada", "Seu plano está ativo. Reativar não cria um kit nem reinicia as utilizações do ciclo.", { foco: true })
       : null;
@@ -207,6 +211,6 @@ async function iniciar() {
 
 (async () => {
   if (!supabase) return;
-  if (!(await exigirSessao({ destino: "C04" }))) return;
+  if (!(await exigirCliente({ destino: "C04" }))) return;
   await iniciar();
 })();

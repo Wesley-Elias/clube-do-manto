@@ -127,7 +127,9 @@ function acoes() {
   const rejeitar = el("button", { class: "botao botao--sec-claro", type: "button" }, "Rejeitar solicitação");
   rejeitar.addEventListener("click", () => abrirConfirmacao("rejeitar", rejeitar));
   if (aviso?.bloquearConclusao) concluir.disabled = true;
-  const estoque = aviso?.estoque ? el("a", { class: "botao botao--sec-claro", href: TELAS.A05 }, "Consultar estoque") : null;
+  // Troca de tamanho: o estoque abre filtrado pelo modelo; nas demais, a substituta pode ser outro modelo
+  const linkEstoque = dados.modalidade === "tamanho" && dados.item.camisas?.id ? `${TELAS.A05}?camisa=${dados.item.camisas.id}` : TELAS.A05;
+  const estoque = aviso?.estoque ? el("a", { class: "botao botao--sec-claro", href: linkEstoque }, "Consultar estoque") : null;
   return el("div", { class: "acoes-linha acoes-linha--botoes" }, estoque || concluir, rejeitar);
 }
 
