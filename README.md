@@ -47,7 +47,8 @@ Implementado até aqui: **P01** (apresentação e planos), **P02** (cadastro), *
 - Catálogo é inativado, nunca apagado. Modelo já usado em kit não muda equipe, tipo, categoria nem temporada; equipe com camisas não muda natureza; equipe com histórico não muda nome nem país. Clubes brasileiros não recebem camisas.
 - O estoque só permite cadastrar o saldo de um tamanho novo (P, M, G ou GG) e repor unidades. Não há baixa arbitrária.
 - A montagem do kit (`admin_montar_kit`) é integral: o kit inteiro é registrado com a baixa de estoque ou nada muda. Vale uma vez por cliente e competência (mês no fuso de São Paulo); repetir devolve o kit existente sem nova baixa. Só entram camisas ativas, no tamanho do perfil, com saldo, de equipe que não é a rival e de modelo nunca recebido pelo cliente (equipe + temporada + categoria).
-- Propostas operacionais aplicadas, ainda a consolidar: a equipe preferida tem prioridade entre os modelos elegíveis, sem peso numérico nem garantia; na conclusão de uma troca de modelo, a substituta é escolhida automaticamente no mesmo grupo (comum por comum, especial por especial); sem estoque elegível a solicitação continua Solicitada; a camisa devolvida não volta ao estoque.
+- Sorteio das camisas (decisão de 07/10/2026): entre os modelos elegíveis, cada modelo da equipe preferida tem peso 5 e cada um dos demais tem peso 1, no kit e na substituta da troca de modelo; a preferida ganha mais chance, sem garantia.
+- Propostas operacionais aplicadas, ainda a consolidar: na conclusão de uma troca de modelo, a substituta é escolhida automaticamente no mesmo grupo (comum por comum, especial por especial); sem estoque elegível a solicitação continua Solicitada; a camisa devolvida não volta ao estoque.
 - Concluir troca (`admin_concluir_troca`) revalida pedido, assinatura ativa, limite do ciclo e item atual; rejeitar (`admin_rejeitar_troca`) muda só o estado. As referências CL-001 e TR-001 são calculadas pela ordem de cadastro, sem coluna nova.
 - A foto do modelo é opcional e aparece na galeria, no painel, nos kits e na administração. Sem foto, ou se ela não carregar, aparece a ilustração genérica. Só administradores enviam ou apagam fotos; a ligação da foto ao modelo passa por `admin_definir_imagem_camisa`, que confere se o arquivo existe na pasta da própria camisa.
 - Contato, Termos de uso e Política de privacidade são texto, sem link.
@@ -82,7 +83,7 @@ js/admin.js          sessão e papel de administrador, cabeçalho administrativo
 js/admin-painel.js, js/catalogo.js, js/equipe.js, js/camisa.js, js/estoque.js   A01 a A05
 js/admin-operacao.js  peças compartilhadas por A06 a A10
 js/assinantes.js, js/assinante.js, js/montar-kit.js, js/solicitacoes-troca.js, js/processar-troca.js   A06 a A10
-supabase/migrations/  001 = esquema; 002 = acesso público e login; 003 = painel e perfil; 004 = tamanhos oficiais; 005 = assinatura e trocas do cliente; 006 = coleção, catálogo e estoque; 007 = assinantes, kits e trocas da administração; 008 = foto da camisa; 009 = recusa de clube brasileiro
+supabase/migrations/  001 = esquema; 002 = acesso público e login; 003 = painel e perfil; 004 = tamanhos oficiais; 005 = assinatura e trocas do cliente; 006 = coleção, catálogo e estoque; 007 = assinantes, kits e trocas da administração; 008 = foto da camisa; 009 = recusa de clube brasileiro; 010 = peso do sorteio
 ```
 
 ## Supabase
@@ -102,6 +103,8 @@ A migração 007 cria as funções de A06 a A10: `admin_assinantes()`, `admin_as
 A migração 008 cria a coluna `camisas.imagem`, o bucket público `camisas` (JPG, PNG ou WebP até 2 MB, envio e remoção só por administradores) e a função `admin_definir_imagem_camisa()`.
 
 A migração 009 impede o cadastro de clubes brasileiros (decisão de 07/10/2026): `admin_salvar_equipe()` recusa clube com país BR no cadastro e na edição, e a tabela `equipes` ganha a mesma restrição. A seleção brasileira continua permitida.
+
+A migração 010 troca a prioridade absoluta da equipe preferida por sorteio ponderado (decisão de 07/10/2026): em `admin_montar_kit()` e `admin_concluir_troca()`, cada modelo elegível da equipe preferida tem peso 5 e cada um dos demais tem peso 1. A elegibilidade, as travas e a baixa de estoque não mudam.
 
 A migração 002 abre só o necessário: leitura pública de `planos`, criação automática do perfil no cadastro (nome vem do formulário), leitura do próprio perfil e da própria assinatura e a função `eh_administrador()`.
 
