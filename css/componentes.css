@@ -281,8 +281,14 @@ h1, h2, h3, p { margin: 0; }
 
 /* Cabeçalho do fluxo em telas estreitas: logo e botão cabem em 360 px */
 @media (max-width: 400px) {
-  .cabecalho-fluxo .botao { padding: 0 var(--espaco-12); }
+  .cabecalho-fluxo__interno { gap: var(--espaco-8); }
+  .cabecalho-fluxo .botao { padding: 0 var(--espaco-8); }
   .cabecalho-fluxo .logo { gap: var(--espaco-4); }
+}
+/* Abaixo de 360 px: o botão do fluxo desce para a linha de baixo e os campos acompanham o cartão */
+@media (max-width: 359px) {
+  .cabecalho-fluxo__interno { flex-wrap: wrap; }
+  .campo__entrada { width: 0; }
 }
 
 /* Títulos que recebem foco por script (troca de estado) não mostram contorno */

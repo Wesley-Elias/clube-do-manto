@@ -276,3 +276,9 @@ a.rodape__link:hover { text-decoration: underline; }
 .rodape__final span:first-child { margin-right: auto; }
 @media (min-width: 768px) { .rodape__grade { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1200px) { .rodape__grade { grid-template-columns: 376px 280px 280px 176px; } }
+
+/* Abaixo de 360 px: marca e botão Menu cabem na largura */
+@media (max-width: 359px) {
+  .nav__interno { gap: var(--espaco-16); }
+  .nav__menu-botao { padding: 0 var(--espaco-12); }
+}

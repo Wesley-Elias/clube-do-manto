@@ -85,7 +85,7 @@ function formulario() {
     el("div", { class: "campo busca-equipe", "data-busca": "equipe" },
       el("label", { class: "campo__rotulo", for: "equipe" }, "Equipe"),
       el("div", { class: "campo__caixa" },
-        el("input", { class: "campo__entrada", id: "equipe", name: "equipe", type: "text", role: "combobox", "aria-autocomplete": "list", "aria-expanded": "false", "aria-controls": "lista-equipe", autocomplete: "off", spellcheck: "false", placeholder: "Busque ou selecione uma equipe", "aria-describedby": "ajuda-equipe", disabled: emUso }),
+        el("input", { class: "campo__entrada", id: "equipe", name: "equipe", type: "text", role: "combobox", "aria-autocomplete": "list", "aria-expanded": "false", "aria-controls": "lista-equipe", autocomplete: "off", spellcheck: "false", placeholder: "Busque uma equipe", "aria-describedby": "ajuda-equipe", disabled: emUso }),
         el("button", { class: "busca-equipe__abrir", type: "button", tabindex: "-1", "aria-label": "Mostrar equipes", disabled: emUso })),
       el("ul", { class: "busca-equipe__lista", id: "lista-equipe", role: "listbox", "aria-label": "Equipes", hidden: true }),
       el("p", { class: "campo__ajuda", id: "ajuda-equipe" }, "Somente equipes cadastradas e ativas. Para uma equipe nova, cadastre-a antes no catálogo."),
