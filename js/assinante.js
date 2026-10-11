@@ -221,7 +221,7 @@ function cartaoTrocas() {
   const resumo = contagem.length
     ? contagem.map(([estado, n]) => `${n} ${nomes[estado][n === 1 ? 0 : 1]}`).join(" · ")
     : "Nenhum registro";
-  return el("section", { class: "cartao cartao--lateral", "aria-labelledby": "titulo-trocas" },
+  return el("section", { class: "cartao cartao--lateral cartao--trocas", "aria-labelledby": "titulo-trocas" },
     el("h2", { class: "cartao-lateral__subtitulo", id: "titulo-trocas" }, "Trocas da assinatura"),
     a ? el("p", { class: "cartao__texto" }, textoTrocasDoPlano(a.trocas_anuais)) : null,
     el("p", { class: "cartao__nota" }, "Cancelar ou reativar não apaga o histórico de utilização. Solicitar e concluir novas trocas exige assinatura ativa."),

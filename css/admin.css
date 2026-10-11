@@ -139,6 +139,13 @@
 .dados-lateral dd { margin: 0; font: var(--tipo-corpo-forte); color: var(--texto-principal); overflow-wrap: anywhere; }
 .cartao-lateral__linha { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-8); font: var(--tipo-tabela); color: var(--texto-secundario); }
 .divisor { align-self: stretch; border: 0; border-top: var(--borda-fina) solid var(--borda-padrao); margin: var(--espaco-4) 0; }
+/* Em uma coluna (abaixo de 1024 px), os dados do assinante vêm antes do conteúdo principal, como nos wireframes de 360 px.
+   Na A07, o cartão de trocas continua depois dos registros. */
+@media (max-width: 1023px) {
+  .painel-grade--admin .painel-grade__lateral { display: contents; }
+  .painel-grade--admin .painel-grade__lateral > * { order: -1; }
+  .painel-grade--admin .painel-grade__lateral > .cartao--trocas { order: 0; }
+}
 
 /* Kit aberto na A07 e camisas registradas na A08 */
 .cartao--registros .tabela, .cartao--registros .kit-admin { margin-top: var(--espaco-16); }

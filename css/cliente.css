@@ -426,3 +426,8 @@ body { background: var(--fundo-claro); }
   .etapas-fluxo .etapa-fluxo--atual { flex: 0 1 auto; min-width: 0; }
   .etapas-fluxo .etapa-fluxo--atual .etapa-fluxo__textos { min-width: 0; }
 }
+
+/* Abaixo de 360 px: marca e botão Menu cabem sem cortar a marca */
+@media (max-width: 359px) {
+  .cab-cliente__interno { gap: var(--espaco-16); }
+}
