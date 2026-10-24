@@ -14,7 +14,7 @@ const ITENS = [
 ];
 
 export function montarCabecalhoAdmin(telaAtual) {
-  montarCabecalhoArea({ itens: ITENS, telaAtual, rotulo: "Administração", inicio: TELAS.A01, idMenu: "menu-admin", nomeFixo: "Administrador" });
+  montarCabecalhoArea({ itens: ITENS, telaAtual, rotulo: "Administração", idMenu: "menu-admin", nomeFixo: "Administrador" });
 }
 
 // Sem sessão → login. Sessão sem papel administrativo → aviso "sem autorização"
