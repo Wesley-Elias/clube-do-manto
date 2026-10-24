@@ -58,18 +58,19 @@ function el(tag, atributos = {}, ...filhos) {
 }
 export { el };
 
-function logo(inicio) {
-  return el("a", { class: "logo", href: inicio }, el("span", { class: "logo__marca", "aria-hidden": "true" }, "///"), "Clube do Manto");
+// A logo leva sempre à página inicial pública (P01), para cliente e administrador.
+function logo() {
+  return el("a", { class: "logo", href: "index.html" }, el("span", { class: "logo__marca", "aria-hidden": "true" }, "///"), "Clube do Manto");
 }
 
 // Monta o cabeçalho dentro de <header data-cabecalho-cliente="C01">.
 export function montarCabecalho(telaAtual) {
-  montarCabecalhoArea({ itens: ITENS, telaAtual, rotulo: "Área do cliente", inicio: TELAS.C01, idMenu: "menu-cliente" });
+  montarCabecalhoArea({ itens: ITENS, telaAtual, rotulo: "Área do cliente", idMenu: "menu-cliente" });
 }
 
 // Cabeçalho das áreas internas (cliente e administração): mesmos componentes,
 // itens e rótulo próprios. No mobile, botão Menu abre um painel com os mesmos destinos.
-export function montarCabecalhoArea({ itens, telaAtual, rotulo, inicio, idMenu, nomeFixo = null }) {
+export function montarCabecalhoArea({ itens, telaAtual, rotulo, idMenu, nomeFixo = null }) {
   const cabecalho = document.querySelector("[data-cabecalho-cliente]");
   const interno = el("div", { class: "container cab-cliente__interno" });
   const nav = el("nav", { class: "cab-cliente__nav", "aria-label": rotulo });
@@ -80,7 +81,7 @@ export function montarCabecalhoArea({ itens, telaAtual, rotulo, inicio, idMenu, 
   const nome = el("span", { class: "cab-cliente__nome", "data-nome-usuario": nomeFixo ? null : true }, nomeFixo);
   const botaoSair = el("button", { class: "botao botao--sec-escuro", type: "button", "data-sair": true }, "Sair");
   const botaoMenu = el("button", { class: "botao botao--sec-escuro cab-cliente__menu-botao", type: "button", "aria-expanded": "false", "aria-controls": idMenu }, "Menu");
-  interno.append(logo(inicio), nav, el("div", { class: "cab-cliente__conta" }, nome, botaoSair), botaoMenu);
+  interno.append(logo(), nav, el("div", { class: "cab-cliente__conta" }, nome, botaoSair), botaoMenu);
 
   // Menu mobile: painel sobreposto com os mesmos destinos
   const fechar = el("button", { class: "botao botao--sec-escuro", type: "button" }, "Fechar menu");
@@ -96,7 +97,7 @@ export function montarCabecalhoArea({ itens, telaAtual, rotulo, inicio, idMenu, 
   const sairMenu = el("button", { class: "botao botao--sec-escuro botao--largo", type: "button", "data-sair": true }, "Sair");
   const menu = el("div", { class: "menu-cliente", id: idMenu, hidden: true },
     el("div", { class: "container" },
-      el("div", { class: "menu-cliente__topo" }, logo(inicio), fechar),
+      el("div", { class: "menu-cliente__topo" }, logo(), fechar),
       el("p", { class: "menu-cliente__nome", "data-nome-usuario": nomeFixo ? null : true }, nomeFixo),
       el("nav", { "aria-label": rotulo }, lista),
       sairMenu));
