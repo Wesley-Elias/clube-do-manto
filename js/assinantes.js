@@ -16,13 +16,16 @@ const params = new URLSearchParams(location.search);
 const estado = {
   busca: params.get("busca") || "",
   situacao: SITUACOES[params.get("situacao")] ? params.get("situacao") : "",
+  plano: params.get("plano") || "",
 };
 let assinantes = [];
+let planos = [];
 
 function enderecoAtual() {
   const url = new URLSearchParams();
   if (estado.busca) url.set("busca", estado.busca);
   if (estado.situacao) url.set("situacao", estado.situacao);
+  if (estado.plano) url.set("plano", estado.plano);
   const texto = url.toString();
   return texto ? `${TELAS.A06}?${texto}` : TELAS.A06;
 }
@@ -31,6 +34,11 @@ async function carregar() {
   const { data, error } = await supabase.rpc("admin_assinantes");
   if (error) throw error;
   assinantes = data;
+  const resposta = await supabase.from("planos").select("nome").order("valor_mensal");
+  if (resposta.error) throw resposta.error;
+  planos = resposta.data.map((p) => p.nome);
+  for (const a of assinantes) if (a.plano && !planos.includes(a.plano)) planos.push(a.plano);
+  if (!planos.includes(estado.plano)) estado.plano = "";
 }
 
 function estrutura() {
@@ -41,6 +49,9 @@ function estrutura() {
   const situacao = el("select", { class: "campo__entrada", id: "situacao", name: "situacao" },
     el("option", { value: "" }, "Todas"),
     ...Object.entries(SITUACOES).map(([v, r]) => el("option", { value: v, selected: v === estado.situacao }, r)));
+  const plano = el("select", { class: "campo__entrada", id: "plano", name: "plano" },
+    el("option", { value: "" }, "Todos"),
+    ...planos.map((n) => el("option", { value: n, selected: n === estado.plano }, n)));
 
   const form = el("form", { class: "consulta-admin consulta-admin--assinantes", role: "search", "aria-label": "Consultar assinantes" },
     el("div", { class: "campo" },
@@ -49,6 +60,9 @@ function estrutura() {
     el("div", { class: "campo" },
       el("label", { class: "campo__rotulo", for: "situacao" }, "Situação da assinatura"),
       el("div", { class: "campo__caixa campo__caixa--selecao" }, situacao, el("span", { class: "campo__seta", "aria-hidden": "true" }))),
+    el("div", { class: "campo" },
+      el("label", { class: "campo__rotulo", for: "plano" }, "Plano"),
+      el("div", { class: "campo__caixa campo__caixa--selecao" }, plano, el("span", { class: "campo__seta", "aria-hidden": "true" }))),
     el("button", { class: "botao botao--escura consulta-admin__buscar", type: "submit" }, "Buscar"),
     el("button", { class: "link consulta-admin__limpar", type: "button", "data-limpar": true }, "Limpar filtros"));
 
@@ -56,6 +70,12 @@ function estrutura() {
     e.preventDefault();
     estado.busca = busca.value.trim();
     estado.situacao = situacao.value;
+    estado.plano = plano.value;
+    atualizar();
+  });
+  plano.addEventListener("change", () => {
+    estado.plano = plano.value;
+    estado.busca = busca.value.trim();
     atualizar();
   });
   situacao.addEventListener("change", () => {
@@ -78,6 +98,8 @@ function estrutura() {
 function limpar() {
   estado.busca = "";
   estado.situacao = "";
+  estado.plano = "";
+  principal.querySelector("#plano").value = "";
   principal.querySelector("#busca").value = "";
   principal.querySelector("#situacao").value = "";
   atualizar();
@@ -99,13 +121,14 @@ function renderizarResultado() {
   }
   const termo = normalizar(estado.busca);
   const lista = assinantes.filter((a) =>
-    (!termo || normalizar(a.nome).includes(termo)) && (!estado.situacao || a.status === estado.situacao));
+    (!termo || normalizar(a.nome).includes(termo)) && (!estado.situacao || a.status === estado.situacao) &&
+    (!estado.plano || a.plano === estado.plano));
   if (!lista.length) {
     const limparBotao = el("button", { class: "botao botao--sec-claro", type: "button" }, "Limpar filtros");
     limparBotao.addEventListener("click", () => limpar());
     alvo.replaceChildren(el("section", { class: "cartao cartao--admin" }, el("div", { class: "vazio" },
       el("p", { class: "vazio__titulo" }, "Nenhum assinante encontrado"),
-      el("p", {}, "Revise o nome ou a situação informados, ou limpe os filtros para ver todos os titulares."),
+      el("p", {}, "Revise o nome, a situação ou o plano informados, ou limpe os filtros para ver todos os titulares."),
       limparBotao)));
     return;
   }

@@ -121,7 +121,7 @@
 
 /* Consulta com campo + seleção (A06) e duas seleções (A09) */
 @media (min-width: 900px) {
-  .consulta-admin--assinantes { grid-template-columns: minmax(0, 1fr) 240px auto auto; }
+  .consulta-admin--assinantes { grid-template-columns: minmax(0, 1fr) 220px 200px auto auto; }
   .consulta-admin--trocas { grid-template-columns: minmax(0, 1fr) 280px auto auto; }
 }
 .contagem-admin--linha { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-4) var(--espaco-16); }
