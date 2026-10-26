@@ -49,12 +49,13 @@
   position: relative;
   display: grid;
   place-items: center;
-  height: 148px;
+  aspect-ratio: 1 / 1; /* fotos quadradas (512 × 512) aparecem inteiras */
   background: var(--estado-neutro-fundo);
   color: var(--icone-comum);
 }
 .cartao-camisa__imagem--especial { color: var(--marca-verde); }
-.cartao-camisa__imagem .camisa-icone { width: 80px; height: auto; }
+.cartao-camisa__imagem .camisa-icone { width: 40%; max-width: 160px; height: auto; }
+.cartao-camisa__imagem .camisa-foto { object-fit: contain; }
 .cartao-camisa__imagem .selo-especial {
   position: absolute;
   top: var(--espaco-12); left: var(--espaco-12);
@@ -68,7 +69,6 @@
 .cartao-camisa__equipe { font: var(--tipo-corpo-forte); color: var(--texto-principal); margin: 0 0 2px; }
 .cartao-camisa__link { align-self: flex-start; display: inline-flex; align-items: center; min-height: var(--alvo-minimo); margin-top: var(--espaco-4); font: var(--tipo-corpo-forte); }
 .cartao-camisa__legenda { font: var(--tipo-pequeno); margin-top: var(--espaco-8); }
-@media (min-width: 1024px) { .cartao-camisa__imagem { height: 148px; } }
 
 /* Esqueleto de carregamento */
 .cartao-camisa--esqueleto .cartao-camisa__imagem { background: var(--borda-suave); }
