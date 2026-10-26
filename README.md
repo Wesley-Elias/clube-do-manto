@@ -25,7 +25,7 @@ Implementado até aqui: **P01** (apresentação e planos), **P02** (cadastro), *
 | `equipe.html` | A03 | cadastro e edição (`?id=`); campos obrigatórios; registro equivalente; campos bloqueados quando a equipe tem camisas ou histórico; salvando; sucesso com atalho para cadastrar camisa; falha |
 | `camisa.html` | A04 | cadastro e edição (`?id=`, `?equipe=`); temporada AAAA ou AAAA/AAAA; classificação incoerente; clube brasileiro; modelo duplicado; campos bloqueados quando o modelo já entrou em kit; foto opcional (JPG, PNG ou WebP até 2 MB) com prévia, troca e remoção; falha no envio da foto avisada sem perder os dados; sucesso com Cadastrar estoque |
 | `estoque.html` | A05 | filtro por modelo (`?camisa=`); Disponível/Sem saldo; sem linhas; diálogos Cadastrar saldo (só tamanhos ainda não registrados) e Repor; quantidade inválida; processando; sucesso; resultado não confirmado atualiza a consulta antes de repetir |
-| `assinantes.html` | A06 | busca por nome ou referência e filtro Ativas/Canceladas na URL; Limpar filtros; nenhum assinante; sem resultado; falha |
+| `assinantes.html` | A06 | busca por nome ou referência, filtro Ativas/Canceladas e filtro por plano (`?plano=`) na URL; Limpar filtros; nenhum assinante; sem resultado; falha |
 | `assinante.html` | A07 | perfil, plano e trocas da assinatura (sem saldo); kit da competência atual (montar, consultar ou motivo da inelegibilidade); abas Kits por mês e Histórico de modelos; kit aberto (`?kit=`) com composição atual, original e alterações; não encontrado |
 | `montar-kit.html` | A08 | pronto para montar; kit registrado; kit já existente (sem nova baixa); inelegível (cancelada, plano inativo, perfil incompleto); estoque insuficiente com Consultar estoque; resultado não confirmado com Consultar situação; falha |
 | `solicitacoes-troca.html` | A09 | filtros Assinante e Estado na URL (`?assinante=`, `?estado=`); Atualizar consulta; Solicitada primeiro; vazio; sem resultado; falha |
@@ -54,6 +54,7 @@ Implementado até aqui: **P01** (apresentação e planos), **P02** (cadastro), *
 - Contato, Termos de uso e Política de privacidade são texto, sem link.
 - `prefers-reduced-motion` para a faixa e as transições (regra em `tokens.css`).
 - Marca oficial (26/10/2026) em `img/marca/`: `logo.svg` (fundo escuro) e `logo-claro.svg` (fundo claro), versões empilhadas, `simbolo.svg`, favicon, ícones de app (`site.webmanifest`) e `compartilhamento.png` (1200×630, usada nas tags Open Graph da P01). O nome está convertido em contornos de Big Shoulders Display 900, então o logo não depende da fonte carregar. As ilustrações de `img/` (P01) foram redesenhadas no mesmo dia: camisas genéricas em cores da marca, sem escudos, patrocínios nem uniformes reais; continuam marcadas na página como ilustração genérica.
+- O logo do cabeçalho leva à página inicial (P01) em todas as telas, inclusive nas áreas do cliente e da administração, sem encerrar a sessão (24/10/2026).
 
 ## Estrutura
 
