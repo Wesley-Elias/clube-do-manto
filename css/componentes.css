@@ -31,20 +31,18 @@ h1, h2, h3, p { margin: 0; }
   .titulo-secao { font: var(--tipo-secao-desktop); letter-spacing: var(--ls-secao); }
 }
 
-/* ---------- Logo provisório ---------- */
+/* ---------- Logo ---------- */
+/* Arquivos em img/marca/: logo.svg (fundo escuro), logo-claro.svg (fundo claro),
+   versões empilhadas, símbolo e ícones. O nome está em contornos, não depende da fonte. */
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: var(--espaco-8);
-  font: var(--tipo-logo);
-  text-transform: uppercase;
-  text-decoration: none;
-  white-space: nowrap;
-  color: var(--texto-no-escuro);
-  letter-spacing: var(--ls-plano);
   min-height: var(--alvo-minimo);
+  min-width: 0;
+  text-decoration: none;
 }
-.logo__marca { color: var(--marca-destaque); letter-spacing: -0.08em; }
+.logo__imagem { display: block; height: auto; width: 214px; max-width: 100%; }
+.logo--empilhado .logo__imagem { width: 179px; }
 
 /* ---------- Botão ---------- */
 .botao {
@@ -283,7 +281,7 @@ h1, h2, h3, p { margin: 0; }
 @media (max-width: 400px) {
   .cabecalho-fluxo__interno { gap: var(--espaco-8); }
   .cabecalho-fluxo .botao { padding: 0 var(--espaco-8); }
-  .cabecalho-fluxo .logo { gap: var(--espaco-4); }
+  .cabecalho-fluxo .logo { flex: 0 1 auto; }
 }
 /* Abaixo de 360 px: o botão do fluxo desce para a linha de baixo e os campos acompanham o cartão */
 @media (max-width: 359px) {

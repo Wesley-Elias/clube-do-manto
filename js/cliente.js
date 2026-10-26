@@ -60,7 +60,8 @@ export { el };
 
 // A logo leva sempre à página inicial pública (P01), para cliente e administrador.
 function logo() {
-  return el("a", { class: "logo", href: "index.html" }, el("span", { class: "logo__marca", "aria-hidden": "true" }, "///"), "Clube do Manto");
+  return el("a", { class: "logo", href: "index.html" },
+    el("img", { class: "logo__imagem", src: "img/marca/logo.svg", width: "214", height: "24", alt: "Clube do Manto" }));
 }
 
 // Monta o cabeçalho dentro de <header data-cabecalho-cliente="C01">.
