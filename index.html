@@ -81,8 +81,13 @@
           </div>
         </div>
         <figure class="hero__figura">
-          <img src="img/ilustracao-hero.svg" width="592" height="466" alt="Ilustração de três camisas de futebol genéricas sobre um gramado, sem uniforme real.">
-          <figcaption class="legenda">Ilustração genérica · sem uniforme real</figcaption>
+          <picture>
+            <source media="(min-width: 1200px)" type="image/webp" srcset="img/p01/hero-desktop-600.webp 600w, img/p01/hero-desktop-1200.webp 1200w" sizes="592px">
+            <source media="(min-width: 600px)" type="image/webp" srcset="img/p01/hero-tablet-800.webp 800w, img/p01/hero-tablet-1600.webp 1600w" sizes="calc(100vw - 80px)">
+            <source type="image/webp" srcset="img/p01/hero-mobile-400.webp 400w, img/p01/hero-mobile-800.webp 800w" sizes="calc(100vw - 40px)">
+            <img src="img/p01/hero-desktop.jpg" width="600" height="450" fetchpriority="high" alt="Caixa preta do Clube do Manto aberta sobre uma mesa, com três camisas dobradas: uma verde-escura com detalhes laranja e creme, uma creme e uma preta com laranja.">
+          </picture>
+          <figcaption class="legenda">Imagem ilustrativa · camisas genéricas</figcaption>
         </figure>
       </div>
     </div>
@@ -152,7 +157,11 @@
         </div>
         <div class="categorias">
           <article class="cartao-categoria">
-            <img src="img/ilustracao-clubes.svg" width="592" height="200" alt="">
+            <picture>
+              <source media="(min-width: 600px)" type="image/webp" srcset="img/p01/clubes-largo-600.webp 600w, img/p01/clubes-largo-1200.webp 1200w" sizes="(min-width: 1200px) 592px, (min-width: 900px) calc(50vw - 52px), calc(100vw - 80px)">
+              <source type="image/webp" srcset="img/p01/clubes-mobile-400.webp 400w, img/p01/clubes-mobile-800.webp 800w" sizes="calc(100vw - 40px)">
+              <img src="img/p01/clubes-largo.jpg" width="600" height="200" loading="lazy" alt="Quatro camisas de clubes internacionais lado a lado: Ajax, Tottenham, Liverpool e Barcelona.">
+            </picture>
             <div class="cartao-categoria__corpo">
               <p class="chamada">Camisas de clubes</p>
               <h3 class="cartao-categoria__titulo">Clubes internacionais</h3>
@@ -161,7 +170,11 @@
             </div>
           </article>
           <article class="cartao-categoria">
-            <img src="img/ilustracao-selecoes.svg" width="592" height="200" alt="">
+            <picture>
+              <source media="(min-width: 600px)" type="image/webp" srcset="img/p01/selecoes-largo-592.webp 592w">
+              <source type="image/webp" srcset="img/p01/selecoes-mobile-328.webp 328w">
+              <img src="img/p01/selecoes-largo.jpg" width="592" height="200" loading="lazy" alt="Pilha de camisas de seleções dobradas, com escudos como os da Inglaterra e da Argentina.">
+            </picture>
             <div class="cartao-categoria__corpo">
               <p class="chamada">Camisas de seleções</p>
               <h3 class="cartao-categoria__titulo">Seleções</h3>
@@ -171,7 +184,12 @@
           </article>
         </div>
         <article class="especiais">
-          <img src="img/ilustracao-especiais.svg" width="400" height="208" alt="">
+          <picture class="especiais__foto">
+            <source media="(min-width: 900px)" type="image/webp" srcset="img/p01/especiais-desktop-400.webp 400w, img/p01/especiais-desktop-800.webp 800w" sizes="400px">
+            <source media="(min-width: 600px)" type="image/webp" srcset="img/p01/especiais-tablet-800.webp 800w, img/p01/especiais-tablet-1600.webp 1600w" sizes="calc(100vw - 80px)">
+            <source type="image/webp" srcset="img/p01/especiais-desktop-400.webp 400w, img/p01/especiais-desktop-800.webp 800w" sizes="calc(100vw - 40px)">
+            <img src="img/p01/especiais-desktop.jpg" width="400" height="300" loading="lazy" alt="Dois jogadores em um estádio à noite: um com a camisa listrada de vermelho e preto do Milan, número 80, e outro de costas com a camisa branca do Real Madrid, nome Sergio Ramos e número 4.">
+          </picture>
           <div class="especiais__corpo">
             <span class="selo">Inclusas no plano Colecionador</span>
             <h3 class="especiais__titulo">Camisas especiais</h3>
@@ -251,7 +269,12 @@
     <section class="secao secao--destaque" aria-labelledby="titulo-final">
       <div class="container final">
         <figure>
-          <img src="img/ilustracao-colecionador.svg" width="592" height="373" alt="Duas camisas comuns, uma camisa especial e um brinde.">
+          <picture>
+            <source media="(min-width: 1200px)" type="image/webp" srcset="img/p01/cta-desktop-600.webp 600w, img/p01/cta-desktop-1200.webp 1200w" sizes="592px">
+            <source media="(min-width: 600px)" type="image/webp" srcset="img/p01/cta-tablet-800.webp 800w, img/p01/cta-tablet-1448.webp 1448w" sizes="calc(100vw - 80px)">
+            <source type="image/webp" srcset="img/p01/cta-mobile-400.webp 400w, img/p01/cta-mobile-800.webp 800w" sizes="calc(100vw - 40px)">
+            <img src="img/p01/cta-desktop.jpg" width="600" height="450" loading="lazy" alt="Exemplo de kit Colecionador sobre uma bandeja de madeira: camisas do Galatasaray e da Espanha, uma camisa retrô da seleção brasileira e, numa caixinha, um chaveiro de brinde, ao lado da caixa do Clube do Manto.">
+          </picture>
           <figcaption>Exemplo de composição do Colecionador · 2 comuns + 1 especial + brinde</figcaption>
         </figure>
         <div class="final__texto">
