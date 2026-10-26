@@ -129,8 +129,8 @@
 .detalhe-modelo__acoes { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-16) var(--espaco-24); }
 @media (max-width: 599px) { .detalhe-modelo__acoes .botao { width: 100%; } }
 
-/* Com fonte substituta, o logo não pode empurrar o botão para fora da tela */
+/* O logo encolhe antes de empurrar o botão para fora da tela */
 @media (max-width: 400px) {
-  .cabecalho-fluxo .logo { gap: var(--espaco-4); min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .cabecalho-fluxo .logo { flex: 0 1 auto; }
   .cabecalho-fluxo .botao { flex: none; }
 }

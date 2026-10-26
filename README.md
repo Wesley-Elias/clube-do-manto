@@ -53,6 +53,7 @@ Implementado até aqui: **P01** (apresentação e planos), **P02** (cadastro), *
 - A foto do modelo é opcional e aparece na galeria, no painel, nos kits e na administração. Sem foto, ou se ela não carregar, aparece a ilustração genérica. Só administradores enviam ou apagam fotos; a ligação da foto ao modelo passa por `admin_definir_imagem_camisa`, que confere se o arquivo existe na pasta da própria camisa.
 - Contato, Termos de uso e Política de privacidade são texto, sem link.
 - `prefers-reduced-motion` para a faixa e as transições (regra em `tokens.css`).
+- Marca oficial (26/10/2026) em `img/marca/`: `logo.svg` (fundo escuro) e `logo-claro.svg` (fundo claro), versões empilhadas, `simbolo.svg`, favicon, ícones de app (`site.webmanifest`) e `compartilhamento.png` (1200×630, usada nas tags Open Graph da P01). O nome está convertido em contornos de Big Shoulders Display 900, então o logo não depende da fonte carregar. As ilustrações de `img/` continuam provisórias.
 
 ## Estrutura
 
