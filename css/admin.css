@@ -165,6 +165,19 @@
 .kit-admin > .link { align-self: flex-start; min-height: var(--alvo-minimo); }
 .cartao--montagem .camisa-kit { align-self: stretch; }
 
+/* A07 — simulação dos próximos meses */
+.cartao--simulacao { min-width: 0; }
+.simulacao__form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--espaco-12) var(--espaco-16); }
+.simulacao__form .campo { flex: 1 1 220px; max-width: 320px; min-width: 0; }
+.simulacao__resultado { display: flex; flex-direction: column; gap: var(--espaco-16); }
+.simulacao__resultado:empty { display: none; }
+.kit-admin__topo .kit-admin__titulo { min-width: 0; overflow-wrap: anywhere; }
+.kit-admin__topo { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--espaco-8) var(--espaco-12); }
+@media (max-width: 599px) {
+  .simulacao__form { flex-direction: column; align-items: stretch; }
+  .simulacao__form .campo { max-width: none; flex-basis: auto; }
+}
+
 /* Listas de regras e verificações */
 .lista-regras { margin: 0; padding-left: var(--espaco-20); display: flex; flex-direction: column; gap: var(--espaco-8); font: var(--tipo-corpo); color: var(--texto-secundario); }
 .verificacoes { background: var(--fundo-claro); border-radius: var(--raio-cartao); padding: var(--espaco-20); display: flex; flex-direction: column; gap: var(--espaco-12); }

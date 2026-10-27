@@ -1,10 +1,12 @@
 // A07 — Detalhes do assinante: perfil e preferências, assinatura, kits por mês,
-// histórico de modelos e acesso à montagem do kit e às solicitações de troca.
+// histórico de modelos, acesso à montagem do kit e às solicitações de troca e
+// simulação dos kits dos próximos meses (prévia sem gravar).
 // O administrador consulta os registros; não edita perfil, não concede trocas e
 // não altera o histórico. Aba e kit aberto ficam na URL (?aba=historico, ?kit=).
-import { avisarSemConfiguracao } from "./supabase.js";
+import { supabase, avisarSemConfiguracao } from "./supabase.js";
 import { TELAS } from "./sessao.js";
 import { el, chip, dataCurta } from "./cliente.js";
+import { processando } from "./formulario.js";
 import { montarCabecalhoAdmin, exigirAdministrador, mostrarFalhaGeral, codigoDoErro } from "./admin.js";
 import { camisaDoKit, faixaDeDados, descricaoCamisa, tipoDaCamisa, MODALIDADES, composicaoRegistrada } from "./kits-comum.js";
 import {
@@ -58,6 +60,73 @@ function cartaoCompetencia() {
     filhos.push(alerta("aviso", titulo, texto));
   }
   return el("section", { class: "cartao cartao--admin cartao--competencia", "aria-label": "Kit do mês" }, ...filhos);
+}
+
+// ---------- Simulação dos próximos meses ----------
+// Prévia do sorteio da montagem (admin_simular_kits): nada é gravado e cada
+// simulação sorteia de novo. Um mês simulado conta para não repetir modelo nos seguintes.
+const GRUPOS = { comum: "comuns", especial: "especiais" };
+const ERROS_SIMULACAO = { assinatura_cancelada: "cancelada", plano_inativo: "plano_inativo", perfil_incompleto: "perfil_incompleto" };
+
+function mesSimulado(kit) {
+  return el("section", { class: "kit-admin kit-admin--simulado", "aria-label": `Kit simulado de ${rotuloCompetencia(kit.competencia)}` },
+    el("div", { class: "kit-admin__topo" },
+      el("h3", { class: "kit-admin__titulo" }, `Kit de ${rotuloCompetencia(kit.competencia)}`),
+      chip("Simulado", "aviso", "◷")),
+    faixaDeDados([
+      ["Competência", rotuloCompetencia(kit.competencia)],
+      ["Plano", kit.plano],
+      ["Composição", composicaoRegistrada(kit)],
+      ["Brinde", brindeDoKit(kit)],
+    ]),
+    ...kit.itens.map((item) => camisaDoKit(item, { rotulo: `Camisa ${item.posicao}` })));
+}
+
+function resultadoSimulacao(dadosSimulados) {
+  const blocos = dadosSimulados.meses.map(mesSimulado);
+  const parada = dadosSimulados.interrupcao;
+  if (parada) {
+    const tamanho = dados.tamanho ? ` no tamanho ${dados.tamanho}` : "";
+    blocos.push(alerta("aviso", `Estoque insuficiente em ${rotuloCompetencia(parada.competencia)}`,
+      `Não há camisas ${GRUPOS[parada.grupo]} inéditas para este titular com saldo${tamanho}. A simulação para neste mês; cadastre estoque de outros modelos para ver os meses seguintes.`));
+  }
+  return blocos;
+}
+
+function cartaoSimulacao() {
+  const meses = el("select", { class: "campo__entrada", id: "meses-simulacao", name: "meses" },
+    ...[3, 6, 12].map((n) => el("option", { value: String(n) }, `Próximos ${n} meses`)));
+  const simular = el("button", { class: "botao botao--sec-claro", type: "submit" }, "Simular");
+  const resultado = el("div", { class: "simulacao__resultado", "aria-live": "polite" });
+  const form = el("form", { class: "simulacao__form", "aria-label": "Simular próximos meses" },
+    el("div", { class: "campo" },
+      el("label", { class: "campo__rotulo", for: "meses-simulacao" }, "Período"),
+      el("div", { class: "campo__caixa campo__caixa--selecao" }, meses, el("span", { class: "campo__seta", "aria-hidden": "true" }))),
+    simular);
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    processando(simular, true, "Simulando…");
+    const { data, error } = await supabase.rpc("admin_simular_kits", { p_usuario: usuarioId, p_meses: Number(meses.value) });
+    processando(simular, false);
+    if (error) {
+      console.error(error);
+      const situacao = ERROS_SIMULACAO[codigoDoErro(error)];
+      resultado.replaceChildren(situacao
+        ? alerta("aviso", ...INELEGIVEL[situacao])
+        : alerta("erro", "Não foi possível simular", "Tente novamente em instantes. Nenhum dado foi alterado."));
+      return;
+    }
+    simular.textContent = "Simular de novo";
+    resultado.replaceChildren(...resultadoSimulacao(data));
+  });
+
+  return el("section", { class: "cartao cartao--admin cartao--simulacao", "aria-labelledby": "titulo-simulacao" },
+    el("h2", { class: "cartao__titulo", id: "titulo-simulacao" }, "Simular próximos meses"),
+    el("p", { class: "cartao__texto" }, "Prévia dos kits seguintes com as regras da montagem: tamanho do perfil, equipe preferida com mais chance, rival bloqueado, sem repetir modelo e só camisas com estoque."),
+    el("p", { class: "cartao__nota" }, "Nada é gravado: estoque, kits e histórico não mudam, e cada simulação sorteia de novo. A prévia não considera kits de outros assinantes, reposições de estoque nem trocas."),
+    form,
+    resultado);
 }
 
 // ---------- Abas ----------
@@ -236,6 +305,7 @@ function renderizar() {
     el("div", { class: "painel-grade painel-grade--admin" },
       el("div", { class: "painel-grade__principal" },
         cartaoCompetencia(),
+        ["pronto", "kit_existente"].includes(situacaoDoKit(dados)) ? cartaoSimulacao() : null,
         el("section", { class: "cartao cartao--admin cartao--registros", "aria-label": "Kits e histórico", "data-registros": true })),
       el("div", { class: "painel-grade__lateral" }, cartaoPerfil(dados), cartaoPlano(), cartaoTrocas()))));
   renderizarRegistros();

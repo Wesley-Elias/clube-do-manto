@@ -26,7 +26,7 @@ Implementado até aqui: **P01** (apresentação e planos), **P02** (cadastro), *
 | `camisa.html` | A04 | cadastro e edição (`?id=`, `?equipe=`); temporada AAAA ou AAAA/AAAA; classificação incoerente; clube brasileiro; modelo duplicado; campos bloqueados quando o modelo já entrou em kit; foto opcional (JPG, PNG ou WebP até 2 MB) com prévia, troca e remoção; falha no envio da foto avisada sem perder os dados; sucesso com Cadastrar estoque |
 | `estoque.html` | A05 | filtro por modelo (`?camisa=`); Disponível/Sem saldo; sem linhas; diálogos Cadastrar saldo (só tamanhos ainda não registrados) e Repor; quantidade inválida; processando; sucesso; resultado não confirmado atualiza a consulta antes de repetir |
 | `assinantes.html` | A06 | busca por nome ou referência, filtro Ativas/Canceladas e filtro por plano (`?plano=`) na URL; Limpar filtros; nenhum assinante; sem resultado; falha |
-| `assinante.html` | A07 | perfil, plano e trocas da assinatura (sem saldo); kit da competência atual (montar, consultar ou motivo da inelegibilidade); abas Kits por mês e Histórico de modelos; kit aberto (`?kit=`) com composição atual, original e alterações; não encontrado |
+| `assinante.html` | A07 | perfil, plano e trocas da assinatura (sem saldo); kit da competência atual (montar, consultar ou motivo da inelegibilidade); abas Kits por mês e Histórico de modelos; kit aberto (`?kit=`) com composição atual, original e alterações; simulação dos próximos meses (prévia do sorteio, sem gravar); não encontrado |
 | `montar-kit.html` | A08 | pronto para montar; kit registrado; kit já existente (sem nova baixa); inelegível (cancelada, plano inativo, perfil incompleto); estoque insuficiente com Consultar estoque; resultado não confirmado com Consultar situação; falha |
 | `solicitacoes-troca.html` | A09 | filtros Assinante e Estado na URL (`?assinante=`, `?estado=`); Atualizar consulta; Solicitada primeiro; vazio; sem resultado; falha |
 | `processar-troca.html` | A10 | solicitação em aberto com verificações; diálogos Concluir troca e Rejeitar solicitação; sem estoque (pedido segue Solicitada); bloqueios (cancelada, limite, item não atual); pedido já encerrado; resultado não confirmado; registro de concluídas e rejeitadas |
@@ -85,7 +85,7 @@ js/admin.js          sessão e papel de administrador, cabeçalho administrativo
 js/admin-painel.js, js/catalogo.js, js/equipe.js, js/camisa.js, js/estoque.js   A01 a A05
 js/admin-operacao.js  peças compartilhadas por A06 a A10
 js/assinantes.js, js/assinante.js, js/montar-kit.js, js/solicitacoes-troca.js, js/processar-troca.js   A06 a A10
-supabase/migrations/  001 = esquema; 002 = acesso público e login; 003 = painel e perfil; 004 = tamanhos oficiais; 005 = assinatura e trocas do cliente; 006 = coleção, catálogo e estoque; 007 = assinantes, kits e trocas da administração; 008 = foto da camisa; 009 = recusa de clube brasileiro; 010 = peso do sorteio
+supabase/migrations/  001 = esquema; 002 = acesso público e login; 003 = painel e perfil; 004 = tamanhos oficiais; 005 = assinatura e trocas do cliente; 006 = coleção, catálogo e estoque; 007 = assinantes, kits e trocas da administração; 008 = foto da camisa; 009 = recusa de clube brasileiro; 010 = peso do sorteio; 011 = simulação dos kits dos próximos meses
 ```
 
 ## Supabase
