@@ -217,8 +217,9 @@ h1, h2, h3, p { margin: 0; }
   gap: var(--espaco-12) var(--espaco-32);
   padding-block: 28px;
 }
-.rodape-fluxo__links { display: flex; flex-wrap: wrap; gap: var(--espaco-12) var(--espaco-32); }
-.rodape-fluxo__link { color: var(--texto-no-escuro); text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; min-height: 24px; }
+.rodape-fluxo__links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--espaco-12) var(--espaco-32); }
+.rodape-fluxo__links > * { display: inline-flex; align-items: center; min-height: 24px; }
+.rodape-fluxo__link { color: var(--texto-no-escuro); text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- Resumo do plano ---------- */
 .resumo-plano {
