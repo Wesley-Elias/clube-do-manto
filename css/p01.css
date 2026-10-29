@@ -281,8 +281,9 @@ a.rodape__link:hover { text-decoration: underline; }
 .rodape__divisor { border: 0; border-top: var(--borda-fina) solid rgba(243, 247, 241, 0.14); margin: var(--espaco-32) 0; }
 .rodape__final { display: flex; flex-wrap: wrap; gap: var(--espaco-12) var(--espaco-24); font: var(--tipo-pequeno); color: var(--texto-no-escuro-suave); }
 .rodape__final span:first-child { margin-right: auto; }
-@media (min-width: 768px) { .rodape__grade { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 1200px) { .rodape__grade { grid-template-columns: 376px 280px 280px 176px; } }
+/* Tablet: marca numa linha inteira e as três colunas de links lado a lado embaixo */
+@media (min-width: 768px) { .rodape__grade { grid-template-columns: repeat(3, 1fr); } .rodape__marca { grid-column: 1 / -1; } }
+@media (min-width: 1200px) { .rodape__grade { grid-template-columns: 376px 280px 280px 176px; } .rodape__marca { grid-column: auto; } }
 
 /* Abaixo de 360 px: marca e botão Menu cabem na largura */
 @media (max-width: 359px) {
