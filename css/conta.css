@@ -192,13 +192,19 @@
   }
   .tabela td, .tabela tbody th { padding: var(--espaco-8) 0; border-bottom: var(--borda-fina) solid var(--borda-suave); }
   .tabela tr > :last-child { border-bottom: 0; }
+  .tabela td { font: var(--tipo-corpo); color: var(--texto-principal); }
   .tabela td[data-rotulo]::before {
     content: attr(data-rotulo);
     display: block;
-    font: var(--tipo-pequeno);
+    font: var(--tipo-cabecalho-tabela);
+    letter-spacing: var(--ls-cabecalho-tabela);
+    text-transform: uppercase;
     color: var(--texto-secundario);
-    margin-bottom: 2px;
+    margin-bottom: var(--espaco-4);
   }
+  /* A ação dispensa rótulo: o próprio link diz o que faz. */
+  .tabela td[data-rotulo="Ação"]::before, .tabela td[data-rotulo="Ações"]::before,
+  .tabela td[data-rotulo="Detalhes"]::before { display: none; }
   .tabela__linha-detalhe td { padding: 0; }
   .tabela tr.tabela__linha-detalhe { border: 0; padding: 0; }
 }
