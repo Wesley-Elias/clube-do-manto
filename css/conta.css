@@ -203,7 +203,8 @@
     margin-bottom: var(--espaco-4);
   }
   /* A ação dispensa rótulo: o próprio link diz o que faz. */
-  .tabela td[data-rotulo="Ação"]::before, .tabela td[data-rotulo="Ações"]::before { display: none; }
+  .tabela td[data-rotulo="Ação"]::before, .tabela td[data-rotulo="Ações"]::before,
+  .tabela td[data-rotulo="Detalhes"]::before { display: none; }
   .tabela__linha-detalhe td { padding: 0; }
   .tabela tr.tabela__linha-detalhe { border: 0; padding: 0; }
 }
