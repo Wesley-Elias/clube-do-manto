@@ -250,6 +250,9 @@ body { background: var(--fundo-claro); }
   background: var(--estado-neutro-fundo);
   color: var(--texto-principal);
 }
+/* Com foto: a camisa aparece inteira, sobre o mesmo fundo branco das fotos. */
+.camisa__imagem:has(.camisa-foto) { height: 180px; background: var(--fundo-superficie); border-bottom: var(--borda-fina) solid var(--borda-suave); }
+.camisa__imagem .camisa-foto { object-fit: contain; padding: var(--espaco-8); }
 .selo-especial {
   position: absolute;
   top: var(--espaco-12); left: var(--espaco-12);
