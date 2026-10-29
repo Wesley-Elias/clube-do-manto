@@ -25,6 +25,10 @@ body { background: var(--fundo-claro); }
   gap: var(--espaco-40);
   min-height: var(--altura-cabecalho-mobile);
 }
+/* Abaixo de 1440 px a logo das áreas internas é só o símbolo /// (ver logo() em js/cliente.js) */
+@media (max-width: 1439px) {
+  .logo--area .logo__imagem { width: 36px; }
+}
 .cab-cliente__nav, .cab-cliente__conta { display: none; }
 .cab-cliente__menu-botao { margin-left: auto; }
 .cab-cliente__item {
