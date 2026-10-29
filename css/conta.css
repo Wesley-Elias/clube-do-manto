@@ -190,8 +190,11 @@
     padding: var(--espaco-12) var(--espaco-16);
     margin-bottom: var(--espaco-12);
   }
-  .tabela td, .tabela tbody th { padding: var(--espaco-8) 0; border-bottom: var(--borda-fina) solid var(--borda-suave); }
-  .tabela tr > :last-child { border-bottom: 0; }
+  /* Cada cartão separa os próprios campos, inclusive o último e o que está aberto. */
+  .tabela td, .tabela tbody th,
+  .tabela tbody tr:last-child td, .tabela tbody tr:last-child th,
+  .tabela__linha--aberta td, .tabela__linha--aberta th { padding: var(--espaco-8) 0; border-bottom: var(--borda-fina) solid var(--borda-suave); }
+  .tabela tbody tr > td:last-child, .tabela tbody tr > th:last-child { border-bottom: 0; }
   .tabela td { font: var(--tipo-corpo); color: var(--texto-principal); }
   .tabela td[data-rotulo]::before {
     content: attr(data-rotulo);
